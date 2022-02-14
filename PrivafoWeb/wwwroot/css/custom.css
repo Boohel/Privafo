@@ -1,0 +1,101 @@
+﻿@import url("https://fonts.googleapis.com/css?family=Patua+One");
+
+body {
+    text-align: center;
+}
+
+.container {
+    padding-top: 1%;
+    padding-bottom: 4%;
+}
+
+h1 {
+    margin-top: 4%;
+    margin-bottom: 4%;
+    font-family: "Patua One", cursive;
+}
+
+.box {
+    position: relative;
+    max-height: 255px;
+    height: 255px;
+    background-color: #eeeeee;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.content-hover2 {
+    transform: scale(0, 0);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #d32222;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    padding: 2em 2em;
+}
+
+
+
+.content-hover2 h1 {
+    color: #ffffff;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: "Patua One", cursive;
+    font-style: italic;
+}
+
+.content-hover2 p {
+    color: #ffffff;
+}
+
+.content-hover {
+    transform: scale(0, 0);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #252525;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    padding: 2em 2em;
+}
+
+.content-hover h1 {
+    color: #ffffff;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: "Patua One", cursive;
+    font-style: italic;
+}
+
+.content-hover p {
+    color: #ffffff;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+}
+
+.content img {
+    width: 160px;
+}
+
+.content p {
+    font-size: 1.2em;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: -2em;
+}
+
+.box .content-hover:hover, .box .content-hover2:hover {
+    transform: scale(1, 1);
+    cursor: pointer;
+}

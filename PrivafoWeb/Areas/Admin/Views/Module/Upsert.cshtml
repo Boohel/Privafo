@@ -1,0 +1,72 @@
+﻿@model Privafo.Models.ViewModels.ModuleVM
+
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input asp-for="Module.ModuleID" hidden />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="border p-3 mt-4 row">
+                <div class="col-12 pb-2">
+                    <h2 class="text-primary">@(Model.Module.ModuleID!=0?"Update": "Create") Module</h2>
+                    <hr />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Module.ModuleName"></label>
+                    <input asp-for="Module.ModuleName" class="form-control" />
+                    <span asp-validation-for="Module.ModuleName" class=text-danger></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Module.Description"></label>
+                    <textarea asp-for="Module.Description" class="form-control" rows=3></textarea>
+                    <span class=text-danger></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Module.ModuleColor"></label>
+                    <textarea asp-for="Module.ModuleColor" rows=3 class="form-control"></textarea>
+                    <span asp-validation-for="Module.ModuleColor" class=text-danger></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Module.ModuleSort"></label>
+                    <input asp-for="Module.ModuleSort" class="form-control" />
+                    <span asp-validation-for="Module.ModuleSort" class=text-danger></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Module.ModuleImageClass"></label>
+                    <input asp-for="Module.ModuleImageClass" class="form-control" />
+                    <span asp-validation-for="Module.ModuleImageClass" class=text-danger></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Module.ModuleCtgID"></label>
+                    @*<select asp-for="ModuleCtgID" asp-items="ViewBag.ModuleCtgList" class="form-select"> 
+                        <option disabled selected>--Select Category--</option>
+                    </select>*@
+                    <select asp-for="Module.ModuleCtgID" asp-items="@Model.ModuleCtgList" class="form-select">
+                        <option disabled selected>--Select Category--</option>
+                    </select>
+                    <span asp-validation-for="Module.ModuleCtgID" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    @if (Model.Module.ModuleID != 0)
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px;">Update</button> 
+                    }
+                    else
+                    {
+                        <button type="submit" onclick="return" class="btn btn-primary" style="width:150px;">Create</button>                
+                    }
+                    <a asp-controller="Module" asp-action="Index" class="btn btn-secondary" style="width:150px;">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@*Validate in Client Side*@
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}
+

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ModuleCtg>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Module Category</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Category Name</th>
+            <th>Display Order</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td width="50%">
+                    @obj.ModuleCtgName
+                </td>
+                <td width="30%">
+                    @obj.ModuleCtgSort
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
