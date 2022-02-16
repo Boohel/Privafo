@@ -36,7 +36,7 @@ namespace PrivafoWeb.Controllers
                 ModuleCtgList = _uow.ModuleCtg.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.ModuleCtgName,
-                    Value = i.ModuleCtgID.ToString()
+                    Value = i.ID.ToString()
                 })
             };
 
@@ -55,7 +55,7 @@ namespace PrivafoWeb.Controllers
             }
             else
             {
-                //ProductVM.Product = _unitOfwork.Product.GetFirstOrDefault(u => u.ID == ID);
+                moduleVM.Module = _uow.Module.GetFirstOrDefault(u => u.ID == ID);
 
                 return View(moduleVM);
             }
@@ -68,47 +68,48 @@ namespace PrivafoWeb.Controllers
         {
             if (ModelState.IsValid) //validation form server side
             {
-                _uow.Module.Add(obj.Module);
+
+                if (obj.Module.ID == 0)
+                {
+                    _uow.Module.Add(obj.Module);
+                    TempData["success"] = "Module inserted successfully";
+                }
+                else
+                {
+                    _uow.Module.Update(obj.Module);
+                    TempData["success"] = "Module updated successfully";
+                }
                 _uow.Save();
-                TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
         }
 
-        //GET
+        //POST
+        [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            if (ID == null || ID == 0)
-            {
-                return NotFound();
-            }
+            var obj = _uow.Module.GetFirstOrDefault(u => u.ID == ID);
 
-            //var categoryFromDb = _db.Categories.Find(ID);
-            var categoryFromDbFirst = _uow.ModuleCtg.GetFirstOrDefault(u => u.ModuleCtgID == ID);
-
-            if (categoryFromDbFirst == null)
-            {
-                return NotFound();
-            }
-            return View(categoryFromDbFirst);
-        }
-
-        //POST
-        [HttpPost, ActionName("Delete")] //ActionName("Delete") for define asp-action is "Delete"
-        [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? ID)
-        {
-            var obj = _uow.ModuleCtg.GetFirstOrDefault(u => u.ModuleCtgID == ID);
             if (obj == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.ModuleCtg.Remove(obj);
+            _uow.Module.Remove(obj);
             _uow.Save();
-            TempData["success"] = "Category deleted successfully";
-            return RedirectToAction("Index");
+            return Json(new { success = true, message = "Module deleted successfully" });
         }
+
+
+        #region API CALLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            //var productList = _uow.Module.GetAll();
+            var productList = _uow.Module.GetAll(includeProperties: "ModuleCtg");
+            return Json(new { data = productList });
+        }
+        #endregion
     }
 }

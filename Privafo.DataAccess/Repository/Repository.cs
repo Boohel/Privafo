@@ -17,7 +17,7 @@ namespace Privafo.DataAccess.Repository
         public Repository(ApplicationDbContext db)
         {
             _db = db;
-            ////_db.Products.Include(u => u.Category).Include(u => u.CoverType);
+            //_db.Products.Include(u => u.Category).Include(u => u.CoverType);
             this.dbSet = _db.Set<T>();
         }
 
@@ -26,7 +26,7 @@ namespace Privafo.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        //includeProp - "Category, CoverType"
+        //includeProp - "ModuleCtg,dll"
         public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;

@@ -13,7 +13,6 @@
 	<link href="~/theme/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
 	<link href="~/theme/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
 	<link href="~/theme/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-	<link href="~/theme/plugins/toastr/css/toastr.min.css" rel="stylesheet" />
 	<!-- Bootstrap CSS -->
 	<link href="~/theme/css/bootstrap.min.css" rel="stylesheet">
 	<link href="~/theme/css/bootstrap-extended.css" rel="stylesheet">
@@ -24,6 +23,7 @@
 	<link rel="stylesheet" href="~/theme/css/dark-theme.css" />
 	<link rel="stylesheet" href="~/theme/css/semi-dark.css" />
 	<link rel="stylesheet" href="~/theme/css/header-colors.css" />
+	<link href="~/theme/plugins/toastr/css/toastr.min.css" rel="stylesheet" />
 	<title>Privacy Information 1.0</title>
 
 </head>
@@ -399,8 +399,11 @@
 	<script src="~/theme/js/app.js"></script>
 	<script src="~/theme/plugins/datatable/js/jquery.dataTables.min.js"></script>
 	<script src="~/theme/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
-	<script src="~/theme/plugins/toastr/js/toastr.min.js"></script>
+	<script src="~/theme/plugins/toastr/js/toastr.min.js"></script>	
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 	@await RenderSectionAsync("Scripts", required: false)
+
 	<script>
 		$(document).ready(function() {
 			var table = $('#myTable').DataTable( {

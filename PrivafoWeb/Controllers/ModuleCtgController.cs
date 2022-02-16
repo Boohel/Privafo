@@ -49,7 +49,7 @@ namespace PrivafoWeb.Controllers
             }
 
             //var modulectgData = _db.module_ctg.Find(ID);
-            var modulectgFromDbFirst = _uow.ModuleCtg.GetFirstOrDefault(u => u.ModuleCtgID == ID);
+            var modulectgFromDbFirst = _uow.ModuleCtg.GetFirstOrDefault(u => u.ID == ID);
             //var modulectgFromDbSingle = _db.module_ctg.SingleOrDefault(u => u.ID==ID);
 
             if (modulectgFromDbFirst == null)
@@ -83,7 +83,7 @@ namespace PrivafoWeb.Controllers
             }
 
             //var categoryFromDb = _db.Categories.Find(ID);
-            var categoryFromDbFirst = _uow.ModuleCtg.GetFirstOrDefault(u => u.ModuleCtgID == ID);
+            var categoryFromDbFirst = _uow.ModuleCtg.GetFirstOrDefault(u => u.ID == ID);
 
             if (categoryFromDbFirst == null)
             {
@@ -97,7 +97,7 @@ namespace PrivafoWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(int? ID)
         {
-            var obj = _uow.ModuleCtg.GetFirstOrDefault(u => u.ModuleCtgID == ID);
+            var obj = _uow.ModuleCtg.GetFirstOrDefault(u => u.ID == ID);
             if (obj == null)
             {
                 return NotFound();

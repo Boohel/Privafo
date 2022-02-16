@@ -10,29 +10,29 @@ using System.Threading.Tasks;
 
 namespace Privafo.Models
 {
-    public class Module
+    public class Module : BaseDateEntity
     {
         [Key]
-        public int ModuleID { get; set; }
+        public int ID { get; set; }
         [Required]
         [Display(Name = "Module Name")]
         [StringLength(50, ErrorMessage = "Module Name cannot be longer than 50 characters.")]
         public String ModuleName { get; set; }
         [DataType(DataType.Text)]
-        public String Description { get; set; }
-        [Required]
+        public String? Description { get; set; }
         [Display(Name = "Color")]
         [ValidateNever]
-        public String ModuleColor { get; set; }
+        [StringLength(10, ErrorMessage = "Module Color cannot be longer than 10 characters.")]
+        public String? ModuleColor { get; set; }
         [Required]
         [Display(Name = "Sort")]
         public int ModuleSort { get; set; }
         [Required]
         [Display(Name = "Image Class")]
-        [StringLength(50, ErrorMessage = "Module Image Class cannot be longer than 50 characters.")]
+        [StringLength(50, ErrorMessage = "Image Class cannot be longer than 50 characters.")]
         public String ModuleImageClass { get; set; }
-        [ValidateNever]
 
+        [ValidateNever]
         [Required]
         [Display(Name = "Module Category")]
         public int ModuleCtgID { get; set; }

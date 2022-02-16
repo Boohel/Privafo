@@ -10,7 +10,7 @@ namespace Privafo.Models.ViewModels
 {
     public class ModuleVM
     {
-        public Module Module = new();
+        public Module Module { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> ModuleCtgList { get; set; }
     }

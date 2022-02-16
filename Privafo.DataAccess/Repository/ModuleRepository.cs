@@ -21,11 +21,12 @@ namespace Privafo.DataAccess.Repository
         {
             //_db.modules.Update(obj);
 
-            var objFromDb = _db.modules.FirstOrDefault(u => u.ModuleID == obj.ModuleID);
+            var objFromDb = _db.modules.FirstOrDefault(u => u.ID == obj.ID);
 
             if (objFromDb != null)
             {
                 objFromDb.ModuleName = obj.ModuleName;
+                objFromDb.Description = obj.Description;
                 objFromDb.ModuleColor = obj.ModuleColor;
                 objFromDb.ModuleSort = obj.ModuleSort;
                 objFromDb.ModuleImageClass = obj.ModuleImageClass;
