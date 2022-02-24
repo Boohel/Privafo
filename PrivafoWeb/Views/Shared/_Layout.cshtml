@@ -1,4 +1,8 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 <!doctype html>
 <html lang="en" class="color-sidebar sidebarcolor7">
     
@@ -8,22 +12,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--favicon-->
 	<link rel="icon" href="~/theme/images/favicon-32x32.png" type="image/png" />
-	<!--plugins-->
-	<link href="~/theme/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-	<link href="~/theme/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-	<link href="~/theme/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
-	<link href="~/theme/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 	<!-- Bootstrap CSS -->
 	<link href="~/theme/css/bootstrap.min.css" rel="stylesheet">
 	<link href="~/theme/css/bootstrap-extended.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 	<link href="~/theme/css/app.css" rel="stylesheet">
 	<link href="~/theme/css/icons.css" rel="stylesheet">
+	<!--plugins-->
+	<link href="~/theme/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+	<link href="~/theme/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+	<link href="~/theme/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+	<link href="~/theme/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+	<link href="~/theme/plugins/toastr/css/toastr.min.css" rel="stylesheet" />
 	<!-- Theme Style CSS -->
 	<link rel="stylesheet" href="~/theme/css/dark-theme.css" />
 	<link rel="stylesheet" href="~/theme/css/semi-dark.css" />
 	<link rel="stylesheet" href="~/theme/css/header-colors.css" />
-	<link href="~/theme/plugins/toastr/css/toastr.min.css" rel="stylesheet" />
 	<title>Privacy Information 1.0</title>
 
 </head>
@@ -343,32 +347,56 @@
 							</li>
 						</ul>
 					</div>
-					<div class="user-box dropdown">
-						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="~/theme/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
-							<div class="user-info ps-3">
-								<p class="user-name mb-0">user</p>
-								<p class="designattion mb-0">Web Designer</p>
-							</div>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
-							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-cog"></i><span>Settings</span></a>
-							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-home-circle'></i><span>Dashboard</span></a>
-							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-dollar-circle'></i><span>Earnings</span></a>
-							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-download'></i><span>Downloads</span></a>
-							</li>
-							<li>
-								<div class="dropdown-divider mb-0"></div>
-							</li>
-							<li><a class="dropdown-item" asp-controller="Home" asp-action="Login"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
-							</li>
-						</ul>
-					</div>
+					@if (SignInManager.IsSignedIn(User))
+					{
+						<div class="user-box dropdown">
+							<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<img src="~/theme/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+								<div class="user-info ps-3">
+									<p class="user-name mb-0">@UserManager.GetUserName(User)</p>
+									<p class="designattion mb-0">Web Designer</p>
+								</div>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bx bx-user"></i><span>Profile</span></a>
+								</li>
+								<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-cog"></i><span>Settings</span></a>
+								</li>
+								@*<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-home-circle'></i><span>Dashboard</span></a>
+								</li>
+								<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-dollar-circle'></i><span>Earnings</span></a>
+								</li>
+								<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-download'></i><span>Downloads</span></a>
+								</li>*@
+								<li>
+									<div class="dropdown-divider mb-0"></div>
+								</li>
+								<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })"><i class='bx bx-log-out'></i><span>Logout</span></a>
+								</li>
+							</ul>
+						</div>
+					}	
+					else 
+					{
+						<div class="user-box dropdown">
+							<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<img src="~/theme/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+								<div class="user-info ps-3">
+									<p class="user-name mb-0">@UserManager.GetUserName(User)</p>
+									<p class="designattion mb-0">Web Designer</p>
+								</div>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li class="nav-item">
+									<a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+								</li>
+							</ul>
+						</div>
+						
+					}
 				</nav>
 			</div>
 		</header>
@@ -400,7 +428,8 @@
 	<script src="~/theme/plugins/datatable/js/jquery.dataTables.min.js"></script>
 	<script src="~/theme/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
 	<script src="~/theme/plugins/toastr/js/toastr.min.js"></script>	
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="~/theme/plugins/sweetalert2/sweetalert.min.js"></script>	
+    @*<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>*@
 
 	@await RenderSectionAsync("Scripts", required: false)
 

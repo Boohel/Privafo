@@ -1,0 +1,105 @@
+﻿@page
+@model LoginModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    ViewData["Title"] = "Log in";
+}
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 order-md-2">
+                <img src="~/lib/login-form/images/undraw_file_sync_ot38.svg" alt="Image" class="img-fluid">
+            </div>
+
+            <div class="col-md-6 contents">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <h3>Sign In to <strong>Prifavo</strong></h3>
+                            <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
+                        </div>
+                        <form id="account" method="post">                
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group first field--not-empty">
+                                <label asp-for="Input.Email" for="username">Email</label>
+                                <input type="text" asp-for="Input.Email" class="form-control" id="username" value="arifrmnsyh@gmail.com">
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group last mb-4 field--not-empty">
+                                <label asp-for="Input.Password" for="password">Password</label>
+                                <input type="password" asp-for="Input.Password" class="form-control" id="password" value="Ari220994!">
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+              
+                            <div class="d-flex mb-5 align-items-center">
+                                <label asp-for="Input.RememberMe" class="control control--checkbox mb-0"><span class="caption">@Html.DisplayNameFor(m => m.Input.RememberMe)</span>
+                                    <input type="checkbox" asp-for="Input.RememberMe" checked="checked"/> 
+                                    <div class="control__indicator"></div>
+                                </label>
+                                <span class="ml-auto"><a asp-page="./ForgotPassword" class="forgot-pass">Forgot Password</a></span> 
+                            </div>
+
+                           @* <div class="d-flex align-items-center">
+                                <p>
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                                </p>
+                            </div>
+
+                            <div class="d-flex mb-5 align-items-center">
+                                <p>
+                                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                                </p>
+                            </div>*@
+
+                            <button id="login-submit" type="submit" class="btn text-white btn-block btn-primary">Log In</button>
+              
+                        </form>
+
+                        @*<span class="d-block text-left my-4 text-muted"> or sign in with</span>*@
+                        @*<div class="social-login">
+                            <a href="#" class="facebook">
+                                <span class="icon-facebook mr-3"></span> 
+                            </a>
+                            <a href="#" class="twitter">
+                            <   span class="icon-twitter mr-3"></span> 
+                            </a>
+                            <a href="#" class="google">
+                                <span class="icon-google mr-3"></span> 
+                            </a>
+                        </div>*@              
+                       @* @{
+                            if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                            {
+                                <div>
+                                    <p>
+                                    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                                    about setting up this ASP.NET application to support logging in via external services</a>.
+                                    </p>
+                                </div>
+                            }
+                            else
+                            {
+                                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                    <div>
+                                        <p>
+                                            @foreach (var provider in Model.ExternalLogins)
+                                            {
+                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                            }
+                                        </p>
+                                    </div>
+                                </form>
+                            }
+                        }*@
+                    </div>
+                </div>          
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

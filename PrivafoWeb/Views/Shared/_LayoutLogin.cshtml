@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!doctype html>
+<html lang="en" class="color-sidebar sidebarcolor7">
+    
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--favicon-->
+	<link rel="icon" href="~/theme/images/favicon-32x32.png" type="image/png" />
+	<!-- Bootstrap CSS -->
+@*	<link href="~/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/theme/css/bootstrap-extended.css" rel="stylesheet">*@
+
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/login-form/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="~/lib/login-form/css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/login-form/css/bootstrap.min.css">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="~/lib/login-form/css/style.css">
+
+    <title>Login Prifavo</title>
+
+</head>
+
+<body>
+	@RenderBody()	
+
+	<script src="~/lib/login-form/js/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/login-form/js/bootstrap.min.js"></script>
+    <script src="~/lib/login-form/js/popper.min.js"></script>
+    <script src="~/lib/login-form/js/main.js"></script>
+    
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

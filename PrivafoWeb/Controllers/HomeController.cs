@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Privafo.DataAccess.Repository.IRepository;
 using Privafo.Models;
 using System.Diagnostics;
 
@@ -7,10 +8,12 @@ namespace PrivafoWeb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _uow;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork uow)
         {
             _logger = logger;
+            _uow = uow;
         }
 
         public IActionResult Index()
@@ -20,7 +23,8 @@ namespace PrivafoWeb.Controllers
 
         public IActionResult Welcome()
         {
-            return View();
+            IEnumerable<Module> objModuleList = _uow.Module.GetAll();
+            return View(objModuleList);
         }
 
         public IActionResult Privacy()

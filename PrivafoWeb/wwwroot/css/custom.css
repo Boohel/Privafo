@@ -1,101 +1,225 @@
-﻿@import url("https://fonts.googleapis.com/css?family=Patua+One");
+﻿@charset "UTF-8";
 
-body {
+* {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    margin: 2em auto;
+    max-width: 1000px;
+}
+
+.header {
+    padding: 30px 30px 0;
     text-align: center;
 }
 
-.container {
-    padding-top: 1%;
-    padding-bottom: 4%;
+.header__title {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    font-weight: 500;
+    line-height: 1.1;
 }
 
-h1 {
-    margin-top: 4%;
-    margin-bottom: 4%;
-    font-family: "Patua One", cursive;
+.header__subtitle {
+    margin: 0;
+    font-size: 1.5em;
+    color: #949fb0;
+    font-family: "Yesteryear", cursive;
+    font-weight: 500;
+    line-height: 1.1;
 }
 
-.box {
+.modules {
+    padding: 15px;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.module {
+    margin: 15px;
+    width: calc((100% / 3) - 30px);
+    transition: all 0.2s ease-in-out;
+}
+
+@media screen and (max-width: 991px) {
+    .module {
+        width: calc((100% / 2) - 30px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .module {
+        width: 100%;
+    }
+}
+
+.module:hover .module__inner {
+    background-color: #f1d7ae;
+    transform: scale(1.05);
+}
+
+.module__inner {
+    width: 100%;
+    min-height: 150px;
+    max-height: 150px;
+    padding: 30px 15px;
     position: relative;
-    max-height: 255px;
-    height: 255px;
-    background-color: #eeeeee;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.content-hover2 {
-    transform: scale(0, 0);
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: #d32222;
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-    padding: 2em 2em;
-}
-
-
-
-.content-hover2 h1 {
-    color: #ffffff;
-    font-size: 1.5em;
-    text-transform: uppercase;
-    font-family: "Patua One", cursive;
-    font-style: italic;
-}
-
-.content-hover2 p {
-    color: #ffffff;
-}
-
-.content-hover {
-    transform: scale(0, 0);
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: #252525;
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-    padding: 2em 2em;
-}
-
-.content-hover h1 {
-    color: #ffffff;
-    font-size: 1.5em;
-    text-transform: uppercase;
-    font-family: "Patua One", cursive;
-    font-style: italic;
-}
-
-.content-hover p {
-    color: #ffffff;
-}
-
-.content {
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-}
-
-.content img {
-    width: 160px;
-}
-
-.content p {
-    font-size: 1.2em;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-top: -2em;
-}
-
-.box .content-hover:hover, .box .content-hover2:hover {
-    transform: scale(1, 1);
     cursor: pointer;
+    color: #5a738a;
+    font-size: 1em;
+    font-weight: 500;
+    text-transform: capitalize;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 1px 0 3px rgb(0 0 0 / 7%);
+    background-color: #fff;
+}
+
+.module__inner:after {
+    transition: all 0.3s ease-in-out;
+}
+
+.module__inner .module__title {
+    min-height:60px
+}
+
+.module__inner .fa {
+    width: 100%;
+    margin-top: 0.25em;
+}
+
+.module__inner a {
+    display: inline-block;
+    margin-top: 0.25em;
+}
+
+.module__expander {
+    transition: all 0.2s ease-in-out;
+    background-image: url(../theme/images/bg-themes/7.png);
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: none;
+    color: #eceef1;
+    font-size: 1em;
+}
+
+.module__expander .fa {
+    font-size: 0.75em;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.module__expander .fa:hover {
+    opacity: 0.9;
+}
+
+.module.is-collapsed .module__inner:after {
+    content: "";
+    opacity: 0;
+}
+
+.module.is-collapsed .module__expander {
+    max-height: 0;
+    min-height: 0;
+    overflow: hidden;
+    margin-top: 0;
+    opacity: 0;
+}
+
+.module.is-expanded .module__inner {
+    background-color: #fff;
+    border: 2px solid rgb(214 130 27);
+}
+
+.module.is-expanded .module__inner:after {
+    content: "";
+    opacity: 1;
+    display: block;
+    height: 0;
+    width: 0;
+    position: absolute;
+    bottom: -22px;
+    left: calc(50% - 15px);
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    /*border-bottom: 15px solid #333a45;*/
+    border-bottom: 15px solid rgb(214 130 27);
+}
+
+.module.is-expanded .module__inner .fa:before {
+    content: "\f010";
+}
+
+.module.is-expanded .module__expander {
+    max-height: 1000px;
+    min-height: 100px;
+    overflow: visible;
+    margin-top: 20px;
+    opacity: 1;
+    padding: 20px;
+}
+
+.module.is-expanded:hover .module__inner {
+    transform: scale(1);
+}
+
+.module.is-inactive .module__inner {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.module.is-inactive:hover .module__inner {
+    background-color: #949fb0;
+    transform: scale(1);
+}
+
+.fa-remove:before, .fa-close:before, .fa-times:before {
+    content: "\f00d";
+    font-weight: 300;
+}
+
+.js-expander {
+    color: #dd8425;
+    border-radius: 1em;
+    text-transform: none;
+    font-size: 1.5em;
+}
+
+@media screen and (min-width: 992px) {
+    .module:nth-of-type(3n+2) .module__expander {
+        margin-left: calc(-100% - 30px);
+    }
+
+    .module:nth-of-type(3n+3) .module__expander {
+        margin-left: calc(-200% - 60px);
+    }
+
+    .module:nth-of-type(3n+4) {
+        clear: left;
+    }
+
+    .module__expander {
+        width: calc(300% + 60px);
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .module:nth-of-type(2n+2) .module__expander {
+        margin-left: calc(-100% - 30px);
+    }
+
+    .module:nth-of-type(2n+3) {
+        clear: left;
+    }
+
+    .module__expander {
+        width: calc(200% + 30px);
+    }
 }

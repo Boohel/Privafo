@@ -1,105 +1,229 @@
-﻿@import url("https://fonts.googleapis.com/css?family=Patua+One");
+﻿$light-gray: #eceef1;
+$gray: darken(#eceef1, 30%);
+$slate: darken(#eceef1, 70%);
+$turquoise: #1abc9c;
+
+* {
+    box-sizing: border-box;
+}
 
 body {
+    background: $light-gray;
+    font-family: 'Slabo 27px', serif;
+    color: $slate;
+}
+
+.wrapper {
+    margin: 5em auto;
+    max-width: 1000px;
+    background-color: #fff;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.06);
+}
+
+.header {
+    padding: 30px 30px 0;
     text-align: center;
+
+    &__title {
+        margin: 0;
+        text-transform: uppercase;
+        font-size: 2.5em;
+        font-weight: 500;
+        line-height: 1.1;
+    }
+
+    &__subtitle {
+        margin: 0;
+        font-size: 1.5em;
+        color: $gray;
+        font-family: 'Yesteryear', cursive;
+        font-weight: 500;
+        line-height: 1.1;
+    }
 }
 
-.container {
-    padding-top: 1%;
-    padding-bottom: 4%;
-}
-
-h1 {
-    margin-top: 4%;
-    margin-bottom: 4%;
-    font-family: "Patua One", cursive;
-}
-
-.box {
-    position: relative;
-    max-height: 255px;
-    height: 255px;
-    background-color: #eeeeee;
+//Grid Container
+.cards {
+    padding: 15px;
     display: flex;
-    align-content: center;
-    justify-content: center;
-    overflow: hidden;
+    flex-flow: row wrap;
 }
 
-.content-hover2 {
-    transform: scale(0, 0);
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: #d32222;
-    // box-shadow: inset 0 0 0 15px #C01E1E;
+//Cards
+.card {
+    margin: 15px;
+    width: calc((100% / 3) - 30px);
     transition: all 0.2s ease-in-out;
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-    padding: 2em 2em;
+    //media queries for stacking cards
+    @media screen and (max-width: 991px) {
+        width: calc((100% / 2) - 30px);
+    }
+
+    @media screen and (max-width: 767px) {
+        width: 100%;
+    }
+
+    &:hover {
+        .card__inner {
+            background-color: $turquoise;
+            transform: scale(1.05);
+        }
+    }
+
+    &__inner {
+        width: 100%;
+        padding: 30px;
+        position: relative;
+        cursor: pointer;
+        background-color: $gray;
+        color: $light-gray;
+        font-size: 1.5em;
+        text-transform: uppercase;
+        text-align: center;
+        transition: all 0.2s ease-in-out;
+
+        &:after {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .fa {
+            width: 100%;
+            margin-top: .25em;
+        }
+    }
+    //Expander
+    &__expander {
+        transition: all 0.2s ease-in-out;
+        background-color: $slate;
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-transform: uppercase;
+        color: $light-gray;
+        font-size: 1.5em;
+
+        .fa {
+            font-size: 0.75em;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+    }
+
+    &.is-collapsed {
+
+        .card__inner {
+            &:after {
+                content: "";
+                opacity: 0;
+            }
+        }
+
+        .card__expander {
+            max-height: 0;
+            min-height: 0;
+            overflow: hidden;
+            margin-top: 0;
+            opacity: 0;
+        }
+    }
+
+    &.is-expanded {
+
+        .card__inner {
+            background-color: $turquoise;
+
+            &:after {
+                content: "";
+                opacity: 1;
+                display: block;
+                height: 0;
+                width: 0;
+                position: absolute;
+                bottom: -30px;
+                left: calc(50% - 15px);
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+                border-bottom: 15px solid #333a45;
+            }
+            //folder open icon
+            .fa:before {
+                content: "\f115";
+            }
+        }
+
+        .card__expander {
+            max-height: 1000px;
+            min-height: 200px;
+            overflow: visible;
+            margin-top: 30px;
+            opacity: 1;
+        }
+
+        &:hover {
+            .card__inner {
+                transform: scale(1);
+            }
+        }
+    }
+
+    &.is-inactive {
+        .card__inner {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        &:hover {
+            .card__inner {
+                background-color: $gray;
+                transform: scale(1);
+            }
+        }
+    }
 }
 
 
+//Expander Widths
 
-.content-hover2 h1 {
-    color: #ffffff;
-    font-size: 1.5em;
-    text-transform: uppercase;
-    font-family: "Patua One", cursive;
-    font-style: italic;
+//when 3 cards in a row
+@media screen and (min-width: 992px) {
+
+    .card:nth-of-type(3n+2) .card__expander {
+        margin-left: calc(-100% - 30px);
+    }
+
+    .card:nth-of-type(3n+3) .card__expander {
+        margin-left: calc(-200% - 60px);
+    }
+
+    .card:nth-of-type(3n+4) {
+        clear: left;
+    }
+
+    .card__expander {
+        width: calc(300% + 60px);
+    }
 }
 
-.content-hover2 p {
-    color: #ffffff;
-}
+//when 2 cards in a row
+@media screen and (min-width: 768px) and (max-width: 991px) {
 
-.content-hover {
-    transform: scale(0, 0);
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: #252525;
-    // box-shadow: inset 0 0 0 15px #1B1B1B;
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-    padding: 2em 2em;
-}
+    .card:nth-of-type(2n+2) .card__expander {
+        margin-left: calc(-100% - 30px);
+    }
 
-.content-hover h1 {
-    color: #ffffff;
-    font-size: 1.5em;
-    text-transform: uppercase;
-    font-family: "Patua One", cursive;
-    font-style: italic;
-}
+    .card:nth-of-type(2n+3) {
+        clear: left;
+    }
 
-.content-hover p {
-    color: #ffffff;
-}
-
-.content {
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-
-    
-}
-
-.content img {
-    width: 160px;
-}
-
-.content p {
-    font-size: 1.2em;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-top: -2em;
-}
-
-.box .content-hover:hover, .box .content-hover2:hover {
-    transform: scale(1, 1);
-    cursor: pointer;
+    .card__expander {
+        width: calc(200% + 30px);
+    }
 }
