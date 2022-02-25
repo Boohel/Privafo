@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Privafo.DataAccess.Repository.IRepository;
 using Privafo.Models;
+using System.Collections;
 using System.Diagnostics;
 
 namespace PrivafoWeb.Controllers
@@ -16,14 +17,31 @@ namespace PrivafoWeb.Controllers
             _uow = uow;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(int ID)
         {
+
+            TempData["moduleid"] = ID;
+            HttpContext.Session.SetInt32("_ModuleID", ID);
             return View();
+
+
+            //var cList = checkListRepository.GetAll().Where(p => p.isApproved && p.isHome);
+            //var cat = checkListCategoryRepository.GetAll();
+            //var model = new CheckListCatModel();
+            //model.CheckLists = cList.ToList();
+            //var query = from checkList in cList
+            //            join category in cat on checkList.CategoryId equals category.Id
+            //            select new CheckListCategory { Id = checkList.CategoryId, CategoryName = category.CategoryName };
+
+            //model.Categories = query.ToList();
+            //return View(model);
         }
 
         public IActionResult Welcome()
         {
-            IEnumerable<Module> objModuleList = _uow.Module.GetAll();
+            IEnumerable<Module> objModuleList = _uow.Module.GetAllFilter(i => i.ModuleCtgID == 3);
+
             return View(objModuleList);
         }
 

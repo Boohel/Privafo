@@ -11,6 +11,7 @@ namespace Privafo.DataAccess.Repository.IRepository
     {
         IModuleCtgRepository ModuleCtg { get; }
         IModuleRepository Module { get; }
+        IMenuRepository Menu { get; }
 
         void Save();
     }

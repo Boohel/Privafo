@@ -33,7 +33,7 @@ namespace PrivafoWeb.Controllers
             ModuleVM moduleVM = new()
             {
                 Module = new(),
-                ModuleCtgList = _uow.ModuleCtg.GetAll().Select(i => new SelectListItem
+                ModuleCtgSelectList = _uow.ModuleCtg.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.ModuleCtgName,
                     Value = i.ID.ToString()

@@ -41,7 +41,7 @@
                     @*<select asp-for="ModuleCtgID" asp-items="ViewBag.ModuleCtgList" class="form-select"> 
                         <option disabled selected>--Select Category--</option>
                     </select>*@
-                    <select asp-for="Module.ModuleCtgID" asp-items="@Model.ModuleCtgList" class="form-select">
+                    <select asp-for="Module.ModuleCtgID" asp-items="@Model.ModuleCtgSelectList" class="form-select">
                         <option disabled selected>--Select Category--</option>
                     </select>
                     <span asp-validation-for="Module.ModuleCtgID" class="text-danger"></span>

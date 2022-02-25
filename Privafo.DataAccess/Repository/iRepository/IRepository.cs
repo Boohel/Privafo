@@ -11,6 +11,8 @@ namespace Privafo.DataAccess.Repository.IRepository
     {
         T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null);
         IEnumerable<T> GetAll(string? includeProperties = null);
+        IEnumerable<T> GetAllFilter(Expression<Func<T, bool>>? filter, string? includeProperties = null);
+        IEnumerable<T> GetAllCustom();
         void Add(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);

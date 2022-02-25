@@ -30,6 +30,7 @@ namespace Privafo.DataAccess.Repository
         public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+
             if (includeProperties != null)
             {
                 foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -37,6 +38,27 @@ namespace Privafo.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
+            return query.ToList();
+        }
+
+        public IEnumerable<T> GetAllFilter(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = dbSet;
+
+            query = query.Where(filter);
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return query.ToList();
+        }
+
+        public IEnumerable<T> GetAllCustom()
+        {
+            IQueryable<T> query = dbSet;
             return query.ToList();
         }
 

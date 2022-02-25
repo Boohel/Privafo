@@ -15,9 +15,11 @@ namespace Privafo.DataAccess.Repository
             _db = db;
             ModuleCtg = new ModuleCtgRepository(_db);
             Module = new ModuleRepository(_db);
+            Menu = new MenuRepository(_db);
         }
         public IModuleCtgRepository ModuleCtg { get; private set; }
         public IModuleRepository Module { get; private set; }
+        public IMenuRepository Menu { get; private set; }
 
         public void Save()
         {

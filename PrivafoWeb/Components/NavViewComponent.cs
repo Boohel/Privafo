@@ -1,49 +1,57 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Privafo.DataAccess;
+using Privafo.DataAccess.Repository.IRepository;
+using Privafo.Models;
+using Privafo.Models.ViewModels;
 
 namespace PrivafoWeb.Components
 {
     [ViewComponent(Name = "module")]
     public class ModuleViewComponent : ViewComponent
     {
-        //private privafo.Data.PrivafoContext _databaseContext;
-        //public headerComponent(privafo.Data.PrivafoContext databaseContext)
-        //{
-        //    _databaseContext = databaseContext;
-        //}
-        //public async Task<IViewComponentResult> InvokeAsync()
-        //{
-        //    return View(await _databaseContext.module.ToListAsync());
-        //}
-        public IViewComponentResult Invoke()
+        private readonly IUnitOfWork _uow;
+
+        public ModuleViewComponent(IUnitOfWork uow)
         {
-            return View();
+            _uow = uow;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            NavModuleVM navModuleVM = new()
+            {
+                ModuleList = _uow.Module.GetAll(),
+                ModuleCtgList = _uow.ModuleCtg.GetAll()
+            };
+
+            return View(navModuleVM);
         }
     }
 
     [ViewComponent(Name = "leftmenu")]
     public class LeftMenuViewComponent : ViewComponent
     {
-
-        //private privafo.Data.PrivafoContext _databaseContext;
-        //public leftmenuComponent(privafo.Data.PrivafoContext databaseContext)
-        //{
-        //    _databaseContext = databaseContext;
-        //}
-
-        //public async Task<IViewComponentResult> InvokeAsync(string? moduleid)
-        //{
-        //    if (moduleid == null)
-        //    { moduleid = "0"; };
-        //    var listofMenu = (from menu in _databaseContext.menu
-        //                      where menu.ModuleID == Int32.Parse(moduleid)
-        //                      select menu).ToListAsync();
-        //    return View(await listofMenu);
-        //}
-
-        public IViewComponentResult Invoke()
+        private readonly IUnitOfWork _uow;
+        public LeftMenuViewComponent(IUnitOfWork uow)
         {
-            return View();
+            _uow = uow;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync(int? moduleid)
+        {
+            if (moduleid == null) { moduleid = 0; };
+
+            NavMenuVM navMenuVM = new()
+            {
+                MenuLevel1 = _uow.Menu.GetAllFilter(u => u.MenuGroup == "Level1" && u.ModuleID == moduleid),
+                MenuLevel2 = _uow.Menu.GetAllFilter(u => u.MenuGroup == "Level2" && u.ModuleID == moduleid),
+                MenuLevel3 = _uow.Menu.GetAllFilter(u => u.MenuGroup == "Level3" && u.ModuleID == moduleid)
+            };
+
+            return View(navMenuVM);
         }
     }
 }
