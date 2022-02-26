@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Privafo.DataAccess\Privafo.DataAccess.csproj" />
+    <ProjectReference Include="..\Privafo.Utility\Privafo.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

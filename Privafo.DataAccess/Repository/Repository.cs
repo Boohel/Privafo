@@ -53,12 +53,16 @@ namespace Privafo.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
+            //query = query.OrderBy(order);
             return query.ToList();
         }
 
         public IEnumerable<T> GetAllCustom()
         {
             IQueryable<T> query = dbSet;
+
+            //custom query here
+
             return query.ToList();
         }
 

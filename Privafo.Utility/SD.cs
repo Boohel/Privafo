@@ -8,5 +8,7 @@ namespace Privafo.Utility
 {
     public static class SD
     {
+        //Session Key
+        public const string sesModule = "SessionSelectedModule";
     }
 }

@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Privafo.Utility
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="error-404 d-flex align-items-center justify-content-center">
+	<div class="container">
+		<div class="card py-5">
+			<div class="row g-0">
+				<div class="col col-xl-5">
+					<div class="card-body p-4">
+						<h1 class="display-1"><span class="text-primary">O</span><span class="text-danger">o</span><span class="text-info">p</span><span class="text-success">s</span><span class="text-warning">s</span>!</h1>
+						<h2 class="font-weight-bold display-4">Under Contruction</h2>
+						<p>You have reached the edge of the universe.
+							<br>The page you requested could not be found.
+							<br>Dont'worry and return to the previous page.</p>
+						
+					</div>
+				</div>
+				<div class="col-xl-7">
+					<div style="position:relative;display: flex;align-items: center;padding:10px;height: 100%;">
+						<img src="~/theme/images/errors-images/under-contruction.png" class="img-fluid" alt="">
+					</div>
+				</div>
+			</div>
+			<div class="row g-0 mt-5">
+				<div class="col text-center">
+					<div class=""> 
+						<a asp-controller="Home" asp-action="Index" asp-route-id="@HttpContextAccessor.HttpContext.Session.GetInt32(SD.sesModule)" class="btn btn-primary btn-lg px-md-5 radius-30">Go Home</a>
+						<a href="javascript:;" class="btn btn-outline-dark btn-lg ms-3 px-md-5 radius-30">Back</a>
+					</div>
+				</div>
+			</div>
+			<!--end row-->
+		</div>
+	</div>
+</div>

@@ -11,17 +11,14 @@ $cell.find(".js-expander").click(function (event) {
             .not($thisCell)
             .removeClass("is-expanded")
             .addClass("is-collapsed")
-            .addClass("is-inactive");
-        $thisCell.removeClass("is-collapsed").addClass("is-expanded");
-
-        if ($cell.not($thisCell).hasClass("is-inactive")) {
-            //do nothing
-        } else {
-            $cell.not($thisCell).addClass("is-inactive");
-        }
+            .addClass("is-inactive")
+            .find(".js-expander").html("Show Description");;
+        $thisCell.removeClass("is-collapsed").removeClass("is-inactive").addClass("is-expanded");
+        $thisCell.find(".js-expander").html("Hide Description");
     } else {
         $thisCell.removeClass("is-expanded").addClass("is-collapsed");
         $cell.not($thisCell).removeClass("is-inactive");
+        $cell.find(".js-expander").html("Show Description");
     }
 });
 
@@ -31,4 +28,5 @@ $cell.find(".js-collapser").click(function () {
 
     $thisCell.removeClass("is-expanded").addClass("is-collapsed");
     $cell.not($thisCell).removeClass("is-inactive");
+    $cell.find(".js-expander").html("Show Description");
 });

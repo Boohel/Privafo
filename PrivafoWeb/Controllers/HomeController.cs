@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Privafo.DataAccess.Repository.IRepository;
 using Privafo.Models;
+using Privafo.Utility;
 using System.Collections;
 using System.Diagnostics;
 
@@ -22,7 +23,7 @@ namespace PrivafoWeb.Controllers
         {
 
             TempData["moduleid"] = ID;
-            HttpContext.Session.SetInt32("_ModuleID", ID);
+            HttpContext.Session.SetInt32(SD.sesModule, ID);
             return View();
 
 
@@ -54,6 +55,20 @@ namespace PrivafoWeb.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Route("/Home/HandleError/{code:int}")]
+        public IActionResult HandleError(int code)
+        {
+            if(code == 404)
+            {
+                ViewData["ErrorMessage"] = $"Error occurred. The ErrorCode is: {code}";
+                return View("~/Views/Shared/_UnderContruction.cshtml");
+            }
+            else
+            {
+                return View("~/Views/Shared/Error.cshtml");
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using Privafo.Models.ViewModels;
 namespace PrivafoWeb.Components
 {
     [ViewComponent(Name = "module")]
+    [Authorize]
     public class ModuleViewComponent : ViewComponent
     {
         private readonly IUnitOfWork _uow;

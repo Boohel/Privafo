@@ -1,8 +1,11 @@
 ﻿@model Privafo.Models.ViewModels.NavMenuVM
+@using Microsoft.AspNetCore.Http
+@using Privafo.Utility
+@inject IHttpContextAccessor HttpContextAccessor
 
 <ul class="metismenu" id="menu">	
 	<li>
-		<a asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="@TempData["moduleid"]">
+		<a asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="@HttpContextAccessor.HttpContext.Session.GetInt32(SD.sesModule)">
 			<div class="parent-icon"><i class='bx bx-cookie'></i>
 			</div>
 			<div class="menu-title">Home</div>

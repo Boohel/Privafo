@@ -10,15 +10,31 @@
             <h1 class="header__title">Expanding module Grid</h1>
             <h2 class="header__subtitle">with Flexbox</h2>
         </div>*@
-
         <div class="modules">
             @foreach(var obj in Model)
             {                
-                <div class=" module [ is-collapsed ] ">
-                    <a asp-area="" asp-controller="Home" asp-action="Index">
-                        <div class="module__inner">
+                <div class=" module [ is-collapsed ] ">      
+                    <div class="d-flex align-items-center">   
+                        <div class="dropdown ms-auto module-option">
+						    <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown">	<i class='bx bx-dots-horizontal-rounded font-22'></i>
+						    </div>
+						    <ul class="dropdown-menu">
+							    <li><a class="dropdown-item [ js-expander ]" href="javascript:;">Show Description</a>
+							    </li>
+							    <li><a class="dropdown-item" asp-controller="Home" asp-action="Index" asp-route-id="@obj.ID">Explore</a>
+							    </li>
+							    <li>
+								    <hr class="dropdown-divider">
+							    </li>
+							    <li><a class="dropdown-item" href="javascript:;">Something else here</a>
+							    </li>
+						    </ul>
+					    </div>   
+                     </div> 
+                    <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="@obj.ID">
+                        <div class="module__inner d-flex flex-column align-items-center">    
+                            <span class="module__img widgets-icons bg-light-warning text-warning mb-2"><i class="fadeIn animated @obj.ModuleImageClass"></i></span>
                             <div class="module__title">@obj.ModuleName</div>
-                            <span class="[ js-expander ]"><i class="fa fa-search-plus"></i></span>
                         </div>
                     </a>
                     <div class="module__expander">
