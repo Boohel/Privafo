@@ -21,9 +21,11 @@ namespace PrivafoWeb.Controllers
         [HttpGet]
         public IActionResult Index(int ID)
         {
-
-            TempData["moduleid"] = ID;
+            var obj = _uow.Module.GetFirstOrDefault(u => u.ID == ID);
+            
             HttpContext.Session.SetInt32(SD.sesModule, ID);
+            HttpContext.Session.SetString(SD.sesModuleName, obj.ModuleName);
+
             return View();
 
 

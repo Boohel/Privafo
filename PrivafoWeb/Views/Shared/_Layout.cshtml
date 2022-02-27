@@ -420,8 +420,16 @@
 			</div>
 		</header>
 		<div class="page-wrapper">	
-			<div class="page-content">				
+			<div class="page-content">		
 				<partial name="_Notification"></partial>
+				
+				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+					<!--Nav Breadcrumb-->
+					@await Component.InvokeAsync("breadcrumb")
+					<!--Nav Breadcrumb-->
+				
+					@RenderSection("rtpage",false)
+				</div>
 				@RenderBody()			
 			</div>
 		</div>

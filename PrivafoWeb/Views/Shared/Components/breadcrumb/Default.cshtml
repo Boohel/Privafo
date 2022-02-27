@@ -1,0 +1,15 @@
+﻿@model Privafo.Models.ViewModels.NavMenuVM
+@using Microsoft.AspNetCore.Http
+@using Privafo.Utility
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="breadcrumb-title pe-3">@HttpContextAccessor.HttpContext.Session.GetString(SD.sesModuleName)</div>
+<div class="ps-3">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb mb-0 p-0">
+			<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" asp-route-id="@HttpContextAccessor.HttpContext.Session.GetInt32(SD.sesModule)"><i class="bx bx-home-alt"></i></a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Data Table</li>
+		</ol>
+	</nav>
+</div>

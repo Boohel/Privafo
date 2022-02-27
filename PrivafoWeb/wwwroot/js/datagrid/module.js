@@ -19,10 +19,10 @@ function loadDataTable() {
                 "data": "id",
                 "render": function (data) {
                     return `
-                            <div class="w-75 btn-group center" role="group">
-                                <a href="/Module/Upsert?ID=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>Edit</a>
-                                <a onClick="Delete('/Module/Delete/${data}')" class="btn btn-danger mx-2"><i class="bi bi-trash-fill"></i>Delete</a>
-                            </div>
+                            <div class="d-flex order-actions">
+								<a href="/Module/Upsert?ID=${data}" class=""><i class='bx bxs-edit'></i></a>
+								<a onClick="Delete('/Module/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
+							</div>
                         `
                 },
                 "width": "10%"

@@ -10,5 +10,6 @@ namespace Privafo.Utility
     {
         //Session Key
         public const string sesModule = "SessionSelectedModule";
+        public const string sesModuleName = "SessionSelectedModuleName";
     }
 }
