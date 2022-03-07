@@ -20,6 +20,7 @@ namespace Privafo.DataAccess.Repository
         public IModuleCtgRepository ModuleCtg { get; private set; }
         public IModuleRepository Module { get; private set; }
         public IMenuRepository Menu { get; private set; }
+        public IRiskTypeRepository RiskType { get; private set; }
 
         public void Save()
         {
