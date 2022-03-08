@@ -12,6 +12,9 @@ namespace Privafo.DataAccess.Repository.IRepository
         IModuleCtgRepository ModuleCtg { get; }
         IModuleRepository Module { get; }
         IMenuRepository Menu { get; }
+        IRiskTypeRepository RiskType { get; }
+        IRiskRegRepository RiskRegister { get; }
+        IRiskMatrixRepository RiskMatrix { get; }
 
         void Save();
     }

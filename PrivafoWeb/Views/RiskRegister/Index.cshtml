@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Risk Register";
+    ViewData["Title"] = "Module";
 }
 
 @section rtpage
@@ -37,18 +37,22 @@
 				<div class="position-relative">
 					<input type="text" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
 				</div>
-				<div class="ms-auto"><a asp-controller="Module" asp-action="Upsert" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add Module</a></div>
+				<div class="ms-auto"><a asp-controller="RiskRegister" asp-action="Upsert" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add Risk</a></div>
 			</div>
 	        <div class="table-responsive">
                 <table id="tblData" class="table" style="width:100%">
-                    <thead class="table-light">                        
+                    <thead class="table-light">
                         <tr>
-                            <th>Module Name</th>
+                            <th>Risk Name</th>
                             <th>Description</th>
-                            <th>Module Sort</th>
-                            <th>Module Image Class</th>
-                            <th>Module Category</th>
-                            <th></th>
+                            <th>Organization</th>
+                            <th>Type</th>
+                            <th>Residual Risk Level</th>
+                            <th>Inherent Risk Level</th>
+                            <th>Source</th>
+                            <th>Risk Owner</th>
+                            <th>Stage</th>
+                            <th>Treatment Status</th>
                         </tr>
                     </thead>
                 </table>
@@ -59,6 +63,6 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/datagrid/module.js"> </script>
+    <script src="~/js/datagrid/riskregister.js"> </script>
 }
 

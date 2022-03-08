@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section CssSection
+{
+    <style rel="stylesheet">
+        body{
+			display: inline-block;
+			float: left;
+		}
+		#txt1{
+			position: relative;
+			font-family: verdana;
+			font-size: 1em;
+			color: black;
+		}
+		.buton{
+			font-family: verdana;
+			font-size: 0.8em;
+			color: black;
+		}
+		.butonDisable{
+			background: lightgrey;
+			font-family: verdana;
+			font-size: 0.8em;
+			color: grey;
+
+		}
+		.rosu {
+			background: red;
+			cursor: pointer;
+			color: black;
+		}
+
+		#main {
+			display: inline-flex;
+			float: left;
+			min-width: 320px;
+			min-height: 320px;
+
+		}
+		#tabla div {
+			display:inline-block;
+			text-align: center;
+			padding: 20px;
+			width: 15px;
+			height: 15px;
+			float: left;
+		}
+
+		#tabla div:nth-child(odd) div:nth-child(even).normal,
+		#tabla div:nth-child(even) div:nth-child(odd).normal {
+			background-color: #000;
+			color: #fff;
+		}
+		#tabla div:nth-child(odd) div:nth-child(odd).normal,
+		#tabla div:nth-child(even) div:nth-child(even).normal {
+			background-color: #fff;
+			color: #000;
+		}
+
+		/*
+		#tabla  div:nth-child(n) div:nth-child(n):hover { 
+			background-color: red;
+			cursor: pointer;
+		}
+		*/
+    </style>
+}
+
+<h1>Index</h1>
+
+<form id="txt1">
+  Choose matrix 'N' number:
+  <select id="sel1" name="sel1" onChange="setX(this), disButton()"> </select>
+  </form>
+<div>
+ <button type="button" id="butGen" class="butonDisable" onclick="clearBox(), createMatrix(), enButton()" disabled>Create Matrix</button>
+ <button type="button" id="butrev" class="butonDisable" onclick="revNum()" disabled>Reverse Numbers</button> 
+</div>
+ 
+<div id="main">
+	<div id="tabla">
+	</div>
+</div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+    
+    <script>
+		//clear screen
+        function clearBox() {
+            document.getElementById('tabla').innerHTML = "";
+        }
+        //enable button
+        function enButton() {
+        but = document.getElementById("butrev");
+        but.disabled = false;
+        but.className = 'buton';
+        }
+        //disable button
+        function disButton() {
+        but = document.getElementById("butrev");
+        but.disabled = true;
+        but.className = 'butonDisable';
+        }
+        //selectbox fill
+        var selNum = ["",2,4,6,8,16];     
+        var sel = document.getElementById('sel1');
+        for(var i = 0; i < selNum.length; i++) {
+            var opt = document.createElement('option');
+            opt.innerHTML = selNum[i];
+            opt.value = selNum[i];
+            sel.appendChild(opt);
+        }
+        var n,x;
+        function setX(valueN){
+            var valueN = document.getElementById("sel1");
+            var n = valueN.options[valueN.selectedIndex].value;
+            parseInt(n);
+            x = n;
+            butG = document.getElementById('butGen');
+            if(n==""){ butG.disabled = true;
+                butG.className ='butonDisable';
+                 } else {
+                    butG.disabled = false;
+                    butG.className = 'buton';}
+
+        }
+        //creeaza matricea
+        var myArr =[];
+        function createMatrix(){
+        var tablasah = document.getElementById("tabla");
+        var z = 0;
+        for (var i = 0; i < x; i++) {    
+       
+            myArr.push([]);
+            myArr[i].push(new Array(x));
+            randNou = tablasah.appendChild(document.createElement('div'));
+            randNou.className = 'randNou'
+            for (var j = 0; j < x; j++) {
+                z = (j * x) + i +1;
+                elem = randNou.appendChild(document.createElement('div'));
+                elem.className = 'normal';
+                elem.id = z;
+                elem.textContent =z;  
+                elem.value =z;
+                myArr[i][j] = elem;   
+            }
+        }
+        console.log(myArr);
+
+        var someElem = document.getElementsByClassName("normal");
+        for (var k = 0; k < someElem.length; k++) {
+            someElem[k].addEventListener('mouseover', function(){
+                this.setAttribute("class","rosu");
+                });
+    
+            someElem[k].addEventListener('mouseout', function(){
+                this.setAttribute("class","normal"); 
+               
+            });
+            someElem[k].addEventListener('click', function(){
+                var element = this.textContent;
+                alert("You clicked on: "+ element)
+            });
+         }
+        }
+        //functia de sortare de la N la 1 in array
+        var sortArray = [];
+        var k = 0;
+        function revNum(){
+        sortArray = [];
+        for (var i = 0; i < x; i++) {       
+                for (var j = 0; j < x; j++) {
+                var temp = document.getElementById(myArr[i][j].id);
+                sortArray.push(temp.textContent);
+                }
+            }
+          sortArray.reverse(sortArray);  
+          fillNumbers();
+        }
+
+        function fillNumbers(){
+        for (var i = 0; i < x; i++) {          
+            for (var j = 0; j < x; j++) {
+                     var temp = document.getElementById(myArr[j][i].id);
+                     temp.textContent = sortArray[(j * x) + i];
+                }        
+            }
+        }
+    </script>
+}
