@@ -23,5 +23,9 @@ namespace Privafo.Models
         [Display(Name = "Risk Level")]
         [StringLength(50, ErrorMessage = "Risk Impact Name cannot be longer than 50 characters.")]
         public String RiskLevel { get; set; }
+        [Required]
+        [Display(Name = "Color")]
+        [StringLength(10)]
+        public String RangeColor { get; set; }
     }
 }

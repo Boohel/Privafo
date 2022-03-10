@@ -107,7 +107,7 @@ namespace PrivafoWeb.Controllers
         public IActionResult GetAll()
         {
             //var productList = _uow.Module.GetAll();
-            var riskRegList = _uow.RiskRegister.GetAll(includeProperties: "RiskType,RiskMatrix");
+            var riskRegList = _uow.RiskRegister.GetAll(includeProperties: "RiskType,ResidualRiskScore,InherentRiskScore,UserOwner,Org");
             return Json(new { data = riskRegList });
         }
         #endregion

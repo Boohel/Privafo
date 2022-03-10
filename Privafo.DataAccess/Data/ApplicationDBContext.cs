@@ -27,6 +27,8 @@ namespace Privafo.DataAccess
             modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("user_login");
         }
 
+
+        //Administrator
         public DbSet<ModuleCtg> module_ctg { get; set; }
         public DbSet<Module> modules { get; set; }
         public DbSet<Menu> menus { get; set; }
@@ -37,11 +39,29 @@ namespace Privafo.DataAccess
         public DbSet<RiskLibrary> risk_library { get; set; }
         public DbSet<RiskRegister> risk_register { get; set; }
         public DbSet<RiskType> risk_type { get; set; }
+        public DbSet<RiskCtg> risk_ctg { get; set; }
         public DbSet<RiskImpact> risk_impact { get; set; }
         public DbSet<RiskProbability> risk_probability { get; set; }
         public DbSet<RiskMatrixScore> risk_matrix_score { get; set; }
         public DbSet<RiskRangeScore> risk_range_score { get; set; }
         public DbSet<RiskVulnerability> risk_vulneries { get; set; }
         public DbSet<RiskThreat> risk_threats { get; set; }
+
+        //Organization
+        public DbSet<Org> organization { get; set; }
+        public DbSet<Branch> branches { get; set; }
+        public DbSet<Entity> entities { get; set; }
+
+        //General Address
+        public DbSet<Address> Address { get; set; }
+        public DbSet<Country> countries { get; set; }
+        public DbSet<Province> provinces { get; set; }
+        public DbSet<City> cities { get; set; }
+
+        //General Data
+        public DbSet<Industry> industries { get; set; }
+
+
+
     }
 }

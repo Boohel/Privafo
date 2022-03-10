@@ -20,6 +20,21 @@ namespace Privafo.Models
         [DataType(DataType.Text)]
         public String? Description { get; set; }
 
+        [ValidateNever]
+        [Required]
+        [Display(Name = "Risk Type")]
+        public int RiskTypeID { get; set; }
+        [ForeignKey("RiskTypeID")]
+        [ValidateNever]
+        public RiskType RiskType { get; set; }
+        [ValidateNever]
+        [Required]
+        [Display(Name = "Risk Category")]
+        public int RiskCtgID { get; set; }
+        [ForeignKey("RiskCtgID")]
+        [ValidateNever]
+        public RiskCtg RiskCtg { get; set; }
+
         public String Threat { get; set; }
         public String Vulnerability { get; set; }
 

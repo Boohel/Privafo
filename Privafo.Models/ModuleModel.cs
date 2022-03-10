@@ -22,7 +22,7 @@ namespace Privafo.Models
         public String? Description { get; set; }
         [Display(Name = "Color")]
         [ValidateNever]
-        [StringLength(10, ErrorMessage = "Module Color cannot be longer than 10 characters.")]
+        [StringLength(10)]
         public String? ModuleColor { get; set; }
         [Required]
         [Display(Name = "Sort")]

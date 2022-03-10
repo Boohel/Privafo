@@ -16,7 +16,7 @@ namespace Privafo.Models
         public String ID { get; set; }
         [Required]
         [Display(Name = "Menu Name")]
-        [StringLength(50, ErrorMessage = "Menu Image Class cannot be longer than 50 characters.")]
+        [StringLength(50, ErrorMessage = "Menu Name cannot be longer than 50 characters.")]
         public String MenuName { get; set; }
         [DataType(DataType.Text)]
         public String? Description { get; set; }

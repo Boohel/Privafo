@@ -20,6 +20,21 @@ namespace Privafo.Models
         [DataType(DataType.Text)]
         public String? Description { get; set; }
 
+        [ValidateNever]
+        [Required]
+        [Display(Name = "Risk Type")]
+        public int RiskTypeID { get; set; }
+        [ForeignKey("RiskTypeID")]
+        [ValidateNever]
+        public RiskType RiskType { get; set; }
+        [ValidateNever]
+        [Required]
+        [Display(Name = "Risk Category")]
+        public int RiskCtgID { get; set; }
+        [ForeignKey("RiskCtgID")]
+        [ValidateNever]
+        public RiskCtg RiskCtg { get; set; }
+
         public String Threat { get; set; }
         public String Vulnerability { get; set; }
         
@@ -32,7 +47,7 @@ namespace Privafo.Models
         public RiskMatrixScore ResidualRiskScore { get; set; }
         [ValidateNever]
         [Required]
-        [Display(Name = "Resudual Risk")]
+        [Display(Name = "Inherent Risk")]
         public int InherentRiskMx { get; set; }
         [ForeignKey("InherentRiskMx")]
         [ValidateNever]
@@ -54,13 +69,20 @@ namespace Privafo.Models
         [ForeignKey("Owner")]
         [ValidateNever]
         public ApplicationUser? UserOwner { get; set; }
+        [ValidateNever]
+        [StringLength(30)]
+        [Display(Name = "Organization")]
+        public String? OrgID { get; set; }
+        [ForeignKey("OrgID")]
+        [ValidateNever]
+        public Org? Org { get; set; }
 
         public DateTime? Deadline { get; set; }
         public Boolean Reminder { get; set; } = false;
 
         [ValidateNever]
         [StringLength(100)]
-        [Display(Name = "Owner")]
+        [Display(Name = "Approver")]
         public string Approver { get; set; }
         [ForeignKey("Approver")]
         [ValidateNever]
