@@ -15,6 +15,8 @@ namespace Privafo.DataAccess.Repository.IRepository
         IRiskTypeRepository RiskType { get; }
         IRiskRegRepository RiskRegister { get; }
         IRiskMatrixRepository RiskMatrix { get; }
+        IDPIATemplateRepository DPIATemplate { get; }
+        IDPIAAssetRepository DPIAAsset { get; }
 
         void Save();
     }

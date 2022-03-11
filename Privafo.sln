@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrivafoWeb", "PrivafoWeb\Pr
 		{3272C3DF-FEC8-4D05-BE08-C8F1F564AA30} = {3272C3DF-FEC8-4D05-BE08-C8F1F564AA30}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Privafo.DataAccess", "Privafo.DataAccess\Privafo.DataAccess.csproj", "{838A3040-20D3-48B0-9EAF-8C3488E60C1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Privafo.DataAccess", "Privafo.DataAccess\Privafo.DataAccess.csproj", "{838A3040-20D3-48B0-9EAF-8C3488E60C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Privafo.Models", "Privafo.Models\Privafo.Models.csproj", "{5C975CA9-2DC6-4FC7-8DA8-AC3EC39FB5F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Privafo.Models", "Privafo.Models\Privafo.Models.csproj", "{5C975CA9-2DC6-4FC7-8DA8-AC3EC39FB5F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Privafo.Utility", "Privafo.Utility\Privafo.Utility.csproj", "{3272C3DF-FEC8-4D05-BE08-C8F1F564AA30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Privafo.Utility", "Privafo.Utility\Privafo.Utility.csproj", "{3272C3DF-FEC8-4D05-BE08-C8F1F564AA30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

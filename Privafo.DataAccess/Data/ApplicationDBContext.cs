@@ -61,7 +61,12 @@ namespace Privafo.DataAccess
         //General Data
         public DbSet<Industry> industries { get; set; }
 
+        //DPIA
+        public DbSet<DPIATemplate> dpia_template { get; set; }
+        public DbSet<DPIAAsset> dpia_asset { get; set; }
 
+        //Assets
+        public DbSet<Asset> assets { get; set; }
 
     }
 }

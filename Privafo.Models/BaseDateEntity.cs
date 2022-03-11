@@ -8,8 +8,10 @@ namespace Privafo.Models
 {
     public abstract class BaseDateEntity
     {
+
         public DateTime DateCreated { get; set; } = DateTime.Now;
         public DateTime DateModified { get; set; } = DateTime.Now;
+
 
     }
 }
