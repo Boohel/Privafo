@@ -18,7 +18,7 @@ a {
     text-decoration: none !important; }
 
 .content {
-  padding: 7rem 0; }
+  padding: 6rem 0; }
 
 h2 {
   font-size: 20px; }
@@ -155,11 +155,13 @@ h2 {
   background: #ccc; }
 
 .control input:checked ~ .control__indicator {
-  background: #38d39f; }
+    background: #d98c2a;
+}
 
 .control:hover input:not([disabled]):checked ~ .control__indicator,
 .control input:checked:focus ~ .control__indicator {
-  background: #4dd8a9; }
+    background: #d98c2a;
+}
 
 .control input:disabled ~ .control__indicator {
   background: #e6e6e6;
@@ -194,3 +196,9 @@ h2 {
 .control--checkbox input:disabled:checked ~ .control__indicator {
   background-color: #7e0cf5;
   opacity: .2; }
+
+
+.btn-primary {
+    background-color: #d98c2a !important;
+    border-color: #d98c2a !important;
+}

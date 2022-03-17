@@ -343,7 +343,7 @@ a {
 	border-radius: 10px;
 	bottom: 20px;
 	right: 12px;
-	background-color: #0d6efd;
+	background-color: #d98c2a;
 	z-index: 5
 }
 
@@ -1921,7 +1921,7 @@ input.search-control-2::placeholder {
 	color: #413c3c
 }
 
-/*mycustom*/
+/*Custom Additional Privafo*/
 .user-info .designattion {
 	font-size: 12px;
 	color: #a9a8a8
@@ -2312,6 +2312,11 @@ input.search-control-2::placeholder {
 	border-left: 1px solid #f0f0f0;
 	margin-left: 1rem;
 	height: 50px;
+}
+
+/*Custom Additional Privafo*/
+.text-color-theme {
+	color: #d98c2a;
 }
 
 @media screen and (max-width:1280px) {

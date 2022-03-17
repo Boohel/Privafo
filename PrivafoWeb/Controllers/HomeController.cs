@@ -11,11 +11,13 @@ namespace PrivafoWeb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _uow;
+        private readonly IConfiguration _config;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork uow)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork uow, IConfiguration config)
         {
             _logger = logger;
             _uow = uow;
+            _config = config;
         }
 
         [HttpGet]
@@ -25,6 +27,8 @@ namespace PrivafoWeb.Controllers
             
             HttpContext.Session.SetInt32(SD.sesModule, ID);
             HttpContext.Session.SetString(SD.sesModuleName, obj.ModuleName);
+
+            ViewData["username"]= _config.GetSection("byPassAccount").GetSection("username").Value;
 
             return View();
 

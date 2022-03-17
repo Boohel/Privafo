@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Privafo.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace PrivafoWeb.Areas.Identity.Pages.Account
 {
@@ -23,11 +24,13 @@ namespace PrivafoWeb.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IConfiguration _config;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IConfiguration config)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _config = config;
         }
 
         /// <summary>
@@ -88,6 +91,9 @@ namespace PrivafoWeb.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            //Test parsing data
+            ViewData["username"] = _config.GetSection("byPassAccount").GetSection("username").Value;
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -100,12 +106,16 @@ namespace PrivafoWeb.Areas.Identity.Pages.Account
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
+
             ReturnUrl = returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+
+            //Test parsing data
+            ViewData["username"] = _config.GetSection("byPassAccount").GetSection("username").Value;
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 

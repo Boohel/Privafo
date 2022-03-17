@@ -9,8 +9,8 @@
 <div class="content">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 order-md-2">
-                <img src="~/lib/login-form/images/undraw_file_sync_ot38.svg" alt="Image" class="img-fluid">
+            <div class="col-md-6 order-md-2 text-center">
+                <img src="~/lib/login-form/images/crayon-1029.png" style="height:350px" alt="Image" class="img-fluid">
             </div>
 
             <div class="col-md-6 contents">
@@ -18,21 +18,20 @@
                     <div class="col-md-8">
                         <div class="mb-4">
                             <h3>Sign In to <strong>Prifavo</strong></h3>
-                            <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
+                            <p class="mb-4">username : yevgenia@privafo.com @ViewData["username"]<br /> pass: Privafo2022!</p>
                         </div>
                         <form id="account" method="post">                
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group first field--not-empty">
                                 <label asp-for="Input.Email" for="username">Email</label>
-                                <input type="text" asp-for="Input.Email" class="form-control" id="username" value="arifrmnsyh@gmail.com">
+                                <input type="text" asp-for="Input.Email" class="form-control" id="username" value="">
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
                             <div class="form-group last mb-4 field--not-empty">
                                 <label asp-for="Input.Password" for="password">Password</label>
-                                <input type="password" asp-for="Input.Password" class="form-control" id="password" value="Privafo2022!">
+                                <input type="password" asp-for="Input.Password" class="form-control" id="password" value="">
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
                             </div>
-              
                             <div class="d-flex mb-5 align-items-center">
                                 <label asp-for="Input.RememberMe" class="control control--checkbox mb-0"><span class="caption">@Html.DisplayNameFor(m => m.Input.RememberMe)</span>
                                     <input type="checkbox" asp-for="Input.RememberMe" checked="checked"/> 
