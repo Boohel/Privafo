@@ -1,0 +1,110 @@
+﻿@model Privafo.Models.ViewModels.DPIAVM
+@{
+    ViewData["Title"] = "DPIA Template";
+}
+
+@section rtpage
+{
+<div class="ms-auto">
+	<div class="btn-group">
+		<button type="button" class="btn btn-primary">Settings</button>
+		<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
+		</button>
+		<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
+			<a class="dropdown-item" href="javascript:;">Another action</a>
+			<a class="dropdown-item" href="javascript:;">Something else here</a>
+			<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
+		</div>
+	</div>
+</div>
+}
+
+<h6 class="mb-0 text-uppercase">DPIA Template</h6>
+<hr/>
+<div>
+    @*<div class="row">
+        <div class="col-6">
+            <h2 class="text-primary">Module List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Module" asp-action="Upsert" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Create New Module
+            </a>
+        </div>
+    </div>*@
+    <div class="card">
+		<div class="card-body">
+            <div class="d-lg-flex align-items-center mb-4 gap-3">
+				<div class="position-relative">
+					<input type="text" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+				</div>
+				@*<div class="ms-auto"><a asp-controller="dpia" asp-action="Upsert" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add New Template</a></div>*@
+                <div class="ms-auto"><a class="btn btn-primary radius-30 mt-2 mt-lg-0" data-bs-toggle="modal" data-bs-target="#mainModal"><i class="bx bxs-plus-square"></i>Add New Template</a></div>
+
+			</div>
+	        <div class="table-responsive">
+                <table id="tblData" class="table" style="width:100%">
+                    <thead class="table-light">                        
+                        <tr>
+                            <th>Template Name</th>
+                            <th>Description</th>
+                            <th>Icon</th>
+                            <th>Welcome</th>
+                            <th>Question JSON</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="mainModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Template</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input asp-for="DPIATemplate.ID" hidden />
+         <div class="row">
+        <div class="col-12">
+            
+                
+                <div class="mb-3">
+                    <label>Template Name</label>
+                    <input asp-for="DPIATemplate.TemplateName" class="form-control" />
+                    <span asp-validation-for="DPIATemplate.TemplateName" class=text-danger></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DPIATemplate.Description"></label>
+                    <textarea asp-for="DPIATemplate.Description" class="form-control" rows=3></textarea>
+                    <span class=text-danger></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DPIATemplate.Icon"></label>
+                    <textarea asp-for="DPIATemplate.Icon" rows=3 class="form-control"></textarea>                    
+                </div>
+                     
+               
+           
+        </div>
+    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/datagrid/dpia.js"> </script>
+}
+

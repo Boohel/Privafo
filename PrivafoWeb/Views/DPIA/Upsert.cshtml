@@ -1,0 +1,60 @@
+﻿@model Privafo.Models.ViewModels.DPIAVM
+
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input asp-for="DPIATemplate.ID" hidden />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="border p-3 mt-4 row">
+                <div class="col-12 pb-2">
+                    <h2 class="text-primary">@(Model.DPIATemplate.ID!=0?"Update": "Create") Template</h2>
+                    <hr />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DPIATemplate.TemplateName"></label>
+                    <input asp-for="DPIATemplate.TemplateName" class="form-control" />
+                    <span asp-validation-for="DPIATemplate.TemplateName" class=text-danger></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DPIATemplate.Description"></label>
+                    <textarea asp-for="DPIATemplate.Description" class="form-control" rows=3></textarea>
+                    <span class=text-danger></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DPIATemplate.Icon"></label>
+                    <textarea asp-for="DPIATemplate.Icon" rows=3 class="form-control"></textarea>                    
+                </div>
+                  <div class="mb-3">
+                    <label asp-for="DPIATemplate.Welcome"></label>
+                    <textarea asp-for="DPIATemplate.Welcome" class="form-control" rows=3></textarea>
+                    <span class=text-danger></span>
+                </div>     
+                  <div class="mb-3">
+                    <label asp-for="DPIATemplate.QuestionJSON"></label>
+                    <textarea asp-for="DPIATemplate.QuestionJSON" class="form-control" rows=3></textarea>
+                    <span class=text-danger></span>
+                </div>                 
+                <div class="col-12">
+                    @if (Model.DPIATemplate.ID != 0)
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px;">Update</button> 
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px;">Create</button>                
+                    }
+                    <a asp-controller="DPIA" asp-action="Index" class="btn btn-secondary" style="width:150px;">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@*Validate in Client Side*@
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}

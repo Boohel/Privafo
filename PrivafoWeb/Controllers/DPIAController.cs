@@ -7,11 +7,11 @@ using Privafo.Models.ViewModels;
 
 namespace PrivafoWeb.Controllers
 {
-    public class DPIATemplateController : Controller
+    public class DPIAController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public DPIATemplateController(IUnitOfWork uow)
+        public DPIAController(IUnitOfWork uow)
         {
             _uow = uow;
         }
@@ -23,14 +23,14 @@ namespace PrivafoWeb.Controllers
         //GET
         public IActionResult Upsert(int? ID)
         {
-            ModuleVM moduleVM = new()
+            DPIAVM DPIAVM = new()
             {
-                Module = new(),
-                ModuleCtgSelectList = _uow.ModuleCtg.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.ModuleCtgName,
-                    Value = i.ID.ToString()
-                })
+                DPIATemplate = new(),
+                //ModuleCtgSelectList = _uow.ModuleCtg.GetAll().Select(i => new SelectListItem
+                //{
+                //    Text = i.ModuleCtgName,
+                //    Value = i.ID.ToString()
+                //})
             };
 
 
@@ -44,33 +44,33 @@ namespace PrivafoWeb.Controllers
                 //return View(module);
 
                 //ViewModel Mode
-                return View(moduleVM);
+                return View(DPIAVM);
             }
             else
             {
-                moduleVM.Module = _uow.Module.GetFirstOrDefault(u => u.ID == ID);
+                DPIAVM.DPIATemplate = _uow.DPIATemplate.GetFirstOrDefault(u => u.ID == ID);
 
-                return View(moduleVM);
+                return View(DPIAVM);
             }
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(ModuleVM obj)
+        public IActionResult Upsert(DPIAVM obj)
         {
             if (ModelState.IsValid) //validation form server side
             {
 
-                if (obj.Module.ID == 0)
+                if (obj.DPIATemplate.ID == 0)
                 {
-                    _uow.Module.Add(obj.Module);
-                    TempData["success"] = "Module inserted successfully";
+                    _uow.DPIATemplate.Add(obj.DPIATemplate);
+                    TempData["success"] = ",DPIA Template inserted successfully";
                 }
                 else
                 {
-                    _uow.Module.Update(obj.Module);
-                    TempData["success"] = "Module updated successfully";
+                    _uow.DPIATemplate.Update(obj.DPIATemplate);
+                    TempData["success"] = "DPIA Template updated successfully";
                 }
                 _uow.Save();
                 return RedirectToAction("Index");
@@ -82,16 +82,16 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.Module.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.DPIATemplate.GetFirstOrDefault(u => u.ID == ID);
 
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.Module.Remove(obj);
+            _uow.DPIATemplate.Remove(obj);
             _uow.Save();
-            return Json(new { success = true, message = "Module deleted successfully" });
+            return Json(new { success = true, message = "DPIA Template deleted successfully" });
         }
 
 
@@ -100,7 +100,7 @@ namespace PrivafoWeb.Controllers
         public IActionResult GetAll()
         {
             //var productList = _uow.Module.GetAll();
-            var productList = _uow.Module.GetAll(includeProperties: "ModuleCtg");
+            var productList = _uow.DPIATemplate.GetAll();
             return Json(new { data = productList });
         }
         #endregion

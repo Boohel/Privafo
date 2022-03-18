@@ -37,7 +37,5 @@ namespace Privafo.Models
         [ForeignKey("AssetID")]
         [ValidateNever]
         public Asset Asset { get; set; }
-
-
     }
 }
