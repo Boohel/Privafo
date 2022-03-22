@@ -15,9 +15,9 @@ namespace Privafo.Models
         public int ID { get; set; }
         public string TemplateName { get; set; }
         public string Description { get; set; }
-        public string Icon { get; set; }
-        public string Welcome { get; set; }
-        public string QuestionJSON { get; set; }
+        public string? Icon { get; set; }
+        public string? Welcome { get; set; }
+        public string? QuestionJSON { get; set; }
     }
 
     public class DPIAAsset : BaseDateEntity

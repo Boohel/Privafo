@@ -1,4 +1,6 @@
 ﻿@model Privafo.Models.ViewModels.DPIAVM
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "DPIA Template";
 }
@@ -22,23 +24,13 @@
 <h6 class="mb-0 text-uppercase">DPIA Template</h6>
 <hr/>
 <div>
-    @*<div class="row">
-        <div class="col-6">
-            <h2 class="text-primary">Module List</h2>
-        </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Module" asp-action="Upsert" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Create New Module
-            </a>
-        </div>
-    </div>*@
     <div class="card">
 		<div class="card-body">
             <div class="d-lg-flex align-items-center mb-4 gap-3">
 				<div class="position-relative">
 					<input type="text" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
 				</div>
-				@*<div class="ms-auto"><a asp-controller="dpia" asp-action="Upsert" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add New Template</a></div>*@
+				@*<div class="ms-auto"><a asp-controller="dpia" asp-action="Upsert" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add New Template2</a></div>*@
                 <div class="ms-auto"><a class="btn btn-primary radius-30 mt-2 mt-lg-0" data-bs-toggle="modal" data-bs-target="#mainModal"><i class="bx bxs-plus-square"></i>Add New Template</a></div>
 
 			</div>
@@ -63,6 +55,7 @@
 
 
 <!-- Modal -->
+<form method="post" asp-action="Index" asp-controller="DPIA" enctype="multipart/form-data">
 <div class="modal fade" id="mainModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -72,38 +65,31 @@
       </div>
       <div class="modal-body">
         <input asp-for="DPIATemplate.ID" hidden />
+        <input asp-for="DPIATemplate.UserID" value="@UserManager.GetUserId(User)" hidden />
          <div class="row">
-        <div class="col-12">
-            
-                
+        <div class="col-12">           
                 <div class="mb-3">
-                    <label>Template Name</label>
-                    <input asp-for="DPIATemplate.TemplateName" class="form-control" />
+                    <label asp-for="DPIATemplate.TemplateName"></label>
+                    <input asp-for="DPIATemplate.TemplateName" class="form-control" id="validationCustom01" required />
                     <span asp-validation-for="DPIATemplate.TemplateName" class=text-danger></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="DPIATemplate.Description"></label>
-                    <textarea asp-for="DPIATemplate.Description" class="form-control" rows=3></textarea>
+                    <textarea asp-for="DPIATemplate.Description" class="form-control" rows=3 id="validationCustom02" required></textarea>
                     <span class=text-danger></span>
                 </div>
-                <div class="mb-3">
-                    <label asp-for="DPIATemplate.Icon"></label>
-                    <textarea asp-for="DPIATemplate.Icon" rows=3 class="form-control"></textarea>                    
-                </div>
-                     
                
-           
         </div>
     </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button> 
       </div>
     </div>
   </div>
 </div>
-
+</form>
 @section Scripts{
     <script src="~/js/datagrid/dpia.js"> </script>
 }

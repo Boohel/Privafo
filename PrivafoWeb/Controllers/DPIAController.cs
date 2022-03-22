@@ -15,9 +15,33 @@ namespace PrivafoWeb.Controllers
         {
             _uow = uow;
         }
+        //GET
         public IActionResult Index()
         {
             return View();
+        }
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(DPIAVM obj)
+        {
+            //if (ModelState.IsValid) //validation form server side
+            //{
+
+                if (obj.DPIATemplate.ID == 0)
+                {
+                    _uow.DPIATemplate.Add(obj.DPIATemplate);
+                    TempData["success"] = ",DPIA Template inserted successfully";
+                }
+                else
+                {
+                    _uow.DPIATemplate.Update(obj.DPIATemplate);
+                    TempData["success"] = "DPIA Template updated successfully";
+                }
+                _uow.Save();
+                return RedirectToAction("Index");
+            //}
+            //return View(obj);
         }
 
         //GET
@@ -59,8 +83,8 @@ namespace PrivafoWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(DPIAVM obj)
         {
-            if (ModelState.IsValid) //validation form server side
-            {
+            //if (ModelState.IsValid) //validation form server side
+            //{
 
                 if (obj.DPIATemplate.ID == 0)
                 {
@@ -74,8 +98,8 @@ namespace PrivafoWeb.Controllers
                 }
                 _uow.Save();
                 return RedirectToAction("Index");
-            }
-            return View(obj);
+            //}
+            //return View(obj);
         }
 
         //POST
@@ -103,7 +127,14 @@ namespace PrivafoWeb.Controllers
             var productList = _uow.DPIATemplate.GetAll();
             return Json(new { data = productList });
         }
+
+        public IActionResult GetAllCustom()
+        {
+            //var productList = _uow.Module.GetAll();
+            var productList = _uow.DPIATemplate.GetAll().Select(i => new { name = i.TemplateName, desc = i.Description } );
+            return Json(new { data = productList });
+        }
         #endregion
-    
-}
+
+    }
 }
