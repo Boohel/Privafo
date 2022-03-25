@@ -36,7 +36,7 @@ namespace PrivafoWeb.Controllers
 
         public IActionResult Welcome()
         {
-            IEnumerable<Module> objModuleList = _uow.Module.GetAllFilter(i => i.ModuleCtgID == 3);
+            IEnumerable<Module> objModuleList = _uow.Module.GetAllFilter(i => i.Highlight);
 
             return View(objModuleList);
         }

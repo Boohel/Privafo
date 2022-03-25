@@ -24,6 +24,7 @@ namespace Privafo.Models.ViewModels
     }
     public class NavMenuVM
     {
+        public Menu Menus { get; set; }
         public IEnumerable<Menu> MenuLevel1 { get; set; }
         public IEnumerable<Menu> MenuLevel2 { get; set; }
         public IEnumerable<Menu> MenuLevel3 { get; set; }
