@@ -18,4 +18,12 @@ namespace Privafo.Models
         public DateTime DateCreated { get; set; } = DateTime.Now;
         public DateTime DateModified { get; set; } = DateTime.Now;
     }
+
+    public class ApplicationRole : IdentityRole
+    {
+        [DataType(DataType.Text)]
+        public string? Description { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateModified { get; set; } = DateTime.Now;
+    }
 }

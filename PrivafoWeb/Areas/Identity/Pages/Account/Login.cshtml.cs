@@ -93,6 +93,7 @@ namespace PrivafoWeb.Areas.Identity.Pages.Account
         {
             //Test parsing data
             ViewData["username"] = _config.GetSection("byPassAccount").GetSection("username").Value;
+            ViewData["password"] = _config.GetSection("byPassAccount").GetSection("password").Value;
 
             if (!string.IsNullOrEmpty(ErrorMessage))
             {

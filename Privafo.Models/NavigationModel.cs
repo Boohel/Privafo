@@ -9,6 +9,53 @@ using System.Threading.Tasks;
 
 namespace Privafo.Models
 {
+    public class ModuleCtg : BaseDateEntity
+    {
+        [Key]
+        public int ID { get; set; }
+        [Required]
+        [Display(Name = "Module Category Name")]
+        [StringLength(50, ErrorMessage = "Module Category Name cannot be longer than 50 characters.")]
+        public String ModuleCtgName { get; set; }
+        [Required]
+        [Display(Name = "Sort")]
+        public int ModuleCtgSort { get; set; }
+        [Display(Name = "Image Class")]
+        [StringLength(50, ErrorMessage = "Image Class cannot be longer than 50 characters.")]
+        public String? ModuleCtgImg { get; set; }
+    }
+
+    public class Module : BaseDateEntity
+    {
+        [Key]
+        public int ID { get; set; }
+        [Required]
+        [Display(Name = "Module Name")]
+        [StringLength(50, ErrorMessage = "Module Name cannot be longer than 50 characters.")]
+        public String ModuleName { get; set; }
+        [DataType(DataType.Text)]
+        public String? Description { get; set; }
+        [Display(Name = "Color")]
+        [ValidateNever]
+        [StringLength(10)]
+        public String? ModuleColor { get; set; }
+        [Required]
+        [Display(Name = "Sort")]
+        public int ModuleSort { get; set; }
+        [Required]
+        [Display(Name = "Image Class")]
+        [StringLength(50, ErrorMessage = "Image Class cannot be longer than 50 characters.")]
+        public String ModuleImageClass { get; set; }
+
+        [ValidateNever]
+        [Required]
+        [Display(Name = "Module Category")]
+        public int ModuleCtgID { get; set; }
+        [ForeignKey("ModuleCtgID")]
+        [ValidateNever]
+        public ModuleCtg ModuleCtg { get; set; }
+    }
+
     public class Menu : BaseDateEntity
     {
         [Key]

@@ -106,7 +106,6 @@ namespace PrivafoWeb.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            //var productList = _uow.Module.GetAll();
             var productList = _uow.Module.GetAll(includeProperties: "ModuleCtg");
             return Json(new { data = productList });
         }

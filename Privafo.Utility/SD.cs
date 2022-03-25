@@ -11,5 +11,14 @@ namespace Privafo.Utility
         //Session Key
         public const string sesModule = "SessionSelectedModule";
         public const string sesModuleName = "SessionSelectedModuleName";
+
+
+        //Statik list data
+        public static string[] AssetDataRetention = { "Day", "Month", "Year" };
+        public static string[] AssetOwnership = { "Internal", "3rd Party" };
+        public static string[] ScopeOrg = { "Internal", "3rd Party" };
+        public static string[] HostingType = { "Cloud", "On-Premises" };
+        public static string[] LocParties = { "Access", "Use Data" };
+
     }
 }

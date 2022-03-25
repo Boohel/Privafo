@@ -31,19 +31,8 @@ namespace PrivafoWeb.Controllers
             ViewData["username"]= _config.GetSection("byPassAccount").GetSection("username").Value;
 
             return View();
-
-
-            //var cList = checkListRepository.GetAll().Where(p => p.isApproved && p.isHome);
-            //var cat = checkListCategoryRepository.GetAll();
-            //var model = new CheckListCatModel();
-            //model.CheckLists = cList.ToList();
-            //var query = from checkList in cList
-            //            join category in cat on checkList.CategoryId equals category.Id
-            //            select new CheckListCategory { Id = checkList.CategoryId, CategoryName = category.CategoryName };
-
-            //model.Categories = query.ToList();
-            //return View(model);
         }
+
 
         public IActionResult Welcome()
         {
@@ -52,9 +41,58 @@ namespace PrivafoWeb.Controllers
             return View(objModuleList);
         }
 
+
+        public class BasicVM
+        {
+            public IEnumerable<Module> Data1 { get; set; }
+            public IEnumerable<Module> Data2 { get; set; }
+            public IEnumerable<Module> Data3 { get; set; }
+            public IEnumerable<Module> Data4 { get; set; }
+            public IEnumerable<Module> Data5 { get; set; }
+        }
+
         public IActionResult Privacy()
         {
-            return View();
+            // basic Model
+            Module module = new();
+            //return View(module);
+
+            // like expression 
+            var data1 = _uow.Module.GetAllFilter(u => u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg");
+
+            // and or expression 
+            var data2 = _uow.Module.GetAllFilter(u => (u.ModuleName == "string" && u.ModuleCtg.ModuleCtgName == "string") || u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg");
+
+            // custom select
+            var data3 = _uow.Module.GetAll(includeProperties: "ModuleCtg")
+                .Select(i => new { name = i.ModuleName, desc = i.Description, category = i.ModuleCtg.ModuleCtgName });
+
+            // group by
+            var data4 = _uow.Module.GetAll(includeProperties: "ModuleCtg")
+                .GroupBy(j => new { j.ModuleCtgID });
+
+            // order by
+            var data5 = _uow.Module.GetAll(includeProperties: "ModuleCtg")
+                .OrderBy(j => new { j.ModuleCtgID })
+                .OrderByDescending(j => new { j.ModuleSort });
+
+            // ViewBag & ViewData Mode
+            ViewBag.ModuleList = data4;
+            ViewData["ModuleList"] = data5;
+
+            BasicVM basicVM = new()
+            {
+                Data1 = _uow.Module.GetAllFilter(u => u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg"),
+                Data2 = _uow.Module.GetAllFilter(u => (u.ModuleName == "string" && u.ModuleCtg.ModuleCtgName == "string") || u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg"),
+                Data3 = (IEnumerable<Module>)_uow.Module.GetAll(includeProperties: "ModuleCtg")
+                        .Select(i => new { name = i.ModuleName, desc = i.Description, category = i.ModuleCtg.ModuleCtgName }),
+                Data4 = (IEnumerable<Module>)_uow.Module.GetAll(includeProperties: "ModuleCtg")
+                        .GroupBy(j => new { j.ModuleCtgID }),
+                Data5 = (IEnumerable<Module>)_uow.Module.GetAll(includeProperties: "ModuleCtg")
+                        .GroupBy(j => new { j.ModuleCtgID })
+            };
+
+            return View(basicVM);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,31 +1,29 @@
 ﻿@model Privafo.Models.ViewModels.DPIAVM
 @using Microsoft.AspNetCore.Identity
-@inject UserManager<ApplicationUser> UserManager
+@inject UserManager<Privafo.Models.ApplicationUser> UserManager
 
 
-<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+<form method="post" asp-action="Upsert" enctype="mutipart/form-data">
     <input asp-for="DPIATemplate.ID" hidden />
-        <input asp-for="DPIATemplate.UserID" value="@UserManager.GetUserId(User)" hidden />
+    <input asp-for="DPIATemplate.UserCreated" value="@UserManager.GetUserId(User)" hidden />
     <div class="row">
         <div class="col-12">
-            
-                <div class="col-12 pb-2">
-                    <h2 class="text-primary">@(Model.DPIATemplate.ID!=0?"Update": "Create") Template</h2>
+            <div class="col-12 pb-2">
+                <h2 class="text-primary">@(Model.DPIATemplate.ID!=0?"Update": "Create") Template</h2>
              </div>   
         </div>
-         
-          
-            <nav>
-                <div class="nav nav-tabs nav-primary" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-header-tab" data-bs-toggle="tab" data-bs-target="#nav-header" type="button" role="tab" aria-controls="nav-header" aria-selected="true">Header</button>
-                    <button class="nav-link" id="nav-section-tab" data-bs-toggle="tab" data-bs-target="#nav-section" type="button" role="tab" aria-controls="nav-section" aria-selected="false">Section</button>
-                </div>
-            </nav>
+
+        <nav>
+            <div class="nav nav-tabs nav-primary" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-header-tab" data-bs-toggle="tab" data-bs-target="#nav-header" type="button" role="tab" aria-controls="nav-header" aria-selected="true">Header</button>
+                <button class="nav-link" id="nav-section-tab" data-bs-toggle="tab" data-bs-target="#nav-section" type="button" role="tab" aria-controls="nav-section" aria-selected="false">Section</button>
+            </div>
+        </nav>
             
-                <div class="tab-content" id="nav-tabContent">
+        <div class="tab-content" id="nav-tabContent">
                    
-                    <div class="tab-pane fade show active" id="nav-header" role="tabpanel" aria-labelledby="nav-header-tab">
-                    <br />                    
+            <div class="tab-pane fade show active" id="nav-header" role="tabpanel" aria-labelledby="nav-header-tab">
+                <br />                    
                 <div class="mb-3">
                     <label asp-for="DPIATemplate.TemplateName">Template Name</label>
                     <input asp-for="DPIATemplate.TemplateName" class="form-control" />
@@ -40,112 +38,107 @@
                     <label asp-for="DPIATemplate.Icon" hidden></label>
                     <textarea asp-for="DPIATemplate.Icon" rows=3 class="form-control" hidden></textarea>                    
                 </div>
-                  <div class="mb-3">
+                <div class="mb-3">
                     <label asp-for="DPIATemplate.Welcome"></label>
                     <textarea asp-for="DPIATemplate.Welcome" class="form-control" rows=3></textarea>
                     <span class=text-danger></span>
                 </div>   
-                 </div>
-
-                 <div class="tab-pane fade" id="nav-section" role="tabpanel" aria-labelledby="nav-section-tab">                  
-                  <br />
-                  <div class="ms-auto"><a class="btn btn-primary radius-30 mt-2 mt-lg-0" data-bs-toggle="modal" data-bs-target="#mainModal"><i class="bx bxs-plus-square"></i>Add New Section</a></div>
-	</div>
-
-
-</div>
-                  
-
             </div>
-  
-  
 
-<div class="modal fade" id="mainModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Section</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <input asp-for="DPIATemplate.ID" hidden />
-        <input asp-for="DPIATemplate.UserID" value="@UserManager.GetUserId(User)" hidden />
-         <div class="row">
-        <div class="col-12">           
-                <div class="mb-3">
-                    <label>Question</label>
-                     <textarea class="form-control" rows=2></textarea>
+            <div class="tab-pane fade" id="nav-section" role="tabpanel" aria-labelledby="nav-section-tab">                  
+                <br />
+                <div class="ms-auto"><a class="btn btn-primary radius-30 mt-2 mt-lg-0" data-bs-toggle="modal" data-bs-target="#mainModal"><i class="bx bxs-plus-square"></i>Add New Section</a></div>
+	        </div>
+        </div>   
+
+    </div>
+
+    <div class="modal fade" id="mainModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Section</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="mb-3">
-                    <label>Friendly Name</label>
-                    <input class="form-control" id="validationCustom01" required />
+                <div class="modal-body">
+                    <input asp-for="DPIATemplate.ID" hidden />
+                    <input asp-for="DPIATemplate.UserCreated" value="@UserManager.GetUserId(User)" hidden />
+                    <div class="row">
+                        <div class="col-12">           
+                            <div class="mb-3">
+                                <label>Question</label>
+                                <textarea class="form-control" rows=2></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label>Friendly Name</label>
+                                <input class="form-control" id="validationCustom01" required />
+                            </div>
+                                <div class="mb-3">
+                                <label>Description</label>
+                                <textarea class="form-control" rows=2></textarea>
+                            </div>  
+                            <div class="mb-3">
+							    <label class="form-label">Type</label>
+							    <select class="single-select">
+								    <option value="mc">Multi Choice</option>
+								    <option value="yn">Yes / No</option>
+								    <option value="tx">Text</option>
+								    <option value="dt">Date</option>
+								    <option value="st">Statement</option>
+								    <option value="in">Inventory</option>
+								    <option value="pd">Personal Data</option>
+								    <option value="ac">Access Control</option>
+							    </select>
+				            </div>
+                            <div class="mb-3">
+                                <table style="vertical-align:top; width:100%">
+                                    <tr>
+                                        <td>
+                                		    <label class="form-label">Question Configuration</label>
+										    <div class="form-check form-switch">
+									            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+									            <label class="form-check-label" for="flexSwitchCheckChecked">Answer Required</label>
+								            </div>
+										    <div class="form-check form-switch">
+									            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+									            <label class="form-check-label" for="flexSwitchCheckChecked">Attachment Required</label>
+								            </div>
+										    <div class="form-check form-switch">
+									            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+									            <label class="form-check-label" for="flexSwitchCheckChecked">Question Hint</label>
+								            </div>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                		    <label class="form-label">Response Configuration</label>
+										    <div class="form-check form-switch">
+									            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+									            <label class="form-check-label" for="flexSwitchCheckChecked">Allow Not Sure</label>
+								            </div>
+										    <div class="form-check form-switch">
+									            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+									            <label class="form-check-label" for="flexSwitchCheckChecked">Allow Not Applicable</label>
+								            </div>
+										    <div class="form-check form-switch">									        
+								            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+				            </div>
+				            <div class="mb-3">
+				                <label for="formFileMultiple" class="form-label">Upload Attachment (Max 256 MB)</label>
+				                <input class="form-control" type="file" id="formFileMultiple" multiple>
+				            </div>
+                        </div>
+                    </div>
                 </div>
-                 <div class="mb-3">
-                    <label>Description</label>
-                    <textarea class="form-control" rows=2></textarea>
-                </div>  
-                <div class="mb-3">
-										<label class="form-label">Type</label>
-										<select class="single-select">
-											<option value="mc">Multi Choice</option>
-											<option value="yn">Yes / No</option>
-											<option value="tx">Text</option>
-											<option value="dt">Date</option>
-											<option value="st">Statement</option>
-											<option value="in">Inventory</option>
-											<option value="pd">Personal Data</option>
-											<option value="ac">Access Control</option>
-										</select>
-				</div>
-                <div class="mb-3">
-                    <table style="vertical-align:top; width:100%">
-                        <tr>
-                            <td>
-                                		<label class="form-label">Question Configuration</label>
-										<div class="form-check form-switch">
-									        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-									        <label class="form-check-label" for="flexSwitchCheckChecked">Answer Required</label>
-								        </div>
-										<div class="form-check form-switch">
-									        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-									        <label class="form-check-label" for="flexSwitchCheckChecked">Attachment Required</label>
-								        </div>
-										<div class="form-check form-switch">
-									        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-									        <label class="form-check-label" for="flexSwitchCheckChecked">Question Hint</label>
-								        </div>
-                            </td>
-                            <td></td>
-                            <td>
-                                		<label class="form-label">Response Configuration</label>
-										<div class="form-check form-switch">
-									        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-									        <label class="form-check-label" for="flexSwitchCheckChecked">Allow Not Sure</label>
-								        </div>
-										<div class="form-check form-switch">
-									        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-									        <label class="form-check-label" for="flexSwitchCheckChecked">Allow Not Applicable</label>
-								        </div>
-										<div class="form-check form-switch">									        
-								        </div>
-                            </td>
-                        </tr>
-                    </table>
-				</div>
-				<div class="mb-3">
-				    <label for="formFileMultiple" class="form-label">Upload Attachment (Max 256 MB)</label>
-				    <input class="form-control" type="file" id="formFileMultiple" multiple>
-				</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button> 
+                </div>
+            </div>
         </div>
     </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button> 
-      </div>
-    </div>
-  </div>
-</div>
 </form>
 
 

@@ -13,11 +13,20 @@ namespace Privafo.Models
     {
         [ValidateNever]
         [StringLength(450)]
-        public string UserID { get; set; }
-        [ForeignKey("UserID")]
+        public string CreatedBy { get; set; }
+        [ForeignKey("CreatedBy")]
         [ValidateNever]
-        public ApplicationUser? UserApprover { get; set; }
+        public ApplicationUser? UserCreated { get; set; }
+
         public DateTime DateCreated { get; set; } = DateTime.Now;
+
+        [ValidateNever]
+        [StringLength(450)]
+        public string ModifiedBy { get; set; }
+        [ForeignKey("ModifiedBy")]
+        [ValidateNever]
+        public ApplicationUser? UserModified { get; set; }
+
         public DateTime DateModified { get; set; } = DateTime.Now;
 
 
