@@ -107,6 +107,10 @@ namespace Privafo.Models
         [StringLength(50, ErrorMessage = "Image Class cannot be longer than 50 characters.")]
         public String? MenuImageClass { get; set; }
 
+        [Display(Name = "Menu Level")]
+        [Range(1,3, ErrorMessage = "Menu Level must between 0 and 3 only.")]
+        public int MenuLevel { get; set; }
+
         [Display(Name = "Menu Group")]
         [StringLength(50)]
         public String? MenuGroup { get; set; }

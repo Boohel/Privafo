@@ -6,59 +6,82 @@
 <ul class="metismenu" id="menu">	
 	<li>
 		<a asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="@HttpContextAccessor.HttpContext.Session.GetInt32(SD.sesModule)">
-			<div class="parent-icon"><i class='bx bx-cookie'></i>
+			<div class="parent-icon"><i class='bx bx-home-alt'></i>
 			</div>
 			<div class="menu-title">Home</div>
 		</a>
 	</li>
-	@foreach(var obj1 in Model.MenuLevel1)
-	{
-		<li>
-			@if(obj1.HasChild == false)
+	@{
+		var currGroup = "";
+
+		@foreach(var obj1 in Model.MenuLevel1)
+		{
+			@if(obj1.MenuGroup != null )
 			{
-				@if (obj1.PageName == "")
-				{
-					<a asp-area="@obj1.AreaName"  asp-controller="@obj1.ControllerName" asp-action="@obj1.ActionName">
-						<div class="parent-icon"><i class='bx bx-home-circle'></i> </div>
-						<div class="menu-title">@obj1.MenuName</div>
-					</a>
+				if(currGroup == ""){
+					<li class="menu-label">@obj1.MenuGroup</li>
+
+					currGroup = obj1.MenuGroup;
 				}
 				else
-				{
-					<a asp-area="@obj1.AreaName" asp-page="@obj1.PageName">
-						<div class="parent-icon"><i class='bx bx-home-circle'></i> </div>
-						<div class="menu-title">@obj1.MenuName</div>
-					</a>
+				{					
+					if(obj1.MenuGroup != currGroup)
+					{
+					<li class="menu-label">@obj1.MenuGroup</li>
+
+					currGroup = obj1.MenuGroup;
+					}
 				}
 			}
 			else
 			{
-				<a href="javascript:;" class="has-arrow" >
-					<div class="parent-icon"><i class='bx bx-home-circle'></i>
-					</div>
-					<div class="menu-title">@obj1.MenuName</div>
-				</a>
-				<ul>
-					@foreach(var obj2 in Model.MenuLevel2)
-					{
-						if (obj2.ParentID == obj1.ID)
-						{
-							<li> 
-								@if (obj2.PageName == "")
-								{
-									<a asp-area="@obj2.AreaName" asp-controller="@obj2.ControllerName" asp-action="@obj2.ActionName"><i class="bx @obj2.MenuImageClass"></i>@obj2.MenuName</a>
-								}else{
-									<a asp-area="@obj2.AreaName" asp-page="@obj2.PageName"><i class="bx @obj2.MenuImageClass"></i>@obj2.MenuName</a>
-								}
-								
-							</li>
-						}
-					}
-				
-				</ul>
+				currGroup = "";
 			}
+			<li>
+				@if(obj1.HasChild == false)
+				{
+					@if (obj1.PageName == "")
+					{
+						<a asp-area="@obj1.AreaName" asp-controller="@obj1.ControllerName" asp-action="@obj1.ActionName">
+							<div class="parent-icon"><i class='@obj1.MenuImageClass'></i> </div>
+							<div class="menu-title">@obj1.MenuName</div>
+						</a>
+					}
+					else
+					{
+						<a asp-area="@obj1.AreaName" asp-page="@obj1.PageName">
+							<div class="parent-icon"><i class='@obj1.MenuImageClass'></i> </div>
+							<div class="menu-title">@obj1.MenuName</div>
+						</a>
+					}
+				}
+				else
+				{
+					<a href="javascript:;" class="has-arrow" >
+						<div class="parent-icon"><i class='@obj1.MenuImageClass'></i> </div>
+						<div class="menu-title">@obj1.MenuName</div>
+					</a>
+					<ul>
+						@foreach(var obj2 in Model.MenuLevel2)
+						{
+							if (obj2.ParentID == obj1.ID)
+							{
+								<li> 
+									@if (obj2.PageName == "")
+									{
+										<a asp-area="@obj2.AreaName" asp-controller="@obj2.ControllerName" asp-action="@obj2.ActionName"><i class="bx @obj2.MenuImageClass"></i>@obj2.MenuName</a>
+									}else{
+										<a asp-area="@obj2.AreaName" asp-page="@obj2.PageName"><i class="bx @obj2.MenuImageClass"></i>@obj2.MenuName</a>
+									}
+								
+								</li>
+							}
+						}
+				
+					</ul>
+				}
 			
-		</li>
-		@*<li class="menu-label">Others</li>*@
+			</li>
+		}
 	}
 </ul>
