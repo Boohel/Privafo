@@ -1,0 +1,53 @@
+﻿@model RiskCtg
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+<div class="card">
+    <div class="card-body p-4">
+        <h5 class="card-title">@(Model.ID!=0?"Update": "Create") Risk Category</h5>
+		<hr/>
+        <form method="post" asp-action="Upsert" enctype="multipart/form-data">
+            <input asp-for="ID" hidden />
+            <input asp-for="CreatedBy" value="@UserManager.GetUserId(User)" hidden />
+            <input asp-for="ModifiedBy" value="@UserManager.GetUserId(User)" hidden />
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label asp-for="RiskCtgName"></label>
+                            <input asp-for="RiskCtgName" class="form-control" />
+                            <span asp-validation-for="RiskCtgName" class=text-danger></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Description"></label>
+                            <textarea asp-for="Description" class="form-control" rows=3></textarea>
+                            <span class=text-danger></span>
+                        </div>
+                        <div class="col-12">
+                            @if (Model.ID != 0)
+                            {
+                                <button type="submit" class="btn btn-primary" style="width:150px;">Update</button> 
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary" style="width:150px;">Create</button>                
+                            }
+                            <a asp-controller="RiskCtg" asp-action="Index" class="btn btn-secondary" style="width:150px;">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@*Validate in Client Side*@
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}
+

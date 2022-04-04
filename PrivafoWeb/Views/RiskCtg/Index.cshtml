@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Module";
+}
+
+@section rtpage
+{
+<div class="ms-auto">
+	<a asp-controller="RiskCtg" asp-action="Upsert" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add Risk Category</a>
+</div>
+}
+
+<h6 class="mb-0 text-uppercase">Risk Category List</h6>
+<hr/>
+<div>
+    <div class="card">
+		<div class="card-body">
+            <div class="d-lg-flex align-items-center mb-4 gap-3">
+				<div class="position-relative">
+					<input type="text" id="areaSearch" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+				</div>
+				<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">	<i class='bx bx-filter font-22 text-dark'></i>
+				</a>
+                <div class="dropdown ms-auto">
+					<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">	<i class='bx bx-dots-horizontal-rounded font-22 text-dark'></i>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item" href="javascript:;">Export to Excel</a>
+						</li>
+						<li><a class="dropdown-item" href="javascript:;">Export to PDF</a>
+						</li>
+					</ul>
+				</div>		
+			</div>
+	        <div class="table-responsive">
+                <table id="tblData" class="table" style="width:100%">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Risk Category Name</th>
+                            <th>Description</th>
+                            <th>Created By</th>
+                            <th>Created Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+@section Scripts{
+    <script src="~/js/datagrid/riskctg.js"> </script>
+}
+
