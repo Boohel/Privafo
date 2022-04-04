@@ -1,8 +1,6 @@
 ﻿@model Privafo.Models.ViewModels.DPIAVM
-
 @using Microsoft.AspNetCore.Identity
-@inject UserManager<Privafo.Models.ApplicationUser> UserManager
-
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "DPIA Template";
 }
@@ -67,7 +65,7 @@
       </div>
       <div class="modal-body">
         <input asp-for="DPIATemplate.ID" hidden />
-        <input asp-for="DPIATemplate.UserCreated" value="@UserManager.GetUserId(User)" hidden />
+        <input asp-for="DPIATemplate.CreatedBy" value="@UserManager.GetUserId(User)" hidden />
          <div class="row">
         <div class="col-12">           
                 <div class="mb-3">
