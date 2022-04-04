@@ -51,6 +51,19 @@ namespace PrivafoWeb.Controllers
             public IEnumerable<Module> Data5 { get; set; }
         }
 
+        public class PostMenuName
+        {
+            public string menuName { get; set; }
+        }
+
+        [HttpPost]
+        public IActionResult SetSessionMenu([FromBody] PostMenuName request) 
+        {
+            HttpContext.Session.SetString("menu", request.menuName);
+
+            return Json(new { data = request.menuName });
+        }
+
         public IActionResult Privacy()
         {
             // basic Model

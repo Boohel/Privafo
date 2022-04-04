@@ -42,7 +42,7 @@
 				{
 					@if (obj1.PageName == "")
 					{
-						<a asp-area="@obj1.AreaName" asp-controller="@obj1.ControllerName" asp-action="@obj1.ActionName">
+						<a asp-area="@obj1.AreaName" asp-controller="@obj1.ControllerName" asp-action="@obj1.ActionName" asp-route-name="@obj1.MenuName" onclick="return theFunction('@obj1.MenuName');">
 							<div class="parent-icon"><i class='@obj1.MenuImageClass'></i> </div>
 							<div class="menu-title">@obj1.MenuName</div>
 						</a>
@@ -69,7 +69,7 @@
 								<li> 
 									@if (obj2.PageName == "")
 									{
-										<a asp-area="@obj2.AreaName" asp-controller="@obj2.ControllerName" asp-action="@obj2.ActionName"><i class="bx @obj2.MenuImageClass"></i>@obj2.MenuName</a>
+										<a asp-area="@obj2.AreaName" asp-controller="@obj2.ControllerName" asp-action="@obj2.ActionName" onclick="return theFunction('@obj2.MenuName');"><i class="bx @obj2.MenuImageClass"></i>@obj2.MenuName</a>
 									}else{
 										<a asp-area="@obj2.AreaName" asp-page="@obj2.PageName"><i class="bx @obj2.MenuImageClass"></i>@obj2.MenuName</a>
 									}
@@ -83,3 +83,44 @@
 		}
 	}
 </ul>
+
+<script type="text/javascript">
+	 function theFunction(name) {
+		//-------------METODE 1 belum tau cara nangkap parameternya di controller--------------
+        //var request;  
+        //if (window.XMLHttpRequest) {
+        //    //New browsers.
+        //    request = new XMLHttpRequest();
+        //}
+        //else if (window.ActiveXObject) {
+        //    //Old IE Browsers.
+        //    request = new ActiveXObject("Microsoft.XMLHTTP");
+        //}
+        //if (request != null) {
+        //    var url = "/Home/SetSessionMenu";
+        //    request.open("POST", url, false);
+        //    var params = "{name: '" + name + "'}";
+        //    request.setRequestHeader("Content-Type", "application/json");
+        //    request.onreadystatechange = function () {
+        //        if (request.readyState == 4 && request.status == 200) {
+        //            alert(JSON.parse(request.responseText).d);
+        //        }
+        //    };
+        //    request.send(params);
+        //}
+
+		fetch('/Home/SetSessionMenu',
+			{
+				method: 'post',
+				headers: { 'Content-type': 'application/json' },
+				body: JSON.stringify({ menuName: name })
+			}
+		).then(response => {
+			response.json().then(data => {
+				this.setState({ reqCheck: "" + response, didPush: false });
+			})
+		}).catch(err => {
+			this.setState({ reqCheck: "Failure! (js)", didPush: false })
+		});
+    }
+</script>
