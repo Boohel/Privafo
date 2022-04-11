@@ -9,20 +9,16 @@
 			<div class="row">
 				<div class="col-12">            
 					<div class="col-12 pb-2">
-						<h2 class="text-primary">@(Model.DPIATemplate.ID!=0?"Update": "Create") Template</h2>
-@*						<div class="ms-auto">
-							<div class="row gy-3">
-								<div class="col-md-10">
-								<input id="todo-input" type="text" class="form-control" value="">
-								</div>
-								<div class="col-md-2 text-end d-grid">
-								<button type="button" onclick="CreateTodo();" class="btn btn-primary">Add Section</button>
-								</div>
-							</div>			
-						</div>*@
+						<h5 class="text-primary">@(Model.DPIATemplate.ID!=0?"Update": "Create") Template</h5>
 					</div>   
 				</div>
-
+						<div class="col-12">
+								<div class="col-12 pb-2">
+									<button class="btn btn btn-outline-primary btn-sm"  type="button" onclick="TampilModalSection();" data-bs-toggle="modal"  data-bs-target="#sectionModal"><i class='bx bx-add-to-queue'></i>Add Section</button>
+									<button class="btn btn btn-outline-secondary btn-sm"  type="button" ><i class='bx bx-save'></i>Save</button>
+									<button class="btn btn btn-outline-secondary btn-sm"  type="button" ><i class='bx bx-printer'></i>Print</button>
+								</div>
+						</div>
 				<div class="accordion" id="accordionHeader">
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="headingOneHeader">
@@ -56,14 +52,8 @@
 					</div>
 				</div>				
 				</div>  
-                <br />
-						<div class="ms-auto">
-							<div class="row gy-3">
-								<div class="col-md-12 text-end">
-									<button class="btn btn-primary"  type="button" onclick="TampilModalSection();" data-bs-toggle="modal"  data-bs-target="#sectionModal">Add Section</button>
-								</div>
-							</div>			
-						</div>                        
+
+                    
                 <div class="form-row mt-3">
 							<div class="col-12">
 								<div id="todo-container"></div>
@@ -111,10 +101,8 @@
 						<input asp-for="DPIATemplate.CreatedBy" value="@UserManager.(User)" hidden />
 					<div class="row">
 					<div class="col-12">       
-							<div class="mb-3">	
-								<span id="section_id" hidden></span>
-								<span id="section"></span>
-							</div>					
+								<input id="section_id" hidden/>
+								<span id="section" hidden></span>					
 							<div class="mb-3">
 								<label>Question</label>
 								<textarea id="idquestion" class="form-control" rows=2 required></textarea>
@@ -125,20 +113,29 @@
 							</div>
 							 <div class="mb-3">
 								<label>Description</label>
-								<textarea class="form-control" rows=2></textarea>
+								<textarea class="form-control" rows=2 id="iddescription"></textarea>
 							</div>  
 							<div class="mb-3">
 										<label class="form-label">Type</label>
-										<select class="single-select">
-											<option value="mc">Multi Choice</option>
-											<option value="yn">Yes / No</option>
+										<select class="single-select" id="idtype" onchange="showChoice();">
 											<option value="tx">Text</option>
+											<option value="mc">Multi Choice</option>
+											<option value="yn">Yes / No</option>									
 											<option value="dt">Date</option>
 											<option value="st">Statement</option>
 											<option value="in">Inventory</option>
 											<option value="pd">Personal Data</option>
 											<option value="ac">Access Control</option>
 										</select>
+							</div>
+							<div class="mb-3 bg-light" id="idmultichoice" style="display: none;">
+									<table class="table table-borderless">
+										<tr><td>A</td><td></td><td><input class="form-control" id="idA" /></td></tr>
+										<tr><td>B</td><td></td><td><input class="form-control" id="idB" /></td></tr>
+										<tr><td>C</td><td></td><td><input class="form-control" id="idC" /></td></tr>
+										<tr><td>D</td><td></td><td><input class="form-control" id="idD" /></td></tr>
+										<tr><td>E</td><td></td><td><input class="form-control" id="idE" /></td></tr>
+									</table>
 							</div>
 					</div>
 						<div class="mb-3">
@@ -191,6 +188,24 @@
 				</div>
 			</div>
 
+			<div id="confirmModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-confirm">
+					<div class="modal-content">
+						<div class="modal-header flex-column">
+							<h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+						</div>
+						<div class="modal-body">
+							<span id="button_triger_id" hidden></span>
+							<p>Do you really want to delete these records? This process cannot be undone.</p>
+						</div>
+						<div class="modal-footer justify-content-center">
+							<button type="button" class="btn btn-primary" onclick="ConfirmDelete();" data-bs-dismiss="modal">Confirm</button> 
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 </form>
 
 
@@ -208,6 +223,7 @@
 
 
 	<script>
+
 		function TampilModalSection(param)
 		{
 			document.getElementById("todo-input").value = '';
@@ -215,18 +231,32 @@
 		function TampilModal(param)
 		{
 			var paramid = param.id;
-			document.getElementById("section_id").innerHTML = paramid;
+			document.getElementById("section_id").value = paramid;
 			document.getElementById("section").innerHTML = "Section : " + document.getElementById(paramid + "_SecName").value;
+		}
+
+		function TampilModalConfirm(param)
+		{
+			var paramid = param.id;
+			document.getElementById("button_triger_id").innerHTML = paramid;
+		}
+
+		function ConfirmDelete()
+		{
+			var paramid = document.getElementById("button_triger_id").innerHTML;
+			DeleteTodo(document.getElementById(paramid));
 		}
 
 		// to do list 
 		 var todos = [{
 			text: "",
+			quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:""}],
 			done: false,
 			id: 0
 		}];
 		var currentTodo = {
 			text: "",
+			quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:""}],
 			done: false,
 			id: 0
 		}
@@ -243,32 +273,34 @@
 							</div>
 							<input type="text" id="${todo.id}_SecName" class="form-control ${todo.done&&" todo-done"} " aria-label="Text input with checkbox" value="${todo.text}" readonly>
 							<button class="btn btn-outline-secondary" id="${todo.id}"  data-activecontainer="${todo.id}_quest" type="button" data-bs-toggle="modal" onclick="TampilModal(this);" data-bs-target="#mainModal">Add Question</button>
-							<button todo-id="${todo.id}" class="btn btn-outline-secondary bg-danger text-white" type="button" onclick="DeleteTodo(this);" id="button-addon2 ">X</button>
-							<div class="container">
-							 <div class="row">
-									<div>
-									<br>
-										<h6>Question List</h6>
+							<button todo-id="${todo.id}" class="btn btn-outline-secondary bg-danger text-white" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" id="${todo.id}_button-addon2" onclick="TampilModalConfirm(this);">X</button>
+							<div id="${todo.id}_container" class="container">
+			  						 <div class="row">
+											<div>
+											<br>
+												<h6>Question List</h6>
+											</div>
+									 </div>
+									 <div class="row">
+										<div class="col-sm-12">
+											<table id="${todo.id}_productTable" class="table table-borderedless">
+												<thead>
+													<tr>
+														<th>ID</th>
+														<th>Question</th>
+														<th>Friendly</th>
+														<th>Type</th>
+													</tr>
+												</thead>
+											</table>
+										</div>
 									</div>
-							 </div>
-							 <div class="row">
-								<div class="col-sm-12">
-									<table id="${todo.id}_productTable" class="table table-bordered table-condensed table-striped">
-										<thead>
-											<tr>
-												<th>ID</th>
-												<th>Question</th>
-												<th>Friendly</th>
-											</tr>
-										</thead>
-									</table>
-								</div>
-							</div>
 							</div>								
 						</div>
 			</div>
 
 			  `;
+
 			var dummy = document.createElement("DIV");
 			if (todo.id == 0)
 			{
@@ -289,6 +321,12 @@
 
 			for (var i = 0; i < todos.length; i++) {
 				DrawTodo(todos[i]);
+				for (var j = 0; j < todos[i].quest.length; j++)
+				{
+					if (j>0){
+						addRowTable(i,j)
+					}					
+				}				
 			}
 		}
 		RenderAllTodos();
@@ -311,7 +349,6 @@
 		}
 
 		function CreateTodo() {
-			//alert (currentTodo.text);
 			$("#sectionModal").modal("hide");
 			if (currentTodo.text.trim().length == 0)
 			{
@@ -319,6 +356,7 @@
 			}
 			newtodo = {
 				text: currentTodo.text,
+				quest:[{id:0,question:"",friendly:"",type:"",a:"",b:"",c:"",d:"",e:""}],
 				done: false,
 				id: todos.length
 			}
@@ -332,6 +370,8 @@
 
 
 <script>
+
+
     function productUpdate() 
 	{
 		$("#mainModal").modal("hide");
@@ -345,50 +385,89 @@
 
 	function productAddToTable() 
 	{
-		
-		var idx = document.getElementById("section_id").innerHTML;
-		//alert(idx);
+		var idx = document.getElementById("section_id").value;
+		var secid = parseInt(idx);
+		var questid = todos[secid].quest.length;
+
+		newQuest = {
+			id: todos[secid].quest.length -1,
+			question: $("#idquestion").val(),
+			friendly: $("#idfriendly").val(),
+			type: $("#idtype").val(),
+			a: $("#idA").val(),
+			b: $("#idB").val(),
+			c: $("#idC").val(),
+			d: $("#idD").val(),
+			e: $("#idE").val()
+		}
+		todos[secid].quest.push(newQuest);
+		addRowTable(idx,questid);
+	}
+
+	function addRowTable(idx,questid)
+	{
 		if ($("#" + idx + "_productTable" + " tbody").length == 0) 
 		{
 			$("#" + idx + "_productTable" + "").append("<tbody></tbody>");
 		}
 
 		$("#" + idx + "_productTable" + " tbody").append("<tr>" +
-        "<td>" + $("#section_id").val() + "</td>" +
-        "<td>" + $("#idquestion").val() + "</td>" +
-        "<td>" + $("#idfriendly").val() + "</td>" +
+        "<td>" + questid + "</td>" +
+        "<td>" + todos[idx].quest[questid].question + "</td>" +
+        "<td>" + todos[idx].quest[questid].friendly + "</td>" +
+        "<td>" + todos[idx].quest[questid].type + "</td>" +
         "</tr>");
+		if (todos[idx].quest[questid].type=="mc")
+		{
+			 if (todos[idx].quest[questid].a != "")
+			 {
+				$("#" + idx + "_productTable" + " tbody").append("<tr>" +
+				"<td></td><td>A : " + todos[idx].quest[questid].a + "</td><td></td><td></td></tr>");
+			 }
+			 if (todos[idx].quest[questid].b != "")
+			 {
+				$("#" + idx + "_productTable" + " tbody").append("<tr>" +
+				"<td></td><td>B : " + todos[idx].quest[questid].b + "</td><td></td><td></td></tr>");
+			 }
+			 if (todos[idx].quest[questid].c != "")
+			 {
+				$("#" + idx + "_productTable" + " tbody").append("<tr>" +
+				"<td></td><td>C : " + todos[idx].quest[questid].c + "</td><td></td><td></td></tr>");
+			 }
+			 if (todos[idx].quest[questid].d != "")
+			 {
+				$("#" + idx + "_productTable" + " tbody").append("<tr>" +
+				"<td></td><td>D : " + todos[idx].quest[questid].d + "</td><td></td><td></td></tr>");
+			 }
+			 if (todos[idx].quest[questid].e != "")
+			 {
+				$("#" + idx + "_productTable" + " tbody").append("<tr>" +
+				"<td></td><td>E : " + todos[idx].quest[questid].e + "</td><td></td><td></td></tr>");
+			 }
+		}
 	}
+
 
 	function formClear() 
 	{
 		$("#idquestion").val("");
 		$("#idfriendly").val("");
+		$("#iddescription").val("");
+		$("#idtype").val("tx");
+		$("#idA").val("");
+		$("#idB").val("");
+		$("#idC").val("");
+		$("#idD").val("");
+		$("#idE").val("");
+		$("#idmultichoice").hide();
+	}
+
+
+  function showChoice() 
+	{
+	  $("#idmultichoice").hide();
+	  if ($("#idtype").val()=="mc"){$("#idmultichoice").show();}
 	}
 </script>
 
 
-@*<script>
-// data-* attributes to scan when populating modal values
-var ATTRIBUTES = ['activecontainer'];
-
-$('[data-toggle="modal"]').on('click', function (e) {
-  // convert target (e.g. the button) to jquery object
-  var $target = $(e.target);
-  // modal targeted by the button
-  var modalSelector = $target.data('target');
-  
-  // iterate over each possible data-* attribute
-  ATTRIBUTES.forEach(function (attributeName) {
-    // retrieve the dom element corresponding to current attribute
-    var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
-    var dataValue = $target.data(attributeName);
-    
-    // if the attribute value is empty, $target.data() will return undefined.
-    // In JS boolean expressions return operands and are not coerced into
-    // booleans. That way is dataValue is undefined, the left part of the following
-    // Boolean expression evaluate to false and the empty string will be returned
-    $modalAttribute.text(dataValue || '');
-  });
-});	
-	</script>*@

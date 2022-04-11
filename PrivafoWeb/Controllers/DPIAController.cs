@@ -20,6 +20,7 @@ namespace PrivafoWeb.Controllers
         {
             return View();
         }
+
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
