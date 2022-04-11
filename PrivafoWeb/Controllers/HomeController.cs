@@ -4,6 +4,7 @@ using Privafo.Models;
 using Privafo.Utility;
 using System.Collections;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace PrivafoWeb.Controllers
 {
@@ -36,7 +37,7 @@ namespace PrivafoWeb.Controllers
 
         public IActionResult Welcome()
         {
-            IEnumerable<Module> objModuleList = _uow.Module.GetAllFilter(i => i.Highlight);
+            IEnumerable<Module> objModuleList = _uow.Module.GetAll(i => i.Highlight);
 
             return View(objModuleList);
         }
@@ -48,7 +49,7 @@ namespace PrivafoWeb.Controllers
             public IEnumerable<Module> Data2 { get; set; }
             public IEnumerable<Module> Data3 { get; set; }
             public IEnumerable<Module> Data4 { get; set; }
-            public IEnumerable<Module> Data5 { get; set; }
+            public IEnumerable<RiskRegister> Data5 { get; set; }
         }
 
         public class PostMenuName
@@ -71,14 +72,17 @@ namespace PrivafoWeb.Controllers
             //return View(module);
 
             // like expression 
-            var data1 = _uow.Module.GetAllFilter(u => u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg");
+            var data1 = _uow.Module.GetAll(u => u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg");
 
             // and or expression 
-            var data2 = _uow.Module.GetAllFilter(u => (u.ModuleName == "string" && u.ModuleCtg.ModuleCtgName == "string") || u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg");
+            var data2 = _uow.Module.GetAll(u => (u.ModuleName == "string" && u.ModuleCtg.ModuleCtgName == "string") || u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg");
 
             // custom select
-            var data3 = _uow.Module.GetAll(includeProperties: "ModuleCtg")
-                .Select(i => new { name = i.ModuleName, desc = i.Description, category = i.ModuleCtg.ModuleCtgName });
+            var data3 = _uow.Module.GetAll(u => u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg")
+                .Select(i => new { name = i.ModuleName, desc = i.Description, category = i.ModuleCtg.ModuleCtgName })
+                .Where(j => j.name != "")
+                .OrderByDescending(j => new { j.category })
+                .GroupBy(j => new { j.category });
 
             // group by
             var data4 = _uow.Module.GetAll(includeProperties: "ModuleCtg")
@@ -86,6 +90,7 @@ namespace PrivafoWeb.Controllers
 
             // order by
             var data5 = _uow.Module.GetAll(includeProperties: "ModuleCtg")
+                .Where(j => j.ModuleCtgID == 1)
                 .OrderBy(j => new { j.ModuleCtgID })
                 .OrderByDescending(j => new { j.ModuleSort });
 
@@ -93,16 +98,20 @@ namespace PrivafoWeb.Controllers
             ViewBag.ModuleList = data4;
             ViewData["ModuleList"] = data5;
 
+            // claim user identity login
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
             BasicVM basicVM = new()
             {
-                Data1 = _uow.Module.GetAllFilter(u => u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg"),
-                Data2 = _uow.Module.GetAllFilter(u => (u.ModuleName == "string" && u.ModuleCtg.ModuleCtgName == "string") || u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg"),
+                Data1 = _uow.Module.GetAll(u => u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg"),
+                Data2 = _uow.Module.GetAll(u => (u.ModuleName == "string" && u.ModuleCtg.ModuleCtgName == "string") || u.ModuleName!.Contains("test"), includeProperties: "ModuleCtg"),
                 Data3 = (IEnumerable<Module>)_uow.Module.GetAll(includeProperties: "ModuleCtg")
                         .Select(i => new { name = i.ModuleName, desc = i.Description, category = i.ModuleCtg.ModuleCtgName }),
                 Data4 = (IEnumerable<Module>)_uow.Module.GetAll(includeProperties: "ModuleCtg")
                         .GroupBy(j => new { j.ModuleCtgID }),
-                Data5 = (IEnumerable<Module>)_uow.Module.GetAll(includeProperties: "ModuleCtg")
-                        .GroupBy(j => new { j.ModuleCtgID })
+                Data5 = (IEnumerable<RiskRegister>)_uow.RiskRegister.GetAll(u => u.Owner == claim.Value, includeProperties: "UserOwner")
+                        .GroupBy(j => new { j.InherentRiskScore })
             };
 
             return View(basicVM);

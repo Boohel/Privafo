@@ -38,15 +38,25 @@ $(function() {
 		$(".compose-mail-popup").show()
 	}), $(".compose-mail-close").on("click", function() {
 		$(".compose-mail-popup").hide()
-	}), $(".switcher-btn").on("click", function() {
+	}), $(".switcher-btn").on("click", function () {
 		$(".switcher-wrapper").toggleClass("switcher-toggled")
 	}), $(".close-switcher").on("click", function (e) {
-		//var senderElement = e.target.tagName;
+		var senderElement = e.target.tagName;
 		var senderClass = e.target.className;
+		var senderParentClass = e.target.parentElement.className;
+		var senderID = e.target.id;
+		//alert(senderClass + ' - ' + senderID + ' - ' + senderParentClass);
+
 		if (senderClass.indexOf("hold-switcher") < 0) {
 			$(".switcher-wrapper").removeClass("switcher-toggled");
-		}
-	}), 
+		} else {
+			if (senderID == "switcher-filter") {
+				$(".switcher-wrapper").removeClass("switcher-toggled");
+			}
+        }
+	}), $("#btn-close-filter").on("click", function (e) {
+		$(".switcher-filter").removeClass("switcher-filter-toggled");
+	}),
 	
 	$("#lightmode").on("click", function() {
 		$("html").attr("class", "light-theme")

@@ -74,9 +74,9 @@ namespace PrivafoWeb.Components
 
             NavMenuVM navMenuVM = new()
             {
-                MenuLevel1 = _uow.Menu.GetAllFilter(u => u.MenuGroup == "Level1" && u.ModuleID == moduleid),
-                MenuLevel2 = _uow.Menu.GetAllFilter(u => u.MenuGroup == "Level2" && u.ModuleID == moduleid),
-                MenuLevel3 = _uow.Menu.GetAllFilter(u => u.MenuGroup == "Level3" && u.ModuleID == moduleid)
+                MenuLevel1 = _uow.Menu.GetAll(u => u.MenuGroup == "Level1" && u.ModuleID == moduleid),
+                MenuLevel2 = _uow.Menu.GetAll(u => u.MenuGroup == "Level2" && u.ModuleID == moduleid),
+                MenuLevel3 = _uow.Menu.GetAll(u => u.MenuGroup == "Level3" && u.ModuleID == moduleid)
             };
 
             return View(navMenuVM);

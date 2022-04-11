@@ -26,17 +26,20 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
            .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDistributedMemoryCache();
-
-builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
     options.IdleTimeout = TimeSpan.FromMinutes(10);//You can set Time   
 });
-
 builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
+});
+builder.Services.ConfigureApplicationCookie(option => 
+{
+    option.LoginPath = $"/Identity/Account/Login";
+    option.LogoutPath = $"/Identity/Account/Logout";
+    option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
 var app = builder.Build();

@@ -4,14 +4,14 @@ $(document).ready(function () {
     loadDataTable();
 });
 
-function loadDataTable() {
+function loadDataTable(jsonFilter) {
     dataTable = $('#tblData').DataTable({
         dom: 'trip', //l:length row perpage, i:information page, t:table, p:pagination control, s:search/filtering box, r: processing display element
         "ajax": {
-            "url": "/RiskVulnerability/GetAll"
+            "url": "/RiskThreat/GetAll?jsonFilter=" + jsonFilter
         },
         "columns": [
-            { "data": "vulnerabilityName", "width": "15%" },
+            { "data": "threatName", "width": "15%" },
             { "data": "description", "width": "15%" },
             { "data": "userCreated.userName", "width": "15%" },
             { "data": "dateCreated", "width": "15%" },
@@ -20,8 +20,8 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                             <div class="d-flex order-actions">
-								<a onclick="showInPopup('/RiskVulnerability/Upsert/${data}', 'Update Vulnerability')" class="ms-3 cursor-pointer"><i class='bx bxs-edit'></i></a>
-								<a onClick="Delete('/RiskVulnerability/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
+								<a onclick="showInPopup('/RiskThreat/Upsert/${data}', 'Update Risk')" class="ms-3 cursor-pointer"><i class='bx bxs-edit'></i></a>
+								<a onClick="Delete('/RiskThreat/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
 							</div>
                         `
                 },
@@ -41,4 +41,3 @@ $('#submitFilter').on('click', function () {
     loadDataTable(jsonFilter);
     $(".switcher-filter").removeClass("switcher-filter-toggled");
 });
-
