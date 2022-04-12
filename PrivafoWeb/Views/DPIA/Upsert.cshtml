@@ -15,7 +15,7 @@
 						<div class="col-12">
 								<div class="col-12 pb-2">
 									<button class="btn btn btn-outline-primary btn-sm"  type="button" onclick="TampilModalSection();" data-bs-toggle="modal"  data-bs-target="#sectionModal"><i class='bx bx-add-to-queue'></i>Add Section</button>
-									<button class="btn btn btn-outline-secondary btn-sm"  type="button" ><i class='bx bx-save'></i>Save</button>
+									<button class="btn btn btn-outline-secondary btn-sm"  type="button" onclick="save_template();"><i class='bx bx-save'></i>Save</button>
 									<button class="btn btn btn-outline-secondary btn-sm"  type="button" ><i class='bx bx-printer'></i>Print</button>
 								</div>
 						</div>
@@ -93,14 +93,15 @@
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Add New Question</h5>
+							<h5 class="modal-title" id="mainModalLabel">Question</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 					<div class="modal-body">
 						<input asp-for="DPIATemplate.ID" hidden />
 						<input asp-for="DPIATemplate.CreatedBy" value="@UserManager.(User)" hidden />
 					<div class="row">
-					<div class="col-12">       
+					<div class="col-12">   
+								<input id="update_mode" hidden/>						
 								<input id="section_id" hidden/>
 								<span id="section" hidden></span>					
 							<div class="mb-3">
@@ -180,7 +181,7 @@
 					</div>
 					</div>
 					  <div class="modal-footer">
-						<button type="button" class="btn btn-primary" onclick="productUpdate();">Add</button> 
+						<button type="button" id="btnupdatequestion" class="btn btn-primary" onclick="productUpdate();">Apply</button> 
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 					  </div>
 					</div>
@@ -231,8 +232,46 @@
 		function TampilModal(param)
 		{
 			var paramid = param.id;
+			document.getElementById("update_mode").value = "add";
 			document.getElementById("section_id").value = paramid;
 			document.getElementById("section").innerHTML = "Section : " + document.getElementById(paramid + "_SecName").value;
+		    document.getElementById("mainModalLabel").innerHTML = "Add New Question";
+			formClear();
+			document.getElementById("btnupdatequestion").style.display = "block";
+		}
+
+		function TampilModalEdit(secid,questid)
+		{
+			document.getElementById("section_id").value = secid;
+			document.getElementById("update_mode").value = "edit";
+			document.getElementById("mainModalLabel").innerHTML = "Question Info";
+			document.getElementById("btnupdatequestion").style.display = "none";
+			for (var i = 0; i < todos.length; i++) {
+				if (i==secid)
+				{
+						for (var j = 0; j < todos[i].quest.length; j++)
+						{
+							if (j==questid){
+									$("#idquestion").val(todos[i].quest[j].question);
+									$("#idfriendly").val(todos[i].quest[j].friendly);
+									$("#iddescription").val(todos[i].quest[j].description);
+									$("#idtype").val(todos[i].quest[j].type);
+									showChoice(); 
+									$("#idA").val(todos[i].quest[j].a);
+									$("#idB").val(todos[i].quest[j].b);
+									$("#idC").val(todos[i].quest[j].c);
+									$("#idD").val(todos[i].quest[j].d);
+									$("#idE").val(todos[i].quest[j].e);
+									document.getElementById("idanswereq").checked = todos[i].quest[j].answereq;
+									document.getElementById("idattachreq").checked = todos[i].quest[j].attachreq;
+									document.getElementById("idquesthint").checked = todos[i].quest[j].questhint;
+									document.getElementById("idnotsure").checked = todos[i].quest[j].notsure;
+									document.getElementById("idna").checked = todos[i].quest[j].na;								
+								break
+							}					
+						}
+				}		
+			}
 		}
 
 		function TampilModalConfirm(param)
@@ -289,7 +328,7 @@
 														<th>ID</th>
 														<th>Question</th>
 														<th>Friendly</th>
-														<th>Type</th>
+														<th></th>
 													</tr>
 												</thead>
 											</table>
@@ -375,12 +414,12 @@
     function productUpdate() 
 	{
 		$("#mainModal").modal("hide");
-		if ($("#idquestion").val() != null && $("#idquestion").val() != '') 
-		{
-			productAddToTable();
-			formClear();
-			$("#question").focus();
-		}
+			if ($("#idquestion").val() != null && $("#idquestion").val() != '') 
+			{
+				productAddToTable();
+				formClear();
+				$("#question").focus();
+			}
 	}
 
 	function productAddToTable() 
@@ -393,6 +432,7 @@
 			id: todos[secid].quest.length -1,
 			question: $("#idquestion").val(),
 			friendly: $("#idfriendly").val(),
+			description: $("#iddescription").val(),
 			type: $("#idtype").val(),
 			a: $("#idA").val(),
 			b: $("#idB").val(),
@@ -421,7 +461,8 @@
         "<td>" + questid + "</td>" +
         "<td>" + todos[idx].quest[questid].question + "</td>" +
         "<td>" + todos[idx].quest[questid].friendly + "</td>" +
-        "<td>" + todos[idx].quest[questid].type + "</td>" +
+        "<td><button type='button' class='btn btn-basic btn-sm' data-bs-toggle='modal' onclick='TampilModalEdit(" + idx + "," + questid + ");' data-bs-target='#mainModal'><i class='bx bx-message-square-edit me-0'></i></button></td>" +
+        //"<td>" + todos[idx].quest[questid].type + "</td>" +
         "</tr>");
 		if (todos[idx].quest[questid].type=="mc")
 		{
@@ -485,6 +526,13 @@
 	{
 	  $("#idmultichoice").hide();
 	  if ($("#idtype").val()=="mc"){$("#idmultichoice").show();}
+	}
+
+
+	function save_template()
+	{
+		let template = JSON.stringify(todos);
+		//alert(template);
 	}
 </script>
 
