@@ -23,41 +23,25 @@ namespace PrivafoWeb.Controllers
         //GET
         public IActionResult Upsert(int? ID)
         {
-            //Module module = new();
-            //IEnumerable<SelectListItem> ModuleCtgList = _uow.ModuleCtg.GetAll().Select(i => new SelectListItem
-            //{
-            //    Text = i.ModuleCtgName,
-            //    Value = i.ModuleCtgID.ToString()
-            //});
-
-            ModuleVM moduleVM = new()
+            RiskRegisterVM riskRegisterVM = new()
             {
-                Module = new(),
-                ModuleCtgSelectList = _uow.ModuleCtg.GetAll().Select(i => new SelectListItem
+                RiskRegister = new(),
+                RiskCtgList = _uow.RiskCtg.GetAll().Select(i => new SelectListItem
                 {
-                    Text = i.ModuleCtgName,
+                    Text = i.RiskCtgName,
                     Value = i.ID.ToString()
                 })
             };
 
-
             if (ID == null || ID == 0)
             {
-                //Create Product
-
-                ////ViewBag Mode
-                //ViewBag.ModuleCtgList = ModuleCtgList;
-                //ViewData["ModuleCtgList"] = ModuleCtgList;
-                //return View(module);
-
-                //ViewModel Mode
-                return View(moduleVM);
+                return View(riskRegisterVM);
             }
             else
             {
-                moduleVM.Module = _uow.Module.GetFirstOrDefault(u => u.ID == ID);
+                riskRegisterVM.RiskRegister = _uow.RiskRegister.GetFirstOrDefault(u => u.ID == ID);
 
-                return View(moduleVM);
+                return View(riskRegisterVM);
             }
         }
 
@@ -108,7 +92,8 @@ namespace PrivafoWeb.Controllers
         {
             //var productList = _uow.Module.GetAll();
             var riskRegList = _uow.RiskRegister.GetAll(includeProperties: "RiskType,ResidualRiskScore,InherentRiskScore,UserOwner,Org");
-            return Json(new { data = riskRegList });
+            //return Json(new { data = riskRegList });
+            return Json(riskRegList);
         }
         #endregion
     }

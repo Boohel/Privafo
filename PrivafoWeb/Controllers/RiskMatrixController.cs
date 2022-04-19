@@ -4,6 +4,7 @@ using Privafo.DataAccess;
 using Privafo.DataAccess.Repository.IRepository;
 using Privafo.Models;
 using Privafo.Models.ViewModels;
+using Newtonsoft.Json.Serialization;
 
 namespace PrivafoWeb.Controllers
 {
@@ -23,13 +24,6 @@ namespace PrivafoWeb.Controllers
         //GET
         public IActionResult Upsert(int? ID)
         {
-            //Module module = new();
-            //IEnumerable<SelectListItem> ModuleCtgList = _uow.ModuleCtg.GetAll().Select(i => new SelectListItem
-            //{
-            //    Text = i.ModuleCtgName,
-            //    Value = i.ModuleCtgID.ToString()
-            //});
-
             ModuleVM moduleVM = new()
             {
                 Module = new(),
@@ -43,14 +37,6 @@ namespace PrivafoWeb.Controllers
 
             if (ID == null || ID == 0)
             {
-                //Create Product
-
-                ////ViewBag Mode
-                //ViewBag.ModuleCtgList = ModuleCtgList;
-                //ViewData["ModuleCtgList"] = ModuleCtgList;
-                //return View(module);
-
-                //ViewModel Mode
                 return View(moduleVM);
             }
             else
@@ -66,7 +52,7 @@ namespace PrivafoWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(ModuleVM obj)
         {
-            if (ModelState.IsValid) //validation form server side
+            if (ModelState.IsValid)
             {
 
                 if (obj.Module.ID == 0)
@@ -102,13 +88,26 @@ namespace PrivafoWeb.Controllers
         }
 
 
+        public class ScoreVM
+        {
+            public IEnumerable<RiskMatrixScore> RiskMxScore { get; set; }
+        }
+
         #region API CALLS
         [HttpGet]
-        public IActionResult GetAll()
+        public Microsoft.AspNetCore.Mvc.JsonResult GetAll()
         {
-            //var productList = _uow.Module.GetAll();
-            var productList = _uow.Module.GetAll(includeProperties: "ModuleCtg");
-            return Json(new { data = productList });
+            ScoreVM modelList = new()
+            {
+                RiskMxScore = _uow.RiskMatrix.GetAll(
+                orderBy: q => q.OrderByDescending(d => d.RiskProbability.LevelSort).OrderBy(d => d.RiskImpact.LevelSort),
+                includeProperties: "RiskImpact,RiskProbability"
+                )
+            };
+
+            //matrixList.Select(i => new { id = i.ID, score = i.Score, category = i.DateCreated }).ToList();
+
+            return Json(modelList);
         }
         #endregion
     }

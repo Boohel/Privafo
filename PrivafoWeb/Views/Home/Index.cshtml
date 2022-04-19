@@ -5,3 +5,28 @@
 <div class="text-center">
     <h3>Welcome @ViewData["username"]</h3>
 </div>
+
+<div id="myFilter" class="mb-5"></div>
+
+@*@section Scripts{
+    <script>
+        $(document).ready(function(){
+            var contacts=[
+                { type:"text", id:"Lastname", label:"Lastname"},
+                { type:"boolean", id:"active", label:"Is active"},	
+                { type:"number", id:"age", label:"Age"},
+                {type:"list", id:"category", label:"Category",
+                    list:[
+                        {id:'1', label:"Family"},
+                        {id:'2', label:"Friends"},
+                        {id:'3', label:"Business"},
+                        {id:'4', label:"Acquaintances"},
+                        {id:'5', label:"Other"}
+                    ]
+                },
+                {type:"date", id:"bday", label:"Birthday"}
+            ] 
+            $('#myFilter').structFilter({fields:contacts });
+        });
+    </script>
+}*@

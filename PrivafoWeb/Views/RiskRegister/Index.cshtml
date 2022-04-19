@@ -2,42 +2,54 @@
     ViewData["Title"] = "Module";
 }
 
+@section CssSection
+{
+    <style type="text/css">
+        .wrap{
+            margin:0 auto;
+            margin-top:20px;
+            width:560px;
+        }
+        .square{ 
+            border: 1px solid white;
+            float:left;
+            background: #99ccff;
+            color:white;
+            text-align:center;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        .square:hover{ 
+            opacity:0.5;
+            cursor:pointer;
+        }
+    </style>
+}   
+
 @section rtpage
 {
-<div class="ms-auto">
-	<div class="btn-group">
-		<button type="button" class="btn btn-primary">Settings</button>
-		<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
-		</button>
-		<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
-			<a class="dropdown-item" href="javascript:;">Another action</a>
-			<a class="dropdown-item" href="javascript:;">Something else here</a>
-			<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
-		</div>
-	</div>
-</div>
+    <div class="ms-auto">
+	    <a asp-controller="RiskRegister" asp-action="Upsert" class="btn btn-primary radius-30 mt-2 mt-lg-0" ><i class="bx bxs-plus-square"></i>Add Risk Register</a>
+    </div>
 }
 
-<h6 class="mb-0 text-uppercase">DataTable Example</h6>
-<hr/>
-<div>
-    @*<div class="row">
-        <div class="col-6">
-            <h2 class="text-primary">Module List</h2>
+<div id="view-all">
+    <div class="card">
+        <div class="card-body">
+            <div class="wrap">
+            </div>
+            <div class="form-group">
+                <input type="color" id="color"  />
+            </div>
         </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Module" asp-action="Upsert" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Create New Module
-            </a>
-        </div>
-    </div>*@
+    </div>
     <div class="card">
 		<div class="card-body">
             <div class="d-lg-flex align-items-center mb-4 gap-3">
 				<div class="position-relative">
 					<input type="text" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
 				</div>
-				<div class="ms-auto"><a asp-controller="RiskRegister" asp-action="Upsert" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add Risk</a></div>
 			</div>
 	        <div class="table-responsive">
                 <table id="tblData" class="table" style="width:100%">
@@ -64,5 +76,104 @@
 
 @section Scripts{
     <script src="~/js/datagrid/riskregister.js"> </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+          function newGrid(nImpact, nProb) {
+            $(".square").remove();
+
+            $.ajax({
+                type: 'GET',
+                url: "/RiskMatrix/GetAll",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (res) {  
+                    alert(res.RiskMxScore);
+                    var i = 1;
+                    $.each(res, function () {  
+                        alert(res.RiskMatrixScore);
+                        i++;
+                    });    
+                },  
+                failure: function (res) {
+                    alert(res.d);
+                },
+                error: function (res) {
+                    alert(res.d);
+                }
+            })
+
+            
+          };
+
+          function OnSuccess(response) {
+            var model = response;
+            alert(model);
+
+            $.each(model, function () {
+               var mxScore = this;
+               alert("1");
+            });
+
+            //$.each(model.RiskMatrixScore, function () {
+            //    var customer = this;
+            //    $("td", row).eq(0).html(customer.CustomerID);
+            //    $("td", row).eq(1).html(customer.ContactName);
+            //    $("td", row).eq(2).html(customer.City);
+            //    $("td", row).eq(3).html(customer.Country);
+            //    $("#tblCustomers").append(row);
+            //    row = $("#tblCustomers tr:last-child").clone(true);
+            //});
+
+            nImpact = 3;
+            nProb = 4;
+
+            for (var k = 0; k < nProb; k++) {
+                for (var i = 0; i < nImpact; i++) {
+                var boxId = "test_" + k + "-" + i;
+                var val = 1 + Math.floor(Math.random() * 100);
+                $(".wrap").append($("<div>" + val + "</div>").attr('id', boxId).height(30).width(50));     
+                $("#" + boxId).addClass("square");     
+                $("#" + boxId).css("background", randCol);    
+                $("#" + boxId).attr("MxID", k + i);    
+
+                $("#" + boxId).click(function(){
+                    var data = $(this).attr('MxID');
+                    var data2 = $(this).html();
+                    alert(data2);
+                });
+                }
+                $(".wrap").append($("<div></div>").css("clear", "both"));
+            }
+        };
+
+          function scorehover() {
+            $(".square").hover(function() {
+              $(this).css("background", "white");
+            });
+          };
+
+          function clear() {
+            $(".square").css("background", "#99ccff");
+            $(".square").css("opacity", "1");
+          };
+  
+          function randCol(){
+            var R = Math.floor(Math.random()*256)
+            var G = Math.floor(Math.random()*256)
+            var B = Math.floor(Math.random()*256) 
+            return "rgb(" + R + "," + G + "," + B + ")";
+          };
+  
+          // start game
+          newGrid(16);
+
+          // choose grid dim
+          $(".Grid").click(function(){
+            newGrid(3, 4);
+            clear/*();*/
+          });
+        });
+    </script>
 }
 

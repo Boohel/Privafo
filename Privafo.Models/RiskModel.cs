@@ -17,7 +17,7 @@ namespace Privafo.Models
         [Required]
         [Display(Name = "Risk Register Name")]
         [StringLength(300, ErrorMessage = "Risk Register Name cannot be longer than 300 characters.")]
-        public int RiskRegName { get; set; }
+        public String RiskRegName { get; set; }
 
         public String? Description { get; set; }
 

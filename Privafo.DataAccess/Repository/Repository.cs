@@ -26,9 +26,22 @@ namespace Privafo.DataAccess.Repository
         }
 
         //includeProp - "ModuleCtg,dll"
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        public virtual IEnumerable<T> GetAll(
+            Expression<Func<T, bool>>? filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            string? includeProperties = "", 
+            bool tracked = true)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query;
+            
+            if (tracked)
+            {
+                query = dbSet;
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+            }
 
             if (filter != null)
             {
@@ -42,16 +55,15 @@ namespace Privafo.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-            return query.ToList();
-        }
 
-        public IEnumerable<T> GetAllCustom()
-        {
-            IQueryable<T> query = dbSet;
-
-            //custom query here
-
-            return query.ToList();
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
         }
 
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null)

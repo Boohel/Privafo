@@ -10,8 +10,7 @@ namespace Privafo.DataAccess.Repository.IRepository
     public interface IRepository<T> where T : class
     {
         T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null);
-        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
-        IEnumerable<T> GetAllCustom();
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string? includeProperties = null, bool tracked = true);
         void Add(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);
