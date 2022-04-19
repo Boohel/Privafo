@@ -15,7 +15,7 @@
 						<div class="col-12">
 								<div class="col-12 pb-2">
 									<button class="btn btn btn-outline-primary btn-sm"  type="button" onclick="TampilModalSection();" data-bs-toggle="modal"  data-bs-target="#sectionModal"><i class='bx bx-add-to-queue'></i>Add Section</button>
-									<button class="btn btn btn-outline-secondary btn-sm"  type="button" ><i class='bx bx-save'></i>Save</button>
+									<button class="btn btn btn-outline-secondary btn-sm"  type="button" onclick="save_template();"><i class='bx bx-save'></i>Save</button>
 									<button class="btn btn btn-outline-secondary btn-sm"  type="button" ><i class='bx bx-printer'></i>Print</button>
 								</div>
 						</div>
@@ -93,14 +93,15 @@
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Add New Question</h5>
+							<h5 class="modal-title" id="mainModalLabel">Question</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 					<div class="modal-body">
 						<input asp-for="DPIATemplate.ID" hidden />
 						<input asp-for="DPIATemplate.CreatedBy" value="@UserManager.(User)" hidden />
 					<div class="row">
-					<div class="col-12">       
+					<div class="col-12">   
+								<input id="update_mode" hidden/>						
 								<input id="section_id" hidden/>
 								<span id="section" hidden></span>					
 							<div class="mb-3">
@@ -144,15 +145,15 @@
 									<td>
                                 				<label class="form-label">Question Configuration</label>
 												<div class="form-check form-switch">
-													<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+													<input class="form-check-input" type="checkbox" id="idanswereq" checked>
 													<label class="form-check-label" for="flexSwitchCheckChecked">Answer Required</label>
 												</div>
 												<div class="form-check form-switch">
-													<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+													<input class="form-check-input" type="checkbox" id="idattachreq">
 													<label class="form-check-label" for="flexSwitchCheckChecked">Attachment Required</label>
 												</div>
 												<div class="form-check form-switch">
-													<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+													<input class="form-check-input" type="checkbox" id="idquesthint">
 													<label class="form-check-label" for="flexSwitchCheckChecked">Question Hint</label>
 												</div>
 									</td>
@@ -160,11 +161,11 @@
 									<td>
                                 				<label class="form-label">Response Configuration</label>
 												<div class="form-check form-switch">
-													<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+													<input class="form-check-input" type="checkbox" id="idnotsure">
 													<label class="form-check-label" for="flexSwitchCheckChecked">Allow Not Sure</label>
 												</div>
 												<div class="form-check form-switch">
-													<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+													<input class="form-check-input" type="checkbox" id="idna">
 													<label class="form-check-label" for="flexSwitchCheckChecked">Allow Not Applicable</label>
 												</div>
 												<div class="form-check form-switch">									        
@@ -175,12 +176,12 @@
 						</div>
 						<div class="mb-3">
 							<label for="formFileMultiple" class="form-label">Upload Attachment (Max 256 MB)</label>
-							<input class="form-control" type="file" id="formFileMultiple" multiple>
+							<input class="form-control" type="file" id="idfileurl" multiple>
 						</div>
 					</div>
 					</div>
 					  <div class="modal-footer">
-						<button type="button" class="btn btn-primary" onclick="productUpdate();">Add</button> 
+						<button type="button" id="btnupdatequestion" class="btn btn-primary" onclick="productUpdate();">Apply</button> 
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 					  </div>
 					</div>
@@ -231,8 +232,46 @@
 		function TampilModal(param)
 		{
 			var paramid = param.id;
+			document.getElementById("update_mode").value = "add";
 			document.getElementById("section_id").value = paramid;
 			document.getElementById("section").innerHTML = "Section : " + document.getElementById(paramid + "_SecName").value;
+		    document.getElementById("mainModalLabel").innerHTML = "Add New Question";
+			formClear();
+			document.getElementById("btnupdatequestion").style.display = "block";
+		}
+
+		function TampilModalEdit(secid,questid)
+		{
+			document.getElementById("section_id").value = secid;
+			document.getElementById("update_mode").value = "edit";
+			document.getElementById("mainModalLabel").innerHTML = "Question Info";
+			document.getElementById("btnupdatequestion").style.display = "none";
+			for (var i = 0; i < todos.length; i++) {
+				if (i==secid)
+				{
+						for (var j = 0; j < todos[i].quest.length; j++)
+						{
+							if (j==questid){
+									$("#idquestion").val(todos[i].quest[j].question);
+									$("#idfriendly").val(todos[i].quest[j].friendly);
+									$("#iddescription").val(todos[i].quest[j].description);
+									$("#idtype").val(todos[i].quest[j].type);
+									showChoice(); 
+									$("#idA").val(todos[i].quest[j].a);
+									$("#idB").val(todos[i].quest[j].b);
+									$("#idC").val(todos[i].quest[j].c);
+									$("#idD").val(todos[i].quest[j].d);
+									$("#idE").val(todos[i].quest[j].e);
+									document.getElementById("idanswereq").checked = todos[i].quest[j].answereq;
+									document.getElementById("idattachreq").checked = todos[i].quest[j].attachreq;
+									document.getElementById("idquesthint").checked = todos[i].quest[j].questhint;
+									document.getElementById("idnotsure").checked = todos[i].quest[j].notsure;
+									document.getElementById("idna").checked = todos[i].quest[j].na;								
+								break
+							}					
+						}
+				}		
+			}
 		}
 
 		function TampilModalConfirm(param)
@@ -250,13 +289,13 @@
 		// to do list 
 		 var todos = [{
 			text: "",
-			quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:""}],
+			quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:"",answereq:false,attachreq:false,questhint:false,notsure:false,na:false,fileurl:""}],
 			done: false,
 			id: 0
 		}];
 		var currentTodo = {
 			text: "",
-			quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:""}],
+			quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:"",answereq:false,attachreq:false,questhint:false,notsure:false,na:false,fileurl:""}],
 			done: false,
 			id: 0
 		}
@@ -272,7 +311,7 @@
 								<label>Section #${todo.id}</label>							
 							</div>
 							<input type="text" id="${todo.id}_SecName" class="form-control ${todo.done&&" todo-done"} " aria-label="Text input with checkbox" value="${todo.text}" readonly>
-							<button class="btn btn-outline-secondary" id="${todo.id}"  data-activecontainer="${todo.id}_quest" type="button" data-bs-toggle="modal" onclick="TampilModal(this);" data-bs-target="#mainModal">Add Question</button>
+							<button class="btn btn btn-outline-primary btn-sm" id="${todo.id}"  data-activecontainer="${todo.id}_quest" type="button" data-bs-toggle="modal" onclick="TampilModal(this);" data-bs-target="#mainModal">Add Question</button>
 							<button todo-id="${todo.id}" class="btn btn-outline-secondary bg-danger text-white" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal" id="${todo.id}_button-addon2" onclick="TampilModalConfirm(this);">X</button>
 							<div id="${todo.id}_container" class="container">
 			  						 <div class="row">
@@ -289,7 +328,7 @@
 														<th>ID</th>
 														<th>Question</th>
 														<th>Friendly</th>
-														<th>Type</th>
+														<th></th>
 													</tr>
 												</thead>
 											</table>
@@ -356,7 +395,7 @@
 			}
 			newtodo = {
 				text: currentTodo.text,
-				quest:[{id:0,question:"",friendly:"",type:"",a:"",b:"",c:"",d:"",e:""}],
+				quest:[{id:0,question:"",friendly:"",type:"",a:"",b:"",c:"",d:"",e:"",answereq:false,attachreq:false,questhint:false,notsure:false,na:false,fileurl:""}],
 				done: false,
 				id: todos.length
 			}
@@ -375,12 +414,12 @@
     function productUpdate() 
 	{
 		$("#mainModal").modal("hide");
-		if ($("#idquestion").val() != null && $("#idquestion").val() != '') 
-		{
-			productAddToTable();
-			formClear();
-			$("#question").focus();
-		}
+			if ($("#idquestion").val() != null && $("#idquestion").val() != '') 
+			{
+				productAddToTable();
+				formClear();
+				$("#question").focus();
+			}
 	}
 
 	function productAddToTable() 
@@ -393,12 +432,19 @@
 			id: todos[secid].quest.length -1,
 			question: $("#idquestion").val(),
 			friendly: $("#idfriendly").val(),
+			description: $("#iddescription").val(),
 			type: $("#idtype").val(),
 			a: $("#idA").val(),
 			b: $("#idB").val(),
 			c: $("#idC").val(),
 			d: $("#idD").val(),
-			e: $("#idE").val()
+			e: $("#idE").val(),
+			answereq: document.getElementById("idanswereq").checked,
+			attachreq: document.getElementById("idattachreq").checked,
+			idquesthint: document.getElementById("idquesthint").checked,
+			notsure: document.getElementById("idnotsure").checked,
+			na: document.getElementById("idna").checked
+			//e: $("#idfileurl").val()
 		}
 		todos[secid].quest.push(newQuest);
 		addRowTable(idx,questid);
@@ -415,7 +461,8 @@
         "<td>" + questid + "</td>" +
         "<td>" + todos[idx].quest[questid].question + "</td>" +
         "<td>" + todos[idx].quest[questid].friendly + "</td>" +
-        "<td>" + todos[idx].quest[questid].type + "</td>" +
+        "<td><button type='button' class='btn btn-basic btn-sm' data-bs-toggle='modal' onclick='TampilModalEdit(" + idx + "," + questid + ");' data-bs-target='#mainModal'><i class='bx bx-message-square-edit me-0'></i></button></td>" +
+        //"<td>" + todos[idx].quest[questid].type + "</td>" +
         "</tr>");
 		if (todos[idx].quest[questid].type=="mc")
 		{
@@ -445,6 +492,13 @@
 				"<td></td><td>E : " + todos[idx].quest[questid].e + "</td><td></td><td></td></tr>");
 			 }
 		}
+	//	$("#" + idx + "_productTable" + " tbody").append("<tr>" +
+  //      "<td></td><td colspan='3'><label class='fst-italic'>Answer Required </label><input class='form-check-input' type='checkbox' " + if (todos[idx].quest[questid].answereq==true){checked}  + " disabled>" +
+		//"<label class='fst-italic'>Attachment Required </label><input class='form-check-input' type='checkbox' " + todos[idx].quest[questid].attachreq  + "disabled>" +
+		//"</td></tr>");
+  //      "<td></td><td colspan='3'><label class='fst-italic'>Answer Required:" + todos[idx].quest[questid].answereq + " | </label>" +
+  //      "<label class='fst-italic'>Attachment Required:" + todos[idx].quest[questid].attachreq + " | </label>" +
+		//"</td></tr>");
 	}
 
 
@@ -460,6 +514,11 @@
 		$("#idD").val("");
 		$("#idE").val("");
 		$("#idmultichoice").hide();
+		document.getElementById("idanswereq").checked = false;
+		document.getElementById("idattachreq").checked = false;
+		document.getElementById("idquesthint").checked = false;
+		document.getElementById("idnotsure").checked = false;
+		document.getElementById("idna").checked = false;
 	}
 
 
@@ -467,6 +526,13 @@
 	{
 	  $("#idmultichoice").hide();
 	  if ($("#idtype").val()=="mc"){$("#idmultichoice").show();}
+	}
+
+
+	function save_template()
+	{
+		let template = JSON.stringify(todos);
+		//alert(template);
 	}
 </script>
 
