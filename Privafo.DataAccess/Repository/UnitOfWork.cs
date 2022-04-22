@@ -27,6 +27,7 @@ namespace Privafo.DataAccess.Repository
             RiskMatrix = new RiskMatrixRepository(_db);
             RiskImpact = new RiskImpactRepository(_db);
             RiskProbability = new RiskProbRepository(_db);
+            RiskRangeScore = new RiskRangeScoreRepository(_db);
             RiskThreat = new RiskThreatRepository(_db);
             RiskVulnerability = new RiskVulnerRepository(_db);
 
@@ -48,6 +49,7 @@ namespace Privafo.DataAccess.Repository
         public IRiskMatrixRepository RiskMatrix { get; private set; }
         public IRiskImpactRepository RiskImpact { get; private set; }
         public IRiskProbRepository RiskProbability { get; private set; }
+        public IRiskRangeScoreRepository RiskRangeScore { get; private set; }
         public IRiskThreatRepository RiskThreat { get; private set; }
         public IRiskVulnerRepository RiskVulnerability { get; private set; }
 

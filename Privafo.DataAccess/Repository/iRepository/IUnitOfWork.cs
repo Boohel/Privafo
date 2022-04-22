@@ -22,6 +22,7 @@ namespace Privafo.DataAccess.Repository.IRepository
         IRiskMatrixRepository RiskMatrix { get; }
         IRiskImpactRepository RiskImpact { get; }
         IRiskProbRepository RiskProbability { get; }
+        IRiskRangeScoreRepository RiskRangeScore { get; }
         IRiskThreatRepository RiskThreat { get; }
         IRiskVulnerRepository RiskVulnerability { get; }
 

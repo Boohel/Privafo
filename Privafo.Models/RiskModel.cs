@@ -83,10 +83,12 @@ namespace Privafo.Models
     {
         [Key]
         public int ID { get; set; }
+
         [Required]
         [Display(Name = "Risk Name")]
         [StringLength(300, ErrorMessage = "Risk Name cannot be longer than 300 characters.")]
-        public int RiskRegName { get; set; }
+        public string RiskLibName { get; set; }
+
         [DataType(DataType.Text)]
         public String? Description { get; set; }
 
@@ -97,6 +99,7 @@ namespace Privafo.Models
         [ForeignKey("RiskTypeID")]
         [ValidateNever]
         public RiskType RiskType { get; set; }
+
         [ValidateNever]
         [Required]
         [Display(Name = "Risk Category")]
@@ -220,6 +223,12 @@ namespace Privafo.Models
         [Display(Name = "Score")]
         [Range(0, 100, ErrorMessage = "Score must between 0 and 100 only.")]
         public Double Score { get; set; }
+        [NotMapped]
+        [ValidateNever]
+        public String LvlScoreName { get; set; }
+        [NotMapped]
+        [ValidateNever]
+        public String LvlScoreColor { get; set; }
     }
 
     public class RiskRangeScore : BaseEntity

@@ -42,6 +42,11 @@ namespace Privafo.DataAccess.Repository.IRepository
         void Update(RiskMatrixScore obj);
     }
 
+    public interface IRiskRangeScoreRepository : IRepository<RiskRangeScore>
+    {
+        void Update(RiskRangeScore obj);
+    }
+
     public interface IRiskThreatRepository : IRepository<RiskThreat>
     {
         void Update(RiskThreat obj);

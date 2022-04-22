@@ -113,6 +113,21 @@ namespace Privafo.DataAccess.Repository
         }
     }
 
+    public class RiskRangeScoreRepository : Repository<RiskRangeScore>, IRiskRangeScoreRepository
+    {
+        private ApplicationDbContext _db;
+
+        public RiskRangeScoreRepository(ApplicationDbContext db) : base(db)
+        {
+            _db = db;
+        }
+
+        public void Update(RiskRangeScore obj)
+        {
+            _db.risk_range_score.Update(obj);
+        }
+    }
+
     public class RiskThreatRepository : Repository<RiskThreat>, IRiskThreatRepository
     {
         private ApplicationDbContext _db;

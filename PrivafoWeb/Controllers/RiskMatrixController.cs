@@ -91,21 +91,30 @@ namespace PrivafoWeb.Controllers
         public class ScoreVM
         {
             public IEnumerable<RiskMatrixScore> RiskMxScore { get; set; }
+            public double TotalImpact { get; set; }
+            public double TotalProb { get; set; }
         }
 
         #region API CALLS
         [HttpGet]
-        public Microsoft.AspNetCore.Mvc.JsonResult GetAll()
+        public IActionResult GetAll()
         {
             ScoreVM modelList = new()
             {
                 RiskMxScore = _uow.RiskMatrix.GetAll(
-                orderBy: q => q.OrderByDescending(d => d.RiskProbability.LevelSort).OrderBy(d => d.RiskImpact.LevelSort),
-                includeProperties: "RiskImpact,RiskProbability"
-                )
+                    orderBy: q => q.OrderByDescending(d => d.RiskImpact.LevelSort).ThenBy(d => d.RiskProbability.LevelSort),
+                    includeProperties: "RiskImpact,RiskProbability"
+                ),
+                TotalImpact = _uow.RiskImpact.GetAll().Count(),
+                TotalProb = _uow.RiskProbability.GetAll().Count()
             };
 
-            //matrixList.Select(i => new { id = i.ID, score = i.Score, category = i.DateCreated }).ToList();
+            foreach (var score in modelList.RiskMxScore)
+            {
+                var rangeScore = _uow.RiskRangeScore.GetFirstOrDefault(u => u.MinRange <= score.Score && u.MaxRange >= score.Score);
+                score.LvlScoreName = rangeScore.RiskLevel;
+                score.LvlScoreColor = rangeScore.RangeColor;
+            }
 
             return Json(modelList);
         }

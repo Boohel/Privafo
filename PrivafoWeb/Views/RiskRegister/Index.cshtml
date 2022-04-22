@@ -87,14 +87,7 @@
                 url: "/RiskMatrix/GetAll",
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                success: function (res) {  
-                    alert(res.RiskMxScore);
-                    var i = 1;
-                    $.each(res, function () {  
-                        alert(res.RiskMatrixScore);
-                        i++;
-                    });    
-                },  
+                success: OnSuccess,  
                 failure: function (res) {
                     alert(res.d);
                 },
@@ -102,50 +95,39 @@
                     alert(res.d);
                 }
             })
-
-            
           };
 
-          function OnSuccess(response) {
-            var model = response;
-            alert(model);
+          function OnSuccess(res) {
+            alert(res.riskMxScore);
 
-            $.each(model, function () {
-               var mxScore = this;
-               alert("1");
-            });
+            nImpact = res.totalImpact;
+            nProb = res.totalProb;
+            var n=0;
+            for (var k = 0; k < nImpact; k++) {
+                for (var i = 0; i < nProb; i++) {
+                    var mxid = res.riskMxScore[n].id;
+                    var boxid = "scr_" + MxId;
+                    var val = res.riskMxScore[n].score;
+                    var xcolor = res.riskMxScore[n].lvlScoreColor;
+                    var levelname = res.riskMxScore[n].lvlScoreName;
 
-            //$.each(model.RiskMatrixScore, function () {
-            //    var customer = this;
-            //    $("td", row).eq(0).html(customer.CustomerID);
-            //    $("td", row).eq(1).html(customer.ContactName);
-            //    $("td", row).eq(2).html(customer.City);
-            //    $("td", row).eq(3).html(customer.Country);
-            //    $("#tblCustomers").append(row);
-            //    row = $("#tblCustomers tr:last-child").clone(true);
-            //});
+                    $(".wrap").append($("<div>" + val + "</div>").attr('id', boxid).height(30).width(50));     
+                    $("#" + boxid).addClass("square");     
+                    $("#" + boxid).css("background", xcolor);    
+                    $("#" + boxid).attr("MxID", mxid);    
+                    $("#" + boxid).attr("MxLevel", levelname);    
 
-            nImpact = 3;
-            nProb = 4;
-
-            for (var k = 0; k < nProb; k++) {
-                for (var i = 0; i < nImpact; i++) {
-                var boxId = "test_" + k + "-" + i;
-                var val = 1 + Math.floor(Math.random() * 100);
-                $(".wrap").append($("<div>" + val + "</div>").attr('id', boxId).height(30).width(50));     
-                $("#" + boxId).addClass("square");     
-                $("#" + boxId).css("background", randCol);    
-                $("#" + boxId).attr("MxID", k + i);    
-
-                $("#" + boxId).click(function(){
-                    var data = $(this).attr('MxID');
-                    var data2 = $(this).html();
-                    alert(data2);
-                });
+                    $("#" + boxid).click(function(){
+                        var mxid = $(this).attr('MxID');
+                        var score = $(this).html();
+                        alert(score);
+                    });
+                    
+                    n++;
                 }
                 $(".wrap").append($("<div></div>").css("clear", "both"));
             }
-        };
+          };
 
           function scorehover() {
             $(".square").hover(function() {
