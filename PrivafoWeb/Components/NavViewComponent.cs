@@ -26,8 +26,8 @@ namespace PrivafoWeb.Components
         {
             NavModuleVM navModuleVM = new()
             {
-                ModuleList = _uow.Module.GetAll(),
-                ModuleCtgList = _uow.ModuleCtg.GetAll()
+                ModuleList = _uow.Module.GetAll(orderBy: q => q.OrderBy(d => d.ModuleSort)),
+                ModuleCtgList = _uow.ModuleCtg.GetAll(orderBy: q => q.OrderBy(d => d.ModuleCtgSort))
             };
 
             return View(navModuleVM);
@@ -50,9 +50,18 @@ namespace PrivafoWeb.Components
             NavMenuVM navMenuVM = new()
             {
                 //MenuLevel1 = _uow.Menu.GetAll().Select(i => new { i.ID, i.MenuName, i.MenuLevel, i.AreaName, i.ControllerName, i.ActionName, i.PageName}).Where(u => u.MenuLevel == 1 && u.ModuleID == moduleid),
-                MenuLevel1 = _uow.Menu.GetAll().Where(u => u.MenuLevel == 1 && u.ModuleID == moduleid),
-                MenuLevel2 = _uow.Menu.GetAll().Where(u => u.MenuLevel == 2 && u.ModuleID == moduleid),
-                MenuLevel3 = _uow.Menu.GetAll().Where(u => u.MenuLevel == 3 && u.ModuleID == moduleid)
+                MenuLevel1 = _uow.Menu.GetAll(
+                    filter: u => u.MenuLevel == 1 && u.ModuleID == moduleid,
+                    orderBy: q => q.OrderBy(d => d.MenuGroup).ThenBy(d => d.MenuSort)
+                    ),
+                MenuLevel2 = _uow.Menu.GetAll(
+                    filter: u => u.MenuLevel == 2 && u.ModuleID == moduleid,
+                    orderBy: q => q.OrderBy(d => d.MenuGroup).ThenBy(d => d.MenuSort)
+                    ),
+                MenuLevel3 = _uow.Menu.GetAll(
+                    filter: u => u.MenuLevel == 3 && u.ModuleID == moduleid,
+                    orderBy: q => q.OrderBy(d => d.MenuGroup).ThenBy(d => d.MenuSort)
+                    )
             };
 
             return View(navMenuVM);
