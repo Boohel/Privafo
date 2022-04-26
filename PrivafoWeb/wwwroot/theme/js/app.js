@@ -138,11 +138,6 @@ $(function() {
       $('html').attr('class', 'color-sidebar sidebarcolor8');
     }
 
-
-
-
-
-
-
+	$('.form-check:has(.font-input-lg)').addClass('form-radio-lg');
 
 });

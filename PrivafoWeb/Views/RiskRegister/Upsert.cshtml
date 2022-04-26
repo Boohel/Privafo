@@ -1,6 +1,26 @@
 ﻿@model Privafo.Models.ViewModels.RiskRegisterVM
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
+    
+@section CssSection
+{
+    <style type="text/css">
+        .square{ 
+            border: 1px solid white;
+            float:left;
+            background: #99ccff;
+            color:white;
+            text-align:center;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        .square:hover{ 
+            opacity:0.5;
+            cursor:pointer;
+        }
+    </style>
+}  
 
 <div class="card">
     <div class="card-body p-4">
@@ -14,15 +34,53 @@
             <div class="row">
                 <div class="col-12">
                     <div class="row">
-                        <div class="mb-3">
-                            <label asp-for="RiskRegister.RiskRegName"></label>
-                            <input asp-for="RiskRegister.RiskRegName" class="form-control" />
-                            <span asp-validation-for="RiskRegister.RiskRegName" class=text-danger></span>
+                        <div class="mb-3 col-12">
+                            <div class="form-check">
+								<input class="form-check-input font-input-lg" type="radio" name="RiskInputType" id="lib-type" checked>
+								<label class="form-check-label font-input-lg" for="lib-type">Select a Risk From the Library</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input font-input-lg" type="radio" name="RiskInputType" id="new-type">
+								<label class="form-check-label font-input-lg" for="new-type">Create New Risk</label>
+							</div>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="RiskRegister.Description"></label>
-                            <textarea asp-for="RiskRegister.Description" class="form-control" rows=3></textarea>
-                            <span class=text-danger></span>
+		                <div class="mb-3" >
+			                <label asp-for="RiskRegister.RiskTypeID"></label>
+			                <select asp-for="RiskRegister.RiskTypeID" asp-items="@Model.RiskTypeList" class="form-select">
+				                <option disabled selected>--Select Risk Type--</option>
+			                </select>
+			                <span asp-validation-for="RiskRegister.RiskTypeID" class="text-danger"></span>
+		                </div>   
+		                <div id="panelRiskLib" class="mb-3">
+			                <label asp-for="RiskLibrary"></label>
+			                <select name="RiskLibraryID" id="RiskLibraryID" asp-items="@Model.RiskLibrary" class="form-select">
+			                </select>
+			                <span asp-validation-for="RiskRegister.RiskTypeID" class="text-danger"></span>
+		                </div>
+                        <div id="panelRiskReg" class="hide-content">
+                            <div class="mb-3">
+                                <label asp-for="RiskRegister.RiskRegName"></label>
+                                <input asp-for="RiskRegister.RiskRegName" class="form-control" />
+                                <span asp-validation-for="RiskRegister.RiskRegName" class=text-danger></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="RiskRegister.Description"></label>
+                                <textarea asp-for="RiskRegister.Description" class="form-control" rows=3></textarea>
+                                <span class=text-danger></span>
+                            </div>
+                            <div class="mb-3">                                 
+                                <label asp-for="RiskRegister.InherentRiskMx"></label>
+                                <div class="btn-group" role="group" aria-label="Button group with nested k">   
+								    <input asp-for="RiskRegister.InherentRiskMx" width="10" class="btn btn-risk-score" readonly/>
+								    <div class="btn-group" role="group">
+									    <button id="btnGroupDrop1" type="button" class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1" data-bs-toggle="dropdown" aria-expanded="false">
+									        <i class='bx bx-chevron-down'></i>
+									    </button>
+                                        <div class="wrap dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        </div>
+								    </div>
+								</div>	
+                            </div>
                         </div>
                         <div class="col-12">
                             @if (Model.RiskRegister.ID != 0)
@@ -46,5 +104,158 @@
     @{
         <partial name="_ValidationScriptsPartial"></partial>
     }
+    <script>    
+        $(document).ready(function() {
+            function newGrid(nImpact, nProb) {
+                $(".square").remove();
+
+                $.ajax({
+                    type: 'GET',
+                    url: "/RiskMatrix/GetAll",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (res) {
+                        alert(res.riskMxScore);
+
+                        nImpact = res.totalImpact;
+                        nProb = res.totalProb;
+                    
+                        var n=0;
+                        for (var k = 0; k < nImpact; k++) {
+                            for (var i = 0; i < nProb; i++) {
+                                var mxid = res.riskMxScore[n].id;
+                                var boxid = "scr_" + mxid;
+                                var val = res.riskMxScore[n].score;
+                                var xcolor = res.riskMxScore[n].lvlScoreColor;
+                                var levelname = res.riskMxScore[n].lvlScoreName;
+
+                                $(".wrap").append($("<div>" + val + "</div>").attr('id', boxid).height(30).width(50));     
+                                $("#" + boxid).addClass("square");     
+                                $("#" + boxid).css("background", xcolor);    
+                                $("#" + boxid).attr("MxID", mxid);    
+                                $("#" + boxid).attr("MxLevel", levelname);    
+
+                                $("#" + boxid).click(function(){
+                                    var mxid = $(this).attr('MxID');
+                                    var score = $(this).html();
+                                    alert(score);
+                                });
+                    
+                                n++;
+                            }
+                            $(".wrap").append($("<div></div>").css("clear", "both"));
+                        }
+                    },  
+                    failure: function (res) {
+                        alert(res.d);
+                    },
+                    error: function (res) {
+                        alert(res.d);
+                    }
+                })
+              };
+
+              function OnSuccess(res) {
+                alert(res.riskMxScore);
+
+                nImpact = res.totalImpact;
+                nProb = res.totalProb;
+                var n=0;
+                for (var k = 0; k < nImpact; k++) {
+                    for (var i = 0; i < nProb; i++) {
+                        var mxid = res.riskMxScore[n].id;
+                        var boxid = "scr_" + MxId;
+                        var val = res.riskMxScore[n].score;
+                        var xcolor = res.riskMxScore[n].lvlScoreColor;
+                        var levelname = res.riskMxScore[n].lvlScoreName;
+
+                        $(".wrap").append($("<div>" + val + "</div>").attr('id', boxid).height(30).width(50));     
+                        $("#" + boxid).addClass("square");     
+                        $("#" + boxid).css("background", xcolor);    
+                        $("#" + boxid).attr("MxID", mxid);    
+                        $("#" + boxid).attr("MxLevel", levelname);    
+
+                        $("#" + boxid).click(function(){
+                            var mxid = $(this).attr('MxID');
+                            var score = $(this).html();
+                            alert(score);
+                        });
+                    
+                        n++;
+                    }
+                    $(".wrap").append($("<div></div>").css("clear", "both"));
+                }
+              };
+
+              function scorehover() {
+                $(".square").hover(function() {
+                  $(this).css("background", "white");
+                });
+              };
+
+              function clear() {
+                $(".square").css("background", "#99ccff");
+                $(".square").css("opacity", "1");
+              };
+  
+              function randCol(){
+                var R = Math.floor(Math.random()*256)
+                var G = Math.floor(Math.random()*256)
+                var B = Math.floor(Math.random()*256) 
+                return "rgb(" + R + "," + G + "," + B + ")";
+              };
+  
+              // start game
+              newGrid(16);
+
+              // choose grid dim
+              $(".Grid").click(function(){
+                newGrid(3, 4);
+                clear/*();*/
+              });
+        });
+        $('#RiskRegister_RiskTypeID').change(function () {
+            if($('#lib-type').is(':checked')){
+                var selectedType = $("#RiskRegister_RiskTypeID").val();
+                var riskLibrarySelect = $('#RiskLibraryID');
+
+                riskLibrarySelect.empty();
+                if (selectedType != null && selectedType != '') {
+                    $.getJSON('@Url.Action("GetRiskLibraries")', { riskType: selectedType }, function (libraries) {     
+                        if (libraries != null && !jQuery.isEmptyObject(libraries))
+                        {         
+                            if(libraries.riskLibrary.length > 0){
+                                riskLibrarySelect.append($('<option/>', {
+                                    value: null,
+                                    text: "--Select a Risk From the Library--"
+                                }).each(function(){
+                                    $(this).attr("selected", "selected");
+                                    $(this).attr("disabled", "disabled");
+                                  })
+                                );
+                                $.each(libraries.riskLibrary, function (index, library) {
+                                    riskLibrarySelect.append($('<option/>', {
+                                        value: library.value,
+                                        text: library.text
+                                    }));
+                                });
+                            }                        
+                        };
+                    });
+                }
+            }            
+        });
+
+        $('input[type=radio][name=RiskInputType]').change(function() {
+            if (this.id == 'new-type') {
+                $('#panelRiskReg').toggle();
+                $('#panelRiskLib').addClass("hide-content");
+            }
+            else if (this.id == 'lib-type') {
+                $('#panelRiskReg').toggle();
+                $('#panelRiskLib').removeClass("hide-content");
+            }
+        });
+    </script>
 }
 

@@ -19,6 +19,7 @@ namespace Privafo.Utility
         public static string[] ScopeOrg = { "Internal", "3rd Party" };
         public static string[] HostingType = { "Cloud", "On-Premises" };
         public static string[] LocParties = { "Access", "Use Data" };
+        public static string[] RiskStage = { "new", "under evaluation", "in review", "live" };
 
-    }
+}
 }
