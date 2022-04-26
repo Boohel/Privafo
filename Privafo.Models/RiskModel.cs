@@ -56,7 +56,8 @@ namespace Privafo.Models
         [ValidateNever]
         public RiskMatrixScore TargetRiskScore { get; set; }
 
-        public int TreatmentPlan { get; set; }
+        [Display(Name = "Treatment Plan")]
+        public String TreatmentPlan { get; set; }
 
         [ValidateNever]
         [StringLength(450)]
@@ -75,7 +76,21 @@ namespace Privafo.Models
         public Org? Org { get; set; }
 
         public DateTime? Deadline { get; set; }
+
         public Boolean Reminder { get; set; } = false;
+
+        [ForeignKey("Owner")]
+        [ValidateNever]
+        [NotMapped]
+        public RiskLibrary RiskLibrary { get; set; }
+
+        [ValidateNever]
+        [Required]
+        [Display(Name = "Active Status")]
+        public int ActiveStatusID { get; set; }
+        [ForeignKey("ActiveStatusID")]
+        [ValidateNever]
+        public ActiveStatus ActiveStatus { get; set; }
 
     }
 
@@ -133,7 +148,16 @@ namespace Privafo.Models
         [ValidateNever]
         public RiskMatrixScore TargetRiskScore { get; set; }
 
-        public int TreatmentPlan { get; set; }
+        [Display(Name = "Treatment Plan")]
+        public String TreatmentPlan { get; set; }
+
+        [ValidateNever]
+        [Required]
+        [Display(Name = "Active Status")]
+        public int ActiveStatusID { get; set; }
+        [ForeignKey("ActiveStatusID")]
+        [ValidateNever]
+        public ActiveStatus ActiveStatus { get; set; }
 
     }
 
@@ -274,6 +298,17 @@ namespace Privafo.Models
         public String VulnerabilityName { get; set; }
         public String? Description { get; set; }
     }
+
+    //public class RiskStatus : BaseEntity
+    //{
+    //    [Key]
+    //    public int ID { get; set; }
+    //    [Required]
+    //    [Display(Name = "Status Name")]
+    //    [StringLength(30, ErrorMessage = "Status Name cannot be longer than 30 characters.")]
+    //    public String RiskStatusName { get; set; }
+    //    public String? Description { get; set; }
+    //}
 
     public class RiskApprover : BaseDateEntity
     {

@@ -30,6 +30,16 @@ namespace PrivafoWeb.Controllers
                 {
                     Text = i.RiskCtgName,
                     Value = i.ID.ToString()
+                }),
+                RiskTypeList = _uow.RiskType.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.RiskTypeName,
+                    Value = i.ID.ToString()
+                }),
+                RiskLibrary = _uow.RiskLibrary.GetAll().Select(i => new SelectListItem
+                {
+                    Text = "",
+                    Value = null
                 })
             };
 
@@ -94,6 +104,24 @@ namespace PrivafoWeb.Controllers
             var riskRegList = _uow.RiskRegister.GetAll(includeProperties: "RiskType,ResidualRiskScore,InherentRiskScore,UserOwner,Org");
             //return Json(new { data = riskRegList });
             return Json(riskRegList);
+        }
+
+        [HttpGet]
+        public IActionResult GetRiskLibraries(string riskType)
+        {
+            if (!string.IsNullOrWhiteSpace(riskType))
+            {
+                RiskRegisterVM riskRegisterVM = new()
+                {
+                    RiskLibrary = _uow.RiskLibrary.GetAll(u => u.RiskTypeID == Int64.Parse(riskType)).Select(i => new SelectListItem
+                    {
+                        Text = i.RiskLibName,
+                        Value = i.ID.ToString()
+                    })
+                };
+                return Json(riskRegisterVM);
+            }
+            return null;
         }
         #endregion
     }

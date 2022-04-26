@@ -2314,6 +2314,18 @@ input.search-control-2::placeholder {
 .text-color-theme {
 	color: #dd8425;
 }
+.font-input-lg {
+	font-size: 1rem;
+}
+.form-radio-lg {
+	padding-left: 1.7em;
+}
+.hide-content {
+	display:none;
+}
+.show-content {
+	display:unset;
+}
 
 .switcher-head {
 	padding: 0 1.25rem;
@@ -2385,6 +2397,15 @@ input.search-control-2::placeholder {
 	background: unset !important;
 	color: #333333;
 }
+
+
+/*Custom Additional Privafo*/
+.btn-risk-score {
+	background-color: #fff;
+	border-color: #ced4da;
+	width:100px;
+}
+
 
 @media screen and (max-width:1280px) {
 	.email-header {
