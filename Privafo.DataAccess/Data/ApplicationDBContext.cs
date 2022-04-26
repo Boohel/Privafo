@@ -118,5 +118,6 @@ namespace Privafo.DataAccess
         public DbSet<DPIATemplate> dpia_template { get; set; }
         public DbSet<DPIAAsset> dpia_asset { get; set; }
 
+
     }
 }

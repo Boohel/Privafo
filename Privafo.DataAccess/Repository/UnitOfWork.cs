@@ -34,6 +34,42 @@ namespace Privafo.DataAccess.Repository
             //DPIA
             DPIATemplate = new DPIATemplateRepository(_db);
             DPIAAsset = new DPIAAssetRepository(_db);
+
+            //Vendor
+            VendorProductCtg = new VendorProductCtgRepository(_db);
+            VendorType = new VendorTypeRepository(_db);
+
+            //Data Element
+            DteCategory = new DteCategoryRepository(_db);
+            DteSource = new DteSourceRepository(_db);
+            DteTransfer = new DteTransferRepository(_db);
+            DteVolume = new DteVolumeRepository(_db);
+            DataSubject = new DataSubjectRepository(_db);
+
+            //Control Management 
+            ControlCtg = new ControlCtgRepository(_db);
+            ControlRegCtg = new ControlRegCtgRepository(_db);
+            ControlSource = new ControlSourceRepository(_db);
+            OrgSecMeasure = new OrgSecMeasureRepository(_db);
+
+            //Asset Management
+            Asset = new AssetRepository(_db);
+            AssetType = new AssetTypeRepository(_db);
+            AssetDisposal = new AssetDisposalRepository(_db);
+
+            //General Data
+            Industry = new IndustryRepository(_db);
+            ActiveStatus = new ActiveStatusRepository(_db);
+
+            //General Address
+            Country = new CountryRepository(_db);
+            Province = new ProvinceRepository(_db);
+            City = new CityRepository(_db);
+
+            //Organization
+            Branch = new BranchRepository(_db);
+            Entity = new EntityRepository(_db);
+
         }
 
         //Navigation
@@ -56,6 +92,42 @@ namespace Privafo.DataAccess.Repository
         //DPIA
         public IDPIATemplateRepository DPIATemplate { get; private set; }
         public IDPIAAssetRepository DPIAAsset { get; private set; }
+
+        //Vendor
+        public IVendorProductCtgRepository VendorProductCtg { get; private set; }
+        public IVendorTypeRepository VendorType { get; private set; }
+
+        //Data Element
+        public IDteCategoryRepository DteCategory { get; private set; }
+        public IDteSourceRepository DteSource { get; private set; }
+        public IDteTransferRepository DteTransfer { get; private set; }
+        public IDteVolumeRepository DteVolume { get; private set; }
+        public IDataSubjectRepository DataSubject { get; private set; }
+
+        //Control Management 
+        public IControlCtgRepository ControlCtg { get; private set; }
+        public IControlRegCtgRepository ControlRegCtg { get; private set; }
+        public IControlSourceRepository ControlSource { get; private set; }
+        public IOrgSecMeasureRepository OrgSecMeasure { get; private set; }
+
+        //Asset Management
+        public IAssetRepository Asset { get; private set; }
+        public IAssetTypeRepository AssetType { get; private set; }
+        public IAssetDisposalRepository AssetDisposal { get; private set; }
+
+        //General Data
+        public IIndustryRepository Industry { get; private set; }
+        public IActiveStatusRepository ActiveStatus { get; private set; }
+
+        //General Address
+        public ICountryRepository Country { get; private set; }
+        public IProvinceRepository Province { get; private set; }
+        public ICityRepository City { get; private set; }
+
+        //Organization
+        public IBranchRepository Branch { get; private set; }
+        public IEntityRepository Entity { get; private set; }
+
         public void Save()
         {
            _db.SaveChanges();

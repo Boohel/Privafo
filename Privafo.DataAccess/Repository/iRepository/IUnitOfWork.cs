@@ -31,6 +31,41 @@ namespace Privafo.DataAccess.Repository.IRepository
         IDPIATemplateRepository DPIATemplate { get; }
         IDPIAAssetRepository DPIAAsset { get; }
 
+        //Vendor
+        IVendorProductCtgRepository VendorProductCtg { get; }
+        IVendorTypeRepository VendorType { get; }
+
+        //Data Element
+        IDteCategoryRepository DteCategory { get; }
+        IDteSourceRepository DteSource { get; }
+        IDteTransferRepository DteTransfer { get; }
+        IDteVolumeRepository DteVolume { get; }
+        IDataSubjectRepository DataSubject { get; }
+
+        //Control Management
+        IControlCtgRepository ControlCtg { get; }
+        IControlRegCtgRepository ControlRegCtg { get; }
+        IControlSourceRepository ControlSource { get; }
+        IOrgSecMeasureRepository OrgSecMeasure { get; }
+
+        //Asset Management
+        IAssetRepository Asset { get; }
+        IAssetTypeRepository AssetType { get; }
+        IAssetDisposalRepository AssetDisposal { get; }
+
+        //General Data
+        IIndustryRepository Industry { get; }
+        IActiveStatusRepository ActiveStatus { get; }
+
+        //General Address
+        ICountryRepository Country { get; }
+        IProvinceRepository Province { get; }
+        ICityRepository City { get; }
+
+        //Organization
+        IBranchRepository Branch { get; }
+        IEntityRepository Entity { get; }
+
         void Save();
     }
 }
