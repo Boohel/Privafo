@@ -462,7 +462,6 @@
         "<td>" + todos[idx].quest[questid].question + "</td>" +
         "<td>" + todos[idx].quest[questid].friendly + "</td>" +
         "<td><button type='button' class='btn btn-basic btn-sm' data-bs-toggle='modal' onclick='TampilModalEdit(" + idx + "," + questid + ");' data-bs-target='#mainModal'><i class='bx bx-message-square-edit me-0'></i></button></td>" +
-        //"<td>" + todos[idx].quest[questid].type + "</td>" +
         "</tr>");
 		if (todos[idx].quest[questid].type=="mc")
 		{
@@ -492,13 +491,35 @@
 				"<td></td><td>E : " + todos[idx].quest[questid].e + "</td><td></td><td></td></tr>");
 			 }
 		}
-	//	$("#" + idx + "_productTable" + " tbody").append("<tr>" +
+		
+		var myhtml="";
+		if (todos[idx].quest[questid].answereq == true)
+			{
+				myhtml = myhtml + "<img style='width:16px;' src='../theme/images/icons/check.png'>Answer Required&nbsp;";		
+			}
+		if (todos[idx].quest[questid].attachreq == true)
+			{
+				myhtml = myhtml + "<img style='width:16px;' src='../theme/images/icons/check.png'>Attached Required&nbsp;";		
+			}
+		if (todos[idx].quest[questid].questhint == true)
+			{
+				myhtml = myhtml + "<img style='width:16px;' src='../theme/images/icons/check.png'>Question Hint&nbsp;";		
+			}
+		if (todos[idx].quest[questid].notsure == true)
+			{
+				myhtml = myhtml + "<img style='width:16px;' src='../theme/images/icons/check.png'>Allow Not Sure&nbsp;";		
+			}
+		if (todos[idx].quest[questid].na == true)
+			{
+				myhtml = myhtml + "<img style='width:16px;' src='../theme/images/icons/check.png'>Allow Not Applicable&nbsp;";		
+			}
+		$("#" + idx + "_productTable" + " tbody").append("<tr><td></td><td>" + myhtml + "</td><td></td><td></td></tr>");
   //      "<td></td><td colspan='3'><label class='fst-italic'>Answer Required </label><input class='form-check-input' type='checkbox' " + if (todos[idx].quest[questid].answereq==true){checked}  + " disabled>" +
 		//"<label class='fst-italic'>Attachment Required </label><input class='form-check-input' type='checkbox' " + todos[idx].quest[questid].attachreq  + "disabled>" +
 		//"</td></tr>");
   //      "<td></td><td colspan='3'><label class='fst-italic'>Answer Required:" + todos[idx].quest[questid].answereq + " | </label>" +
   //      "<label class='fst-italic'>Attachment Required:" + todos[idx].quest[questid].attachreq + " | </label>" +
-		//"</td></tr>");
+
 	}
 
 
