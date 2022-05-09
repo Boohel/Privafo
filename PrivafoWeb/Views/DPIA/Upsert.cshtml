@@ -15,42 +15,52 @@
 						<div class="col-12">
 								<div class="col-12 pb-2">
 									<button class="btn btn btn-outline-primary btn-sm"  type="button" onclick="TampilModalSection();" data-bs-toggle="modal"  data-bs-target="#sectionModal"><i class='bx bx-add-to-queue'></i>Add Section</button>
-									<button class="btn btn btn-outline-secondary btn-sm"  type="button" onclick="save_template();"><i class='bx bx-save'></i>Save</button>
+									<button class="btn btn btn-outline-secondary btn-sm"  type="submit" onclick="save_template();"><i class='bx bx-save'></i>Save</button>
 									<button class="btn btn btn-outline-secondary btn-sm"  type="button" ><i class='bx bx-printer'></i>Print</button>
 								</div>
 						</div>
 				<div class="accordion" id="accordionHeader">
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingOneHeader">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							<strong>Header</strong>
-						</button>
-					</h2>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingOneHeader">
+							<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								<strong>Header</strong>
+							</button>
+						</h2>
 
-					<div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionHeader">
-						<div class="accordion-body">	
-								<div class="mb-3">
-                                    <label asp-for="DPIATemplate.TemplateName">Template Name</label>
-                                    <input id="tmpname" asp-for="DPIATemplate.TemplateName" class="form-control" />
-                                    <span asp-validation-for="DPIATemplate.TemplateName" class=text-danger></span>
-								</div>
-								<div class="mb-3">
-                                    <label asp-for="DPIATemplate.Description"></label>
-                                    <textarea asp-for="DPIATemplate.Description" class="form-control" rows=3></textarea>
-                                    <span class=text-danger></span>
-								</div>
-                                <div class="mb-3">
-                                    <label asp-for="DPIATemplate.Icon" hidden></label>
-                                    <textarea asp-for="DPIATemplate.Icon" rows=3 class="form-control" hidden></textarea>                    
-                                </div>
-                                    <div class="mb-3">
-                                    <label asp-for="DPIATemplate.Welcome"></label>
-                                    <textarea id="welcome" asp-for="DPIATemplate.Welcome" class="form-control" rows=3></textarea>
-                                    <span class=text-danger></span>
-                                </div>  
-                        </div>
-					</div>
-				</div>				
+						<div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionHeader">
+							<div class="accordion-body">	
+									<div class="mb-3">
+										<label asp-for="DPIATemplate.TemplateName">Template Name</label>
+										<input id="tmpname" asp-for="DPIATemplate.TemplateName" class="form-control" />
+										<span asp-validation-for="DPIATemplate.TemplateName" class=text-danger></span>
+									</div>
+									<div class="mb-3">
+										<label asp-for="DPIATemplate.Description"></label>
+										<textarea asp-for="DPIATemplate.Description" class="form-control" rows=3></textarea>
+										<span class=text-danger></span>
+									</div>
+									<div class="mb-3">
+										<label asp-for="DPIATemplate.Icon" hidden></label>
+										<textarea asp-for="DPIATemplate.Icon" rows=3 class="form-control" hidden></textarea>                    
+									</div>
+										<div class="mb-3">
+										<label asp-for="DPIATemplate.Welcome"></label>
+										<textarea id="welcome" asp-for="DPIATemplate.Welcome" class="form-control" rows=3></textarea>
+										<span class=text-danger></span>
+									</div>  
+                                
+										<div class="mb-3">
+										<label asp-for="DPIATemplate.QuestionJSON">JSON</label>
+										<textarea id="questionjson" asp-for="DPIATemplate.QuestionJSON" class="form-control" rows=3></textarea>
+										<span class=text-danger></span>
+										</div> 
+										<div class="mb-3">
+										<label id="labelJSON">Total Character : 0</label>
+										</div> 
+									</div>
+							</div>
+						</div>
+					</div>				
 				</div>  
 
                     
@@ -59,7 +69,7 @@
 								<div id="todo-container"></div>
 							</div>
 				</div> 
-			</div>
+			
 
 			<div class="modal fade" id="sectionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
@@ -514,11 +524,6 @@
 				myhtml = myhtml + "<img style='width:16px;' src='../theme/images/icons/check.png'>Allow Not Applicable&nbsp;";		
 			}
 		$("#" + idx + "_productTable" + " tbody").append("<tr><td></td><td>" + myhtml + "</td><td></td><td></td></tr>");
-  //      "<td></td><td colspan='3'><label class='fst-italic'>Answer Required </label><input class='form-check-input' type='checkbox' " + if (todos[idx].quest[questid].answereq==true){checked}  + " disabled>" +
-		//"<label class='fst-italic'>Attachment Required </label><input class='form-check-input' type='checkbox' " + todos[idx].quest[questid].attachreq  + "disabled>" +
-		//"</td></tr>");
-  //      "<td></td><td colspan='3'><label class='fst-italic'>Answer Required:" + todos[idx].quest[questid].answereq + " | </label>" +
-  //      "<label class='fst-italic'>Attachment Required:" + todos[idx].quest[questid].attachreq + " | </label>" +
 
 	}
 
@@ -552,9 +557,17 @@
 
 	function save_template()
 	{
-		let template = JSON.stringify(todos);
-		//alert(template);
+		refresh_template();
 	}
+
+	function refresh_template()
+	{
+		let template = JSON.stringify(todos);
+		document.getElementById("questionjson").value = template;
+		document.getElementById("labelJSON").innerHTML = "Total Character : " + template.length;
+	}
+
+	//refresh_template();
 </script>
 
 
