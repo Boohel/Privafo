@@ -8,6 +8,21 @@ using System.Threading.Tasks;
 
 namespace Privafo.DataAccess.Repository
 {
+    public class DataElementRepository : Repository<DataElement>, IDataElementRepository
+    {
+        private ApplicationDbContext _db;
+
+        public DataElementRepository(ApplicationDbContext db) : base(db)
+        {
+            _db = db;
+        }
+
+        public void Update(DataElement obj)
+        {
+            _db.data_elements.Update(obj);
+        }
+    }
+
     public class DteCategoryRepository : Repository<DteCategory>, IDteCategoryRepository
     {
         private ApplicationDbContext _db;

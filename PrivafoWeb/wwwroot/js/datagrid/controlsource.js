@@ -9,10 +9,10 @@ function loadDataTable(jsonFilter) {
     dataTable = $('#tblData').DataTable({
         dom: 'trip', //l:length row perpage, i:information page, t:table, p:pagination control, s:search/filtering box, r: processing display element
         "ajax": {
-            "url": "/dtecategory/GetAll?jsonFilter=" + jsonFilter
+            "url": "/controlsource/GetAll?jsonFilter=" + jsonFilter
         },
         "columns": [
-            { "data": "dteCtgName", "width": "15%" },
+            { "data": "ctrSourceName", "width": "15%" },
             { "data": "description", "width": "15%" },
             { "data": "userCreated.userName", "width": "15%" },
             { "data": "dateCreated", "width": "15%" },
@@ -21,8 +21,8 @@ function loadDataTable(jsonFilter) {
                 "render": function (data) {
                     return `
                             <div class="d-flex order-actions">
-								<a onclick="showInPopup('/DteCategory/Upsert/${data}', 'Update Data Category')" class="ms-3 cursor-pointer"><i class='bx bxs-edit'></i></a>
-								<a onClick="Delete('/DteCategory/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
+								<a onclick="showInPopup('/ControlSource/Upsert/${data}', 'Update Control Source')" class="ms-3 cursor-pointer"><i class='bx bxs-edit'></i></a>
+								<a onClick="Delete('/ControlSource/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
 							</div>
                         `
                 },

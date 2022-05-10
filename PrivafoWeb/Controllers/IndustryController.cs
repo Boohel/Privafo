@@ -8,16 +8,16 @@ using static Privafo.Utility.Helper;
 
 namespace PrivafoWeb.Controllers
 {
-    public class DteVolumeController : Controller
+    public class IndustryController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public DteVolumeController(IUnitOfWork uow)
+        public IndustryController(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        // GET: VenProductCtgController
+        // GET: IndustryController
         public ActionResult Index()
         {
             return View();
@@ -26,23 +26,23 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public async Task<IActionResult> Upsert(int ID = 0)
         {
-            DteVolume dteVolume = new();
+            Industry industry = new();
             if (ID == 0)
-                return View(dteVolume);
+                return View(industry);
             else
             {
-                var dteVolumeFromDbFirst = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
-                if (dteVolumeFromDbFirst == null)
+                var IndustryFromDbFirst = _uow.Industry.GetFirstOrDefault(u => u.ID == ID);
+                if (IndustryFromDbFirst == null)
                 {
                     return NotFound();
                 }
-                return View(dteVolumeFromDbFirst);
+                return View(IndustryFromDbFirst);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(DteVolume obj)
+        public async Task<IActionResult> Upsert(Industry obj)
         {
             if (ModelState.IsValid)
             {
@@ -50,23 +50,23 @@ namespace PrivafoWeb.Controllers
                 String resultMsg = "";
                 if (obj.ID == 0)
                 {
-                    _uow.DteVolume.Add(obj);
+                    _uow.Industry.Add(obj);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category created successfully";
-                    resultMsg = "Data Volume created successfully";
+                    resultMsg = "Industry created successfully";
                 }
                 else
                 {
-                    _uow.DteVolume.Update(obj);
+                    _uow.Industry.Update(obj);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category updated successfully";
-                    resultMsg = "Data Volume updated successfully";
+                    resultMsg = "Industry updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DteVolume()), msg = resultMsg });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new Industry()), msg = resultMsg });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DteVolume()), msg = "Data not Valid" });
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new Industry()), msg = "Data not Valid" });
             }
         }
 
@@ -74,16 +74,16 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.Industry.GetFirstOrDefault(u => u.ID == ID);
 
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.DteVolume.Remove(obj);
+            _uow.Industry.Remove(obj);
             _uow.Save();
-            return Json(new { success = true, message = "Data Volume deleted successfully" });
+            return Json(new { success = true, message = "Industry deleted successfully" });
         }
 
         [NoDirectAccess]
@@ -137,9 +137,10 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
-            var dteVolumeList = _uow.DteVolume.GetAll(includeProperties: "UserCreated");
-            return Json(new { data = dteVolumeList });
+            var IndustryList = _uow.Industry.GetAll();
+            return Json(new { data = IndustryList });
         }
         #endregion
     }
 }
+

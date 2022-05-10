@@ -8,11 +8,11 @@ using static Privafo.Utility.Helper;
 
 namespace PrivafoWeb.Controllers
 {
-    public class DteSourceController : Controller
+    public class DteCategoryController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public DteSourceController(IUnitOfWork uow)
+        public DteCategoryController(IUnitOfWork uow)
         {
             _uow = uow;
         }
@@ -26,23 +26,23 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public async Task<IActionResult> Upsert(int ID = 0)
         {
-            DteSource dteSource = new();
+            DteCategory dteCtg = new();
             if (ID == 0)
-                return View(dteSource);
+                return View(dteCtg);
             else
             {
-                var dtesourceFromDbFirst = _uow.DteSource.GetFirstOrDefault(u => u.ID == ID);
-                if (dtesourceFromDbFirst == null)
+                var dtectgFromDbFirst = _uow.DteCategory.GetFirstOrDefault(u => u.ID == ID);
+                if (dtectgFromDbFirst == null)
                 {
                     return NotFound();
                 }
-                return View(dtesourceFromDbFirst);
+                return View(dtectgFromDbFirst);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(DteSource obj)
+        public async Task<IActionResult> Upsert(DteCategory obj)
         {
             if (ModelState.IsValid)
             {
@@ -50,23 +50,23 @@ namespace PrivafoWeb.Controllers
                 String resultMsg = "";
                 if (obj.ID == 0)
                 {
-                    _uow.DteSource.Add(obj);
+                    _uow.DteCategory.Add(obj);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category created successfully";
-                    resultMsg = "Data Source created successfully";
+                    resultMsg = "Data Element Category created successfully";
                 }
                 else
                 {
-                    _uow.DteSource.Update(obj);
+                    _uow.DteCategory.Update(obj);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category updated successfully";
-                    resultMsg = "Data Source updated successfully";
+                    resultMsg = "Data Element Category updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DteSource()), msg = resultMsg });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DteCategory()), msg = resultMsg });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DteSource()), msg = "Data not Valid" });
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DteCategory()), msg = "Data not Valid" });
             }
         }
 
@@ -74,14 +74,14 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.DteSource.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.DteCategory.GetFirstOrDefault(u => u.ID == ID);
 
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.DteSource.Remove(obj);
+            _uow.DteCategory.Remove(obj);
             _uow.Save();
             return Json(new { success = true, message = "Data Element Category deleted successfully" });
         }
@@ -137,9 +137,10 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
-            var dteSourceList = _uow.DteSource.GetAll(includeProperties: "UserCreated");
-            return Json(new { data = dteSourceList });
+            var dteCtgList = _uow.DteCategory.GetAll(includeProperties: "UserCreated");
+            return Json(new { data = dteCtgList });
         }
         #endregion
     }
 }
+

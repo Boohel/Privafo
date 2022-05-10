@@ -8,16 +8,16 @@ using static Privafo.Utility.Helper;
 
 namespace PrivafoWeb.Controllers
 {
-    public class DteVolumeController : Controller
+    public class AssetDisposalController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public DteVolumeController(IUnitOfWork uow)
+        public AssetDisposalController(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        // GET: VenProductCtgController
+        // GET
         public ActionResult Index()
         {
             return View();
@@ -26,23 +26,23 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public async Task<IActionResult> Upsert(int ID = 0)
         {
-            DteVolume dteVolume = new();
+            AssetDisposal assetDisposal = new();
             if (ID == 0)
-                return View(dteVolume);
+                return View(assetDisposal);
             else
             {
-                var dteVolumeFromDbFirst = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
-                if (dteVolumeFromDbFirst == null)
+                var AssetDisposalFromDbFirst = _uow.AssetDisposal.GetFirstOrDefault(u => u.ID == ID);
+                if (AssetDisposalFromDbFirst == null)
                 {
                     return NotFound();
                 }
-                return View(dteVolumeFromDbFirst);
+                return View(AssetDisposalFromDbFirst);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(DteVolume obj)
+        public async Task<IActionResult> Upsert(AssetDisposal obj)
         {
             if (ModelState.IsValid)
             {
@@ -50,23 +50,23 @@ namespace PrivafoWeb.Controllers
                 String resultMsg = "";
                 if (obj.ID == 0)
                 {
-                    _uow.DteVolume.Add(obj);
+                    _uow.AssetDisposal.Add(obj);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category created successfully";
-                    resultMsg = "Data Volume created successfully";
+                    resultMsg = "Asset Disposal created successfully";
                 }
                 else
                 {
-                    _uow.DteVolume.Update(obj);
+                    _uow.AssetDisposal.Update(obj);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category updated successfully";
-                    resultMsg = "Data Volume updated successfully";
+                    resultMsg = "Asset Disposal updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DteVolume()), msg = resultMsg });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new AssetDisposal()), msg = resultMsg });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DteVolume()), msg = "Data not Valid" });
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new AssetDisposal()), msg = "Data not Valid" });
             }
         }
 
@@ -74,16 +74,16 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.AssetDisposal.GetFirstOrDefault(u => u.ID == ID);
 
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.DteVolume.Remove(obj);
+            _uow.AssetDisposal.Remove(obj);
             _uow.Save();
-            return Json(new { success = true, message = "Data Volume deleted successfully" });
+            return Json(new { success = true, message = "Asset Disposal deleted successfully" });
         }
 
         [NoDirectAccess]
@@ -137,9 +137,10 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
-            var dteVolumeList = _uow.DteVolume.GetAll(includeProperties: "UserCreated");
-            return Json(new { data = dteVolumeList });
+            var AssetDisposalList = _uow.AssetDisposal.GetAll();
+            return Json(new { data = AssetDisposalList });
         }
         #endregion
     }
 }
+
