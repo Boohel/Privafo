@@ -10,11 +10,20 @@ function loadDataTable() {
             "url": "/DPIA/GetAll"
         },
         "columns": [
-            { "data": "templateName", "width": "15%" },
-            { "data": "description", "width": "15%" },
-            { "data": "icon", "width": "15%" },
-            { "data": "welcome", "width": "15%" },
-            { "data": "questionJSON", "width": "15%" },
+            { "data": "templateName","width": "40%"},
+            { "data": "description", "width": "50%"},
+            {
+                "data": "icon",
+                "render": function (data) { return `<div></div>` }
+            },
+            {
+                "data": "welcome",
+                "render": function (data) { return `<div></div>` }
+            },
+            {
+                "data": "questionJSON",
+                "render": function (data) { return `<div></div>`}
+            },
             {
                 "data": "id",
                 "render": function (data) {
