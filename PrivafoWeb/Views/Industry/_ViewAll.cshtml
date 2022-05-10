@@ -1,4 +1,4 @@
-﻿@model DteVolume
+﻿@model Industry
 
 <div class="card">
     <div class="card-body">
@@ -6,7 +6,7 @@
 	        <div class="position-relative">
 		        <input type="text" id="areaSearch" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
 	        </div>
-	        <a class="hold-switcher" href="#" onclick="showFilterSide('@Url.Action("FilterData","DteVolume",null,Context.Request.Scheme)','Filter Data Volume')"> <i class="bx bx-filter font-22 text-dark hold-switcher" id="switcher-filter"></i>
+	        <a class="hold-switcher" href="#" onclick="showFilterSide('@Url.Action("FilterData","Industry",null,Context.Request.Scheme)','Filter Data Industry')"> <i class="bx bx-filter font-22 text-dark hold-switcher" id="switcher-filter"></i>
 	        </a>
             <div class="dropdown ms-auto">
 		        <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">	<i class='bx bx-dots-horizontal-rounded font-22 text-dark'></i>
@@ -24,19 +24,10 @@
                 <thead class="table-light">
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.DteVolumeName)
+                            @Html.DisplayNameFor(model => model.IndustryName)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.MinVol)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.MaxVol)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CreatedBy)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DateCreated)
+                            @Html.DisplayNameFor(model => model.Description)
                         </th>
                         <th>
                         </th>

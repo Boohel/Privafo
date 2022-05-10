@@ -1,21 +1,21 @@
-﻿@model DteVolume
+﻿@model AssetType
 
 @{ ViewData["Title"] = "Index"; }
 
 @section rtpage
 {
     <div class="ms-auto">
-	    <a class="btn btn-primary radius-30 mt-2 mt-lg-0" onclick="showInPopup('@Url.Action("Upsert","DteVolume",null,Context.Request.Scheme)','Create New Volume')"><i class="bx bxs-plus-square"></i>Add Volume</a>
+	    <a class="btn btn-primary radius-30 mt-2 mt-lg-0" onclick="showInPopup('@Url.Action("Upsert","AssetType",null,Context.Request.Scheme)','Create New Asset Type')"><i class="bx bxs-plus-square"></i>Add Asset Type</a>
     </div>
 }
 
 <div id="view-all">
-    @await Html.PartialAsync("_ViewAll", new DteVolume())
+    @await Html.PartialAsync("_ViewAll", new AssetType())
 </div>
 
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/theme/plugins/toastr/js/toastr.min.js"></script>
-    <script src="~/js/datagrid/dtevolume.js"> </script>    
+    <script src="~/js/datagrid/assettype.js"> </script>    
 	<script src="~/theme/plugins/adv-structured-filter/js/structured-filter.min.js"></script>
 }

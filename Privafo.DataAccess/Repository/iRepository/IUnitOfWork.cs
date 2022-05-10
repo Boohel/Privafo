@@ -36,6 +36,7 @@ namespace Privafo.DataAccess.Repository.IRepository
         IVendorTypeRepository VendorType { get; }
 
         //Data Element
+        IDataElementRepository DataElement { get; }  
         IDteCategoryRepository DteCategory { get; }
         IDteSourceRepository DteSource { get; }
         IDteTransferRepository DteTransfer { get; }

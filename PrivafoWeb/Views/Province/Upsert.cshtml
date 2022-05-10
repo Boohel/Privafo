@@ -1,0 +1,44 @@
+﻿@model Privafo.Models.ViewModels.ProvinceVM
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{ Layout = null; }
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Upsert" asp-route-id="@Model.province.ID" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="province.ID" />
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <div class="form-group mb-3">
+                        <label asp-for="province.ProvinceCode" class="control-label"></label>
+                        <input asp-for="province.ProvinceCode" class="form-control" />
+                        <span asp-validation-for="province.ProvinceCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="province.ProvinceName" class="control-label"></label>
+                        <textarea asp-for="province.ProvinceName" class="form-control" rows=3></textarea>
+                        <span asp-validation-for="province.ProvinceName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="province.CountryID"></label>
+			                <select asp-for="province.CountryID" asp-items="@Model.countryList" class="form-select">
+				                <option disabled selected>--Select Country--</option>
+			                </select>
+                    </div>
+
+                </div>
+            </div>               
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-md-12" style="text-align:right">
+                            <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

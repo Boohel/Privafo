@@ -1,72 +1,80 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Privafo.DataAccess;
 using Privafo.DataAccess.Repository.IRepository;
 using Privafo.Models;
+using Privafo.Models.ViewModels;
 using Privafo.Utility;
 using static Privafo.Utility.Helper;
 
 namespace PrivafoWeb.Controllers
 {
-    public class DteVolumeController : Controller
+    public class DataElementController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public DteVolumeController(IUnitOfWork uow)
+        public DataElementController(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        // GET: VenProductCtgController
+        // GET: DataElementController
         public ActionResult Index()
         {
             return View();
         }
 
         [NoDirectAccess]
-        public async Task<IActionResult> Upsert(int ID = 0)
+        public async Task<IActionResult> Upsert(int? ID)
         {
-            DteVolume dteVolume = new();
-            if (ID == 0)
-                return View(dteVolume);
+            DataElementVM dataElementVM = new()
+            {
+                dataElement = new(),
+                categorylist = _uow.DteCategory.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.DteCtgName,
+                    Value = i.ID.ToString()
+                }),
+            };
+
+           
+            if (ID == null || ID == 0)
+                return View(dataElementVM);
             else
             {
-                var dteVolumeFromDbFirst = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
-                if (dteVolumeFromDbFirst == null)
-                {
-                    return NotFound();
-                }
-                return View(dteVolumeFromDbFirst);
+                dataElementVM.dataElement = _uow.DataElement.GetFirstOrDefault(u => u.ID == ID);
+                return View(dataElementVM);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(DteVolume obj)
+        public async Task<IActionResult> Upsert(DataElementVM obj)
         {
             if (ModelState.IsValid)
             {
                 //Insert
                 String resultMsg = "";
-                if (obj.ID == 0)
+                if (obj.dataElement.ID == 0)
                 {
-                    _uow.DteVolume.Add(obj);
+                    _uow.DataElement.Add(obj.dataElement);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category created successfully";
-                    resultMsg = "Data Volume created successfully";
+                    resultMsg = "Data Element created successfully";
                 }
                 else
                 {
-                    _uow.DteVolume.Update(obj);
+                    _uow.DataElement.Update(obj.dataElement);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category updated successfully";
-                    resultMsg = "Data Volume updated successfully";
+                    resultMsg = "Data element updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DteVolume()), msg = resultMsg });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DataElement()), msg = resultMsg });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DteVolume()), msg = "Data not Valid" });
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DataElement()), msg = "Data Not Valid" });
             }
         }
 
@@ -74,16 +82,16 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.DataElement.GetFirstOrDefault(u => u.ID == ID);
 
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.DteVolume.Remove(obj);
+            _uow.DataElement.Remove(obj);
             _uow.Save();
-            return Json(new { success = true, message = "Data Volume deleted successfully" });
+            return Json(new { success = true, message = "Data Element deleted successfully" });
         }
 
         [NoDirectAccess]
@@ -134,12 +142,13 @@ namespace PrivafoWeb.Controllers
 
         #region API CALLS
         [HttpGet]
-        [NoDirectAccess]
+        //[NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
-            var dteVolumeList = _uow.DteVolume.GetAll(includeProperties: "UserCreated");
-            return Json(new { data = dteVolumeList });
+            var DataElementList = _uow.DataElement.GetAll(includeProperties: "DteCategory");
+            return Json(new { data = DataElementList });
         }
         #endregion
     }
 }
+

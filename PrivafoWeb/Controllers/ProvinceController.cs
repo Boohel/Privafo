@@ -1,72 +1,80 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Privafo.DataAccess;
 using Privafo.DataAccess.Repository.IRepository;
 using Privafo.Models;
+using Privafo.Models.ViewModels;
 using Privafo.Utility;
 using static Privafo.Utility.Helper;
 
 namespace PrivafoWeb.Controllers
 {
-    public class DteVolumeController : Controller
+    public class ProvinceController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public DteVolumeController(IUnitOfWork uow)
+        public ProvinceController(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        // GET: VenProductCtgController
+        // GET: ProvinceController
         public ActionResult Index()
         {
             return View();
         }
 
         [NoDirectAccess]
-        public async Task<IActionResult> Upsert(int ID = 0)
+        public async Task<IActionResult> Upsert(int? ID)
         {
-            DteVolume dteVolume = new();
-            if (ID == 0)
-                return View(dteVolume);
+            ProvinceVM locationVM = new()
+            {
+                province = new(),
+                countryList = _uow.Country.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.CountryName,
+                    Value = i.ID.ToString()
+                }),
+            };
+
+           
+            if (ID == null || ID == 0)
+                return View(locationVM);
             else
             {
-                var dteVolumeFromDbFirst = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
-                if (dteVolumeFromDbFirst == null)
-                {
-                    return NotFound();
-                }
-                return View(dteVolumeFromDbFirst);
+                locationVM.province = _uow.Province.GetFirstOrDefault(u => u.ID == ID);
+                return View(locationVM);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(DteVolume obj)
+        public async Task<IActionResult> Upsert(ProvinceVM obj)
         {
             if (ModelState.IsValid)
             {
                 //Insert
                 String resultMsg = "";
-                if (obj.ID == 0)
+                if (obj.province.ID == 0 || obj.province.ID==null)
                 {
-                    _uow.DteVolume.Add(obj);
+                    _uow.Province.Add(obj.province);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category created successfully";
-                    resultMsg = "Data Volume created successfully";
+                    resultMsg = "Province created successfully";
                 }
                 else
                 {
-                    _uow.DteVolume.Update(obj);
+                    _uow.Province.Update(obj.province);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category updated successfully";
-                    resultMsg = "Data Volume updated successfully";
+                    resultMsg = "Province updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DteVolume()), msg = resultMsg });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new Province()), msg = resultMsg  });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DteVolume()), msg = "Data not Valid" });
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new Province()), msg = "Data Not Valid" });
             }
         }
 
@@ -74,16 +82,16 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.Province.GetFirstOrDefault(u => u.ID == ID);
 
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.DteVolume.Remove(obj);
+            _uow.Province.Remove(obj);
             _uow.Save();
-            return Json(new { success = true, message = "Data Volume deleted successfully" });
+            return Json(new { success = true, message = "Province deleted successfully" });
         }
 
         [NoDirectAccess]
@@ -134,12 +142,13 @@ namespace PrivafoWeb.Controllers
 
         #region API CALLS
         [HttpGet]
-        [NoDirectAccess]
+        //[NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
-            var dteVolumeList = _uow.DteVolume.GetAll(includeProperties: "UserCreated");
-            return Json(new { data = dteVolumeList });
+            var ProvinceList = _uow.Province.GetAll(includeProperties: "Country");
+            return Json(new { data = ProvinceList });
         }
         #endregion
     }
 }
+
