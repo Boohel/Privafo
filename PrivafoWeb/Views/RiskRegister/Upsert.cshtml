@@ -5,6 +5,17 @@
 @section CssSection
 {
     <style type="text/css">
+        .score-container{
+            width:max-content !important;
+            padding: 15px
+        }
+        
+        .score-header {
+            padding: 0 0 5px 1.4rem;
+        }
+        .score-middle{
+            display:flex;
+        }
         .square{ 
             border: 1px solid white;
             float:left;
@@ -18,6 +29,15 @@
         .square:hover{ 
             opacity:0.5;
             cursor:pointer;
+        }
+        .score-y{
+            writing-mode: tb-rl;
+            transform: rotate(-180deg);
+            text-align: center;
+            padding-top:1.4rem;
+        }
+        .score-x{
+            text-align: center;
         }
     </style>
 }  
@@ -70,14 +90,59 @@
                             </div>
                             <div class="mb-3">                                 
                                 <label asp-for="RiskRegister.InherentRiskMx"></label>
-                                <div class="btn-group" role="group" aria-label="Button group with nested k">   
-								    <input asp-for="RiskRegister.InherentRiskMx" width="10" class="btn btn-risk-score" readonly/>
+                                <div class="btn-group" role="group">   
+                                    <input asp-for="RiskRegister.InherentRiskMx" hidden />
+								    <input asp-for="RiskRegister.InherentRiskLvl" width="10" class="btn btn-risk-score" readonly/>
 								    <div class="btn-group" role="group">
-									    <button id="btnGroupDrop1" type="button" class="btn btn-white dropdown-toggle dropdown-toggle-nocaret px-1" data-bs-toggle="dropdown" aria-expanded="false">
+									    <button id="btn_InherentRiskMx" type="button" class="btn btn-risk-mx btn-white dropdown-toggle dropdown-toggle-nocaret px-1" data-bs-toggle="dropdown" aria-expanded="false">
 									        <i class='bx bx-chevron-down'></i>
 									    </button>
-                                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            <div class="wrap">
+                                        <div class="dropdown-menu score-container" aria-labelledby="btnGroupDrop1">
+                                            <div class="score-header">
+                                                <div>
+                                                    Impact lvl: <span id="select-impact">12</span>
+                                                </div>
+                                                <div>
+                                                    Probability lvl: <span id="select-prob">2323</span>
+                                                </div>
+                                            </div>
+                                            <div class="score-middle">
+                                                <div class="score-y">Impact</div>
+                                                <div>                                                    
+                                                    <div class="wrap">
+                                                    </div>
+                                                    <div class="score-x">Probability</div>
+                                                </div>
+                                            </div>
+                                        </div>
+								    </div>
+								</div>	
+                            </div>
+                            <div class="mb-3">                                 
+                                <label asp-for="RiskRegister.ResidualRiskMx"></label>
+                                <div class="btn-group" role="group">   
+                                    <input asp-for="RiskRegister.ResidualRiskMx" hidden />
+								    <input asp-for="RiskRegister.ResidualRiskLvl" width="10" class="btn btn-risk-score" readonly/>
+								    <div class="btn-group" role="group">
+									    <button id="btn_ResidualRiskMx" type="button" class="btn btn-risk-mx btn-white dropdown-toggle dropdown-toggle-nocaret px-1 " data-bs-toggle="dropdown" aria-expanded="false">
+									        <i class='bx bx-chevron-down'></i>
+									    </button>
+                                        <div class="dropdown-menu score-container" aria-labelledby="btnGroupDrop1">
+                                            <div class="score-header">
+                                                <div>
+                                                    Impact lvl: <span id="select-impact">12</span>
+                                                </div>
+                                                <div>
+                                                    Probability lvl: <span id="select-prob">2323</span>
+                                                </div>
+                                            </div>
+                                            <div class="score-middle">
+                                                <div class="score-y">Impact</div>
+                                                <div>                                                    
+                                                    <div class="wrap">
+                                                    </div>
+                                                    <div class="score-x">Probability</div>
+                                                </div>
                                             </div>
                                         </div>
 								    </div>
@@ -107,8 +172,15 @@
         <partial name="_ValidationScriptsPartial"></partial>
     }
     <script>    
-        $(document).ready(function() {
-            function newGrid(nImpact, nProb) {
+        $(document).ready(function() {  
+            // start scoring
+
+            $('.btn-risk-mx').click(function() {
+                var elmId = $(this).attr("id");
+                newMatrixScore(elmId);
+            });
+
+            function newMatrixScore(elmId) {
                 $(".square").remove();
 
                 $.ajax({
@@ -116,9 +188,7 @@
                     url: "/RiskMatrix/GetAll",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
-                    success: function (res) {
-                        alert(res.riskMxScore);
-
+                    success: function (res){
                         nImpact = res.totalImpact;
                         nProb = res.totalProb;
                     
@@ -126,21 +196,36 @@
                         for (var k = 0; k < nImpact; k++) {
                             for (var i = 0; i < nProb; i++) {
                                 var mxid = res.riskMxScore[n].id;
-                                var boxid = "scr_" + mxid;
+                                var boxid = elmId + "_" + mxid;
                                 var val = res.riskMxScore[n].score;
                                 var xcolor = res.riskMxScore[n].lvlScoreColor;
                                 var levelname = res.riskMxScore[n].lvlScoreName;
+                                var impactlevel = res.riskMxScore[n].riskImpact.riskImpactName;
+                                var problevel = res.riskMxScore[n].riskProbability.riskProbabilityName;
 
                                 $(".wrap").append($("<div>" + val + "</div>").attr('id', boxid).height(30).width(50));     
                                 $("#" + boxid).addClass("square");     
                                 $("#" + boxid).css("background", xcolor);    
                                 $("#" + boxid).attr("MxID", mxid);    
                                 $("#" + boxid).attr("MxLevel", levelname);    
+                                $("#" + boxid).attr("ImpactLevel", impactlevel);    
+                                $("#" + boxid).attr("ProbLevel", problevel);    
+                                $("#" + boxid).attr("LvlColor", xcolor);    
 
                                 $("#" + boxid).click(function(){
-                                    var mxid = $(this).attr('MxID');
+                                    var levelid = $(this).attr('MxID');
+                                    var levelname = $(this).attr('MxLevel');
+                                    var levelcolor = $(this).attr('LvlColor');
                                     var score = $(this).html();
-                                    alert(score);
+                                    $('#RiskRegister_InherentRiskMx').val(levelid);
+                                    $('#RiskRegister_InherentRiskLvl').val(levelname);
+                                    $('#RiskRegister_InherentRiskLvl').css("background", levelcolor).css("color", "#FFF");
+                                    alert(level);
+                                }); 
+
+                                $("#" + boxid).hover(function(){
+                                    $("#select-impact").html($(this).attr('ImpactLevel'));
+                                    $("#select-prob").html($(this).attr('ProbLevel'));
                                 });
                     
                                 n++;
@@ -157,65 +242,55 @@
                 })
               };
 
-              function OnSuccess(res) {
-                alert(res.riskMxScore);
+            function OnSuccess(res) {
+                //alert(res.riskMxScore);
 
                 nImpact = res.totalImpact;
                 nProb = res.totalProb;
+                    
                 var n=0;
                 for (var k = 0; k < nImpact; k++) {
                     for (var i = 0; i < nProb; i++) {
                         var mxid = res.riskMxScore[n].id;
-                        var boxid = "scr_" + MxId;
+                        var boxid = "scr_" + mxid;
                         var val = res.riskMxScore[n].score;
                         var xcolor = res.riskMxScore[n].lvlScoreColor;
                         var levelname = res.riskMxScore[n].lvlScoreName;
+                        var impactlevel = res.riskMxScore[n].riskImpact.riskImpactName;
+                        var problevel = res.riskMxScore[n].riskProbability.riskProbabilityName;
 
                         $(".wrap").append($("<div>" + val + "</div>").attr('id', boxid).height(30).width(50));     
                         $("#" + boxid).addClass("square");     
                         $("#" + boxid).css("background", xcolor);    
                         $("#" + boxid).attr("MxID", mxid);    
                         $("#" + boxid).attr("MxLevel", levelname);    
+                        $("#" + boxid).attr("ImpactLevel", impactlevel);    
+                        $("#" + boxid).attr("ProbLevel", problevel);    
+                        $("#" + boxid).attr("LvlColor", xcolor);    
 
                         $("#" + boxid).click(function(){
-                            var mxid = $(this).attr('MxID');
+                            var levelid = $(this).attr('MxID');
+                            var levelname = $(this).attr('MxLevel');
+                            var levelcolor = $(this).attr('LvlColor');
                             var score = $(this).html();
-                            alert(score);
+                            $('#RiskRegister_InherentRiskMx').val(levelid);
+                            $('#RiskRegister_InherentRiskLvl').val(levelname);
+                            $('#RiskRegister_InherentRiskLvl').css("background", levelcolor).css("color", "#FFF");
+                            alert(level);
+                        }); 
+
+                        $("#" + boxid).hover(function(){
+                            $("#select-impact").html($(this).attr('ImpactLevel'));
+                            $("#select-prob").html($(this).attr('ProbLevel'));
                         });
                     
                         n++;
                     }
                     $(".wrap").append($("<div></div>").css("clear", "both"));
                 }
-              };
-
-              function scorehover() {
-                $(".square").hover(function() {
-                  $(this).css("background", "white");
-                });
-              };
-
-              function clear() {
-                $(".square").css("background", "#99ccff");
-                $(".square").css("opacity", "1");
-              };
-  
-              function randCol(){
-                var R = Math.floor(Math.random()*256)
-                var G = Math.floor(Math.random()*256)
-                var B = Math.floor(Math.random()*256) 
-                return "rgb(" + R + "," + G + "," + B + ")";
-              };
-  
-              // start game
-              newGrid(16);
-
-              // choose grid dim
-              $(".Grid").click(function(){
-                newGrid(3, 4);
-                clear/*();*/
-              });
+            };
         });
+
         $('#RiskRegister_RiskTypeID').change(function () {
             if($('#lib-type').is(':checked')){
                 var selectedType = $("#RiskRegister_RiskTypeID").val();

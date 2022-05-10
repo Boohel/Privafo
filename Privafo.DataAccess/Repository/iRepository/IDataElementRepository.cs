@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Privafo.DataAccess.Repository.IRepository
 {
+    public interface IDataElementRepository : IRepository<DataElement>
+    {
+        void Update(DataElement obj);
+    }
+
     public interface IDteCategoryRepository : IRepository<DteCategory>
     {
         void Update(DteCategory obj);

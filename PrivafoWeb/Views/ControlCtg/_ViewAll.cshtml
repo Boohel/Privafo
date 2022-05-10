@@ -1,0 +1,47 @@
+﻿@model ControlCtg
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-lg-flex align-items-center mb-4 gap-3">
+	        <div class="position-relative">
+		        <input type="text" id="areaSearch" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+	        </div>
+	        <a class="hold-switcher" href="#" onclick="showFilterSide('@Url.Action("FilterData","ControlCtg",null,Context.Request.Scheme)','Filter Data Control Category')"> <i class="bx bx-filter font-22 text-dark hold-switcher" id="switcher-filter"></i>
+	        </a>
+            <div class="dropdown ms-auto">
+		        <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">	<i class='bx bx-dots-horizontal-rounded font-22 text-dark'></i>
+		        </a>
+		        <ul class="dropdown-menu">
+			        <li><a class="dropdown-item" href="javascript:;">Export to Excel</a>
+			        </li>
+			        <li><a class="dropdown-item" href="javascript:;">Export to PDF</a>
+			        </li>
+		        </ul>
+	        </div>		
+        </div>
+        <div class="table-responsive">
+			<table id="tblData" class="table">
+                <thead class="table-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CtrCtgName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateCreated)
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

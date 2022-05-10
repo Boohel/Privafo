@@ -12,8 +12,9 @@ function loadDataTable(jsonFilter) {
             "url": "/dtevolume/GetAll?jsonFilter=" + jsonFilter
         },
         "columns": [
-            { "data": "dteSourceName", "width": "15%" },
-            { "data": "description", "width": "15%" },
+            { "data": "dteVolumeName", "width": "15%" },
+            { "data": "minVol", "width": "15%" },
+            { "data": "maxVol", "width": "15%" },
             { "data": "userCreated.userName", "width": "15%" },
             { "data": "dateCreated", "width": "15%" },
             {
@@ -21,8 +22,8 @@ function loadDataTable(jsonFilter) {
                 "render": function (data) {
                     return `
                             <div class="d-flex order-actions">
-								<a onclick="showInPopup('/DteSource/Upsert/${data}', 'Update Data Source')" class="ms-3 cursor-pointer"><i class='bx bxs-edit'></i></a>
-								<a onClick="Delete('/DteSource/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
+								<a onclick="showInPopup('/DteVolume/Upsert/${data}', 'Update Data Volume')" class="ms-3 cursor-pointer"><i class='bx bxs-edit'></i></a>
+								<a onClick="Delete('/DteVolume/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
 							</div>
                         `
                 },

@@ -40,6 +40,7 @@ namespace Privafo.DataAccess.Repository
             VendorType = new VendorTypeRepository(_db);
 
             //Data Element
+            DataElement = new DataElementRepository(_db);
             DteCategory = new DteCategoryRepository(_db);
             DteSource = new DteSourceRepository(_db);
             DteTransfer = new DteTransferRepository(_db);
@@ -98,6 +99,7 @@ namespace Privafo.DataAccess.Repository
         public IVendorTypeRepository VendorType { get; private set; }
 
         //Data Element
+        public IDataElementRepository DataElement { get; private set; }
         public IDteCategoryRepository DteCategory { get; private set; }
         public IDteSourceRepository DteSource { get; private set; }
         public IDteTransferRepository DteTransfer { get; private set; }

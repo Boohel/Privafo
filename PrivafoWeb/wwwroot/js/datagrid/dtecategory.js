@@ -9,7 +9,7 @@ function loadDataTable(jsonFilter) {
     dataTable = $('#tblData').DataTable({
         dom: 'trip', //l:length row perpage, i:information page, t:table, p:pagination control, s:search/filtering box, r: processing display element
         "ajax": {
-            "url": "/dteelement/GetAll?jsonFilter=" + jsonFilter
+            "url": "/dtecategory/GetAll?jsonFilter=" + jsonFilter
         },
         "columns": [
             { "data": "dteCtgName", "width": "15%" },

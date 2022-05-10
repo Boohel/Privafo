@@ -41,6 +41,11 @@ namespace Privafo.Models
         public RiskMatrixScore ResidualRiskScore { get; set; }
 
         [ValidateNever]
+        [NotMapped]
+        [Display(Name = "Resudual Risk")]
+        public string ResidualRiskLvl { get; set; }
+
+        [ValidateNever]
         [Required]
         [Display(Name = "Inherent Risk")]
         public int InherentRiskMx { get; set; }
@@ -49,12 +54,22 @@ namespace Privafo.Models
         public RiskMatrixScore InherentRiskScore { get; set; }
 
         [ValidateNever]
+        [NotMapped]
+        [Display(Name = "Inherent Risk")]
+        public string InherentRiskLvl { get; set; }
+
+        [ValidateNever]
         [Required]
         [Display(Name = "Target Risk")]
         public int TargetRiskMx { get; set; }
         [ForeignKey("TargetRiskMx")]
         [ValidateNever]
         public RiskMatrixScore TargetRiskScore { get; set; }
+
+        [ValidateNever]
+        [NotMapped]
+        [Display(Name = "Target Risk")]
+        public string TargetRiskLvl { get; set; }
 
         [Display(Name = "Treatment Plan")]
         public String TreatmentPlan { get; set; }

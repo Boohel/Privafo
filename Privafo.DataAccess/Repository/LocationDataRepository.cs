@@ -33,6 +33,14 @@ namespace Privafo.DataAccess.Repository
 
         public void Update(Province obj)
         {
+            //var objFromDb = _db.provinces.FirstOrDefault(u => u.ID == obj.ID);
+
+            //if (objFromDb != null)
+            //{
+            //    objFromDb.ProvinceCode = obj.ProvinceCode;
+            //    objFromDb.ProvinceName = obj.ProvinceName;
+            //    objFromDb.CountryID = obj.CountryID;
+            //}
             _db.provinces.Update(obj);
         }
     }

@@ -31,18 +31,18 @@ namespace PrivafoWeb.Controllers
                 return View(dteVolume);
             else
             {
-                var dtectgFromDbFirst = _uow.DteCategory.GetFirstOrDefault(u => u.ID == ID);
-                if (dtectgFromDbFirst == null)
+                var dteVolumeFromDbFirst = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
+                if (dteVolumeFromDbFirst == null)
                 {
                     return NotFound();
                 }
-                return View(dtectgFromDbFirst);
+                return View(dteVolumeFromDbFirst);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(DteCategory obj)
+        public async Task<IActionResult> Upsert(DteVolume obj)
         {
             if (ModelState.IsValid)
             {
@@ -50,23 +50,23 @@ namespace PrivafoWeb.Controllers
                 String resultMsg = "";
                 if (obj.ID == 0)
                 {
-                    _uow.DteCategory.Add(obj);
+                    _uow.DteVolume.Add(obj);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category created successfully";
-                    resultMsg = "Data Element Category created successfully";
+                    resultMsg = "Data Volume created successfully";
                 }
                 else
                 {
-                    _uow.DteCategory.Update(obj);
+                    _uow.DteVolume.Update(obj);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category updated successfully";
-                    resultMsg = "Data Element Category updated successfully";
+                    resultMsg = "Data Volume updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DteCategory()), msg = resultMsg });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new DteVolume()), msg = resultMsg });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DteCategory()), msg = "Data not Valid" });
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new DteVolume()), msg = "Data not Valid" });
             }
         }
 
@@ -74,16 +74,16 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.DteCategory.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.DteVolume.GetFirstOrDefault(u => u.ID == ID);
 
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.DteCategory.Remove(obj);
+            _uow.DteVolume.Remove(obj);
             _uow.Save();
-            return Json(new { success = true, message = "Data Element Category deleted successfully" });
+            return Json(new { success = true, message = "Data Volume deleted successfully" });
         }
 
         [NoDirectAccess]
@@ -137,8 +137,8 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
-            var dteCtgList = _uow.DteCategory.GetAll(includeProperties: "UserCreated");
-            return Json(new { data = dteCtgList });
+            var dteVolumeList = _uow.DteVolume.GetAll(includeProperties: "UserCreated");
+            return Json(new { data = dteVolumeList });
         }
         #endregion
     }
