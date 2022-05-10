@@ -13,18 +13,6 @@ function loadDataTable() {
             { "data": "templateName","width": "40%"},
             { "data": "description", "width": "50%"},
             {
-                "data": "icon",
-                "render": function (data) { return `<div></div>` }
-            },
-            {
-                "data": "welcome",
-                "render": function (data) { return `<div></div>` }
-            },
-            {
-                "data": "questionJSON",
-                "render": function (data) { return `<div></div>`}
-            },
-            {
                 "data": "id",
                 "render": function (data) {
                     return `
