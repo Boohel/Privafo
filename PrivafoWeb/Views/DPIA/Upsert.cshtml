@@ -15,8 +15,9 @@
 						<div class="col-12">
 								<div class="col-12 pb-2">
 									<button class="btn btn btn-outline-primary btn-sm"  type="button" onclick="TampilModalSection();" data-bs-toggle="modal"  data-bs-target="#sectionModal"><i class='bx bx-add-to-queue'></i>Add Section</button>
-									<button class="btn btn btn-outline-secondary btn-sm"  type="submit" onclick="save_template();"><i class='bx bx-save'></i>Save</button>
-									<button class="btn btn btn-outline-secondary btn-sm"  type="button" ><i class='bx bx-printer'></i>Print</button>
+									<button class="btn btn btn-outline-primary btn-sm"  type="submit" onclick="save_template();"><i class='bx bx-save'></i>Save</button>
+									<button class="btn btn btn-outline-secondary btn-sm"  type="button" onclick="CreateTodo2();"><i class='bx bx-printer'></i>Print</button>		
+									<button class="btn btn btn-outline-primary btn-sm"  type="button" onclick="RefreshTodo()"><i class='bx bx-refresh'></i>Refresh</button>
 								</div>
 						</div>
 				<div class="accordion" id="accordionHeader">
@@ -232,7 +233,6 @@
 	<script src="~/theme/js/app.js"></script>
 
 
-
 	<script>
 
 		function TampilModalSection(param)
@@ -297,21 +297,32 @@
 		}
 
 		// to do list 
-		 var todos = [{
+		 var todos;
+		 //alert(document.getElementById("questionjson").value);
+		 var oldtodos = document.getElementById("questionjson").value;
+		 if (oldtodos != "")
+		 {
+			//todos = JSON.parse(oldtodos);
+		 }else{
+			todos = [{
 			text: "",
 			quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:"",answereq:false,attachreq:false,questhint:false,notsure:false,na:false,fileurl:""}],
 			done: false,
 			id: 0
-		}];
-		var currentTodo = {
-			text: "",
-			quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:"",answereq:false,attachreq:false,questhint:false,notsure:false,na:false,fileurl:""}],
-			done: false,
-			id: 0
-		}
-		document.getElementById("todo-input").oninput = function (e) {
-			currentTodo.text = e.target.value;
-		};
+			}];
+
+
+		 }
+				var currentTodo = {
+					text: "",
+					quest:[{id:0,question:"",friendly:"",description:"",type:"",a:"",b:"",c:"",d:"",e:"",answereq:false,attachreq:false,questhint:false,notsure:false,na:false,fileurl:""}],
+					done: false,
+					id: 0
+				}
+			document.getElementById("todo-input").oninput = function (e) {
+				currentTodo.text = e.target.value;
+			};
+
 
 		function DrawTodo(todo) {
 			var newTodoHTML = `
@@ -378,7 +389,11 @@
 				}				
 			}
 		}
+
+
 		RenderAllTodos();
+
+		
 
 		function DeleteTodo(button) {
 			var deleteID = parseInt(button.getAttribute("todo-id"));
@@ -412,6 +427,16 @@
 			todos.push(newtodo);
 			currentTodo.text = '';
 			RenderAllTodos();
+		}
+
+		function RefreshTodo()
+		{
+			var oldtodos = document.getElementById("questionjson").value;
+			if (oldtodos != "")
+				{
+					todos = JSON.parse(oldtodos);
+				}
+				RenderAllTodos();
 		}
 	</script>
 
