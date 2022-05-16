@@ -2,7 +2,9 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
 
-@{ Layout = null; }
+@{
+    Layout = null;
+}
 
 <div class="row">
     <div class="col-md-12">
@@ -12,19 +14,23 @@
             <div class="row mb-5">
                 <div class="col-md-12">
                     <div class="form-group mb-3">
-                        <label asp-for="city.CityName" class="control-label"></label>
-                        <textarea asp-for="city.CityName" class="form-control" rows=3></textarea>
-                        <span asp-validation-for="city.CityName" class="text-danger"></span>
+                        <label>Country</label>
+                        <select id="country" asp-items="@Model.countryList" class="form-select">
+                            <option disabled selected>--Select Country--</option>
+                        </select>
                     </div>
                     <div class="form-group mb-3">
                         <label asp-for="city.ProvinceID"></label>
-			                <select asp-for="city.ProvinceID" asp-items="@Model.provinceList" class="form-select">
-				                <option disabled selected>--Select Province--</option>
-			                </select>
+                        <select asp-for="city.ProvinceID" asp-items="@Model.provinceList" class="form-select">
+                        </select>
                     </div>
-
+                    <div class="form-group mb-3">
+                        <label asp-for="city.CityName" class="control-label"></label>
+                        <input asp-for="city.CityName" class="form-control">
+                        <span asp-validation-for="city.CityName" class="text-danger"></span>
+                    </div>                  
                 </div>
-            </div>               
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -37,3 +43,42 @@
         </form>
     </div>
 </div>
+
+@if (Model.countryId!=null){
+<script>
+    $(document).ready(function() {
+        $("#country").val("@Model.countryId");
+    });
+</script>
+}
+
+<script>
+    $('#country').change(function () {
+                   var countryselect = $("#country").val();
+                   var provinceSelect = $('#city_ProvinceID');
+                   provinceSelect.empty();
+                   if (countryselect != null && countryselect != '') {
+                       $.getJSON('@Url.Action("GetProvince")', { country: countryselect }, function (libraries) {
+                           if (libraries != null && !jQuery.isEmptyObject(libraries))
+                           {
+                               if(libraries.provinceList.length > 0){
+                                   provinceSelect.append($('<option/>', {
+                                       value: null,
+                                       text: "--Select a Province--"
+                                   }).each(function(){
+                                       $(this).attr("selected", "selected");
+                                       $(this).attr("disabled", "disabled");
+                                     })
+                                   );
+                                   $.each(libraries.provinceList, function (index, library) {
+                                       provinceSelect.append($('<option/>', {
+                                           value: library.value,
+                                           text: library.text
+                                       }));
+                                      });
+                               }
+                           };
+                       });
+                   }
+           });
+</script>

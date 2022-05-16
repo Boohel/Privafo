@@ -31,19 +31,36 @@ namespace PrivafoWeb.Controllers
             CityVM cityVM = new()
             {
                 city = new(),
-                provinceList = _uow.Province.GetAll().Select(i => new SelectListItem
+                countryList = _uow.Country.GetAll().Select(i => new SelectListItem
                 {
-                    Text = i.ProvinceName,
+                    Text = i.CountryName,
                     Value = i.ID.ToString()
-                }),
+                }),     
             };
-
            
             if (ID == null || ID == 0)
                 return View(cityVM);
             else
             {
+                
                 cityVM.city = _uow.City.GetFirstOrDefault(u => u.ID == ID);
+                int get1p = _uow.Province.GetFirstOrDefault(u => u.ID == cityVM.city.ProvinceID).CountryID;
+                cityVM.countryId = get1p.ToString();
+                //cityVM.countryList = _uow.Country.GetAll().Where(w => w.ID==8).Select(i => new SelectListItem
+                //{
+                //    Text = i.CountryName,
+                //    Value = i.ID.ToString()
+                //});
+                cityVM.countryList = _uow.Country.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.CountryName,
+                    Value = i.ID.ToString()
+                });  
+                cityVM.provinceList = _uow.Province.GetAll().Where(w => w.CountryID==get1p).Select(i => new SelectListItem
+                {
+                    Text = i.ProvinceName,
+                    Value = i.ID.ToString()
+                });
                 return View(cityVM);
             }
         }
@@ -92,6 +109,24 @@ namespace PrivafoWeb.Controllers
             _uow.City.Remove(obj);
             _uow.Save();
             return Json(new { success = true, message = "Province deleted successfully" });
+        }
+
+        [HttpGet]
+        public IActionResult GetProvince(string country)
+        {
+            if (!string.IsNullOrWhiteSpace(country))
+            {
+                CityVM cityVM = new()
+                {
+                    provinceList = _uow.Province.GetAll(u => u.CountryID == Int64.Parse(country)).Select(i => new SelectListItem
+                    {
+                        Text = i.ProvinceName,
+                        Value = i.ID.ToString()
+                    })
+                };
+                return Json(cityVM);
+            }
+            return Json("");
         }
 
         [NoDirectAccess]
