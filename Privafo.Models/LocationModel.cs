@@ -83,10 +83,10 @@ namespace Privafo.Models
         public String CityName { get; set; }
         [Display(Name = "City Code")]
         [StringLength(30, ErrorMessage = "City Code cannot be longer than 30 characters.")]
-        public String? ProvinceCode { get; set; }
+        public String? CityCode { get; set; }
         [ValidateNever]
         [Required]
-        [Display(Name = "Province")]
+        [Display(Name = "City Code")]
         public int ProvinceID { get; set; }
         [ForeignKey("ProvinceID")]
         [ValidateNever]

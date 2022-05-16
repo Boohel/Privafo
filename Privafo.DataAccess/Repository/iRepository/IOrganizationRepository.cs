@@ -16,4 +16,9 @@ namespace Privafo.DataAccess.Repository.IRepository
     {
         void Update(Entity obj);
     }
+
+    public interface IOrganizationRepository : IRepository<Org>
+    {
+        void Update(Org obj);
+    }
 }

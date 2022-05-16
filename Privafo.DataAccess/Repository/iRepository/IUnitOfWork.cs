@@ -66,6 +66,11 @@ namespace Privafo.DataAccess.Repository.IRepository
         //Organization
         IBranchRepository Branch { get; }
         IEntityRepository Entity { get; }
+        IOrganizationRepository Organization { get; }
+
+        //Identity
+        IUserRepository User { get; }
+        IRoleRepository Role { get; }
 
         void Save();
     }

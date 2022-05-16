@@ -12,11 +12,18 @@ namespace Privafo.Models.ViewModels
     public class RiskRegisterVM
     {
         public RiskRegister RiskRegister { get; set; }
+        [ValidateNever]
         public IEnumerable<SelectListItem> RiskCtgList { get; set; }
+        [ValidateNever]
         public IEnumerable<SelectListItem> RiskTypeList { get; set; }
+        [ValidateNever]
+        public IEnumerable<SelectListItem> OrganizationList { get; set; }
+        [ValidateNever]
+        public IEnumerable<SelectListItem> OwnerList { get; set; }
 
         [Display(Name = "Select a Risk")]
-        public IEnumerable<SelectListItem> RiskLibrary { get; set; }
+        [ValidateNever]
+        public IEnumerable<SelectListItem> RiskLibraryList { get; set; }
     }
 
 }

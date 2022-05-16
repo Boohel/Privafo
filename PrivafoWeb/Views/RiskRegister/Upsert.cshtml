@@ -50,20 +50,24 @@
             <input asp-for="RiskRegister.ID" hidden />
             <input asp-for="RiskRegister.CreatedBy" value="@UserManager.GetUserId(User)" hidden />
             <input asp-for="RiskRegister.ModifiedBy" value="@UserManager.GetUserId(User)" hidden />
+            <input asp-for="RiskRegister.ActiveStatusID" value="1" hidden />
 
             <div class="row">
                 <div class="col-12">
                     <div class="row">
-                        <div class="mb-3 col-12">
-                            <div class="form-check">
-								<input class="form-check-input font-input-lg" type="radio" name="RiskInputType" id="lib-type" checked>
-								<label class="form-check-label font-input-lg" for="lib-type">Select a Risk From the Library</label>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input font-input-lg" type="radio" name="RiskInputType" id="new-type">
-								<label class="form-check-label font-input-lg" for="new-type">Create New Risk</label>
-							</div>
-                        </div>
+                        @if (Model.RiskRegister.ID == 0)
+                        {
+                            <div class="mb-3 col-12">
+                                <div class="form-check">
+								    <input class="form-check-input font-input-lg" type="radio" name="RiskInputType" id="lib-type" checked>
+								    <label class="form-check-label font-input-lg" for="lib-type">Select a Risk From the Library</label>
+							    </div>
+							    <div class="form-check">
+								    <input class="form-check-input font-input-lg" type="radio" name="RiskInputType" id="new-type">
+								    <label class="form-check-label font-input-lg" for="new-type">Create New Risk</label>
+							    </div>
+                            </div>
+                        }                       
 		                <div class="mb-3" >
 			                <label asp-for="RiskRegister.RiskTypeID"></label>
 			                <select asp-for="RiskRegister.RiskTypeID" asp-items="@Model.RiskTypeList" class="form-select">
@@ -72,10 +76,9 @@
 			                <span asp-validation-for="RiskRegister.RiskTypeID" class="text-danger"></span>
 		                </div>   
 		                <div id="panelRiskLib" class="mb-3">
-			                <label asp-for="RiskLibrary"></label>
-			                <select name="RiskLibraryID" id="RiskLibraryID" asp-items="@Model.RiskLibrary" class="form-select">
+			                <label asp-for="RiskLibraryList"></label>
+			                <select name="RiskLibraryID" id="RiskLibraryID" asp-items="@Model.RiskLibraryList" class="form-select">
 			                </select>
-			                <span asp-validation-for="RiskRegister.RiskTypeID" class="text-danger"></span>
 		                </div>
                         <div id="panelRiskReg" class="hide-content">
                             <div class="mb-3">
@@ -86,69 +89,103 @@
                             <div class="mb-3">
                                 <label asp-for="RiskRegister.Description"></label>
                                 <textarea asp-for="RiskRegister.Description" class="form-control" rows=3></textarea>
-                                <span class=text-danger></span>
                             </div>
                             <div class="mb-3">                                 
                                 <label asp-for="RiskRegister.InherentRiskMx"></label>
-                                <div class="btn-group" role="group">   
+								<div class="btn-group" style="display:block" role="group">
                                     <input asp-for="RiskRegister.InherentRiskMx" hidden />
 								    <input asp-for="RiskRegister.InherentRiskLvl" width="10" class="btn btn-risk-score" readonly/>
-								    <div class="btn-group" role="group">
-									    <button id="btn_InherentRiskMx" type="button" class="btn btn-risk-mx btn-white dropdown-toggle dropdown-toggle-nocaret px-1" data-bs-toggle="dropdown" aria-expanded="false">
-									        <i class='bx bx-chevron-down'></i>
-									    </button>
-                                        <div class="dropdown-menu score-container" aria-labelledby="btnGroupDrop1">
-                                            <div class="score-header">
-                                                <div>
-                                                    Impact lvl: <span id="select-impact">12</span>
-                                                </div>
-                                                <div>
-                                                    Probability lvl: <span id="select-prob">2323</span>
-                                                </div>
+									<button id="InherentRisk" type="button" class="btn btn-risk-mx btn-white dropdown-toggle dropdown-toggle-nocaret px-1" data-bs-toggle="dropdown" aria-expanded="false">
+									    <i class='bx bx-chevron-down'></i>
+									</button>
+                                    <div class="dropdown-menu score-container" aria-labelledby="btnGroupDrop1">
+                                        <div class="score-header">
+                                            <div>
+                                                Impact lvl: <span id="InherentRiskImpact">-</span>
                                             </div>
-                                            <div class="score-middle">
-                                                <div class="score-y">Impact</div>
-                                                <div>                                                    
-                                                    <div class="wrap">
-                                                    </div>
-                                                    <div class="score-x">Probability</div>
-                                                </div>
+                                            <div>
+                                                Probability lvl: <span id="InherentRiskProb">-</span>
                                             </div>
                                         </div>
-								    </div>
-								</div>	
+                                        <div class="score-middle">
+                                            <div class="score-y">Impact</div>
+                                            <div>                                                    
+                                                <div class="wrap_InherentRisk">
+                                                </div>
+                                                <div class="score-x">Probability</div>
+                                            </div>
+                                        </div>
+                                    </div>
+								</div>
+                                <span class=text-danger></span>
                             </div>
                             <div class="mb-3">                                 
                                 <label asp-for="RiskRegister.ResidualRiskMx"></label>
-                                <div class="btn-group" role="group">   
+                                <div class="btn-group" style="display:block" role="group">
                                     <input asp-for="RiskRegister.ResidualRiskMx" hidden />
 								    <input asp-for="RiskRegister.ResidualRiskLvl" width="10" class="btn btn-risk-score" readonly/>
-								    <div class="btn-group" role="group">
-									    <button id="btn_ResidualRiskMx" type="button" class="btn btn-risk-mx btn-white dropdown-toggle dropdown-toggle-nocaret px-1 " data-bs-toggle="dropdown" aria-expanded="false">
-									        <i class='bx bx-chevron-down'></i>
-									    </button>
-                                        <div class="dropdown-menu score-container" aria-labelledby="btnGroupDrop1">
-                                            <div class="score-header">
-                                                <div>
-                                                    Impact lvl: <span id="select-impact">12</span>
-                                                </div>
-                                                <div>
-                                                    Probability lvl: <span id="select-prob">2323</span>
-                                                </div>
+									<button id="ResidualRisk" type="button" class="btn btn-risk-mx btn-white dropdown-toggle dropdown-toggle-nocaret px-1 " data-bs-toggle="dropdown" aria-expanded="false">
+									    <i class='bx bx-chevron-down'></i>
+									</button>
+                                    <div class="dropdown-menu score-container" aria-labelledby="btnGroupDrop1">
+                                        <div class="score-header">
+                                            <div>
+                                                Impact lvl: <span id="ResidualRiskImpact">-</span>
                                             </div>
-                                            <div class="score-middle">
-                                                <div class="score-y">Impact</div>
-                                                <div>                                                    
-                                                    <div class="wrap">
-                                                    </div>
-                                                    <div class="score-x">Probability</div>
-                                                </div>
+                                            <div>
+                                                Probability lvl: <span id="ResidualRiskProb">-</span>
                                             </div>
                                         </div>
-								    </div>
+                                        <div class="score-middle">
+                                            <div class="score-y">Impact</div>
+                                            <div>                                                    
+                                                <div class="wrap_ResidualRisk">
+                                                </div>
+                                                <div class="score-x">Probability</div>
+                                            </div>
+                                        </div>
+                                    </div>
 								</div>	
+                                <span class=text-danger></span>
+                            </div>                      
+                            <div class="row">     
+                                <div class="mb-3 col-6">                                
+                                    <label asp-for="RiskRegister.Threat"></label>
+                                    <textarea asp-for="RiskRegister.Threat" class="form-control" rows=2></textarea>
+			                        <span asp-validation-for="RiskRegister.Threat" class="text-danger"></span>
+                                </div>                  
+                                <div class="mb-3 col-6">                                
+                                    <label asp-for="RiskRegister.Vulnerability"></label>
+                                    <textarea asp-for="RiskRegister.Vulnerability" class="form-control" rows=2></textarea>
+			                        <span asp-validation-for="RiskRegister.Vulnerability" class="text-danger"></span>
+                                </div>   
+                            </div>                 
+                            <div class="mb-3">                                
+                                <label asp-for="RiskRegister.TreatmentPlan"></label>
+                                <textarea asp-for="RiskRegister.TreatmentPlan" class="form-control" rows=3></textarea>
+			                    <span asp-validation-for="RiskRegister.TreatmentPlan" class="text-danger"></span>
                             </div>
-                        </div>
+		                    <div class="mb-3" >
+			                    <label asp-for="RiskRegister.OrgID"></label>
+			                    <select asp-for="RiskRegister.OrgID" asp-items="@Model.OrganizationList" class="form-select">
+				                    <option disabled selected>--Select Organization--</option>
+			                    </select>
+			                    <span asp-validation-for="RiskRegister.OrgID" class="text-danger"></span>
+		                    </div> 
+		                    <div class="mb-3" >
+			                    <label asp-for="RiskRegister.Owner"></label>
+			                    <select asp-for="RiskRegister.Owner" asp-items="@Model.OwnerList" class="form-select">
+				                    <option disabled selected>--Select Owner--</option>
+			                    </select>
+			                    <span asp-validation-for="RiskRegister.Owner" class="text-danger"></span>
+		                    </div> 
+		                    <div class="mb-3" >
+                                <div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" asp-for="RiskRegister.Reminder">
+									<label class="form-check-label" asp-for="RiskRegister.Reminder"></label>
+								</div>
+		                    </div> 
+                        </div>  
                         <div class="col-12">
                             @if (Model.RiskRegister.ID != 0)
                             {
@@ -174,6 +211,10 @@
     <script>    
         $(document).ready(function() {  
             // start scoring
+            if ($('#RiskRegister_ID').val()!=0 && $('#RiskRegister_ID').val()!=''){   
+                $('#panelRiskReg').toggle();
+                $('#panelRiskLib').addClass("hide-content");
+            };
 
             $('.btn-risk-mx').click(function() {
                 var elmId = $(this).attr("id");
@@ -191,19 +232,21 @@
                     success: function (res){
                         nImpact = res.totalImpact;
                         nProb = res.totalProb;
-                    
+                        
+                        $(".wrap_" + elmId).empty();
+
                         var n=0;
                         for (var k = 0; k < nImpact; k++) {
                             for (var i = 0; i < nProb; i++) {
                                 var mxid = res.riskMxScore[n].id;
-                                var boxid = elmId + "_" + mxid;
+                                var boxid = elmId + "_bx" + mxid;
                                 var val = res.riskMxScore[n].score;
                                 var xcolor = res.riskMxScore[n].lvlScoreColor;
                                 var levelname = res.riskMxScore[n].lvlScoreName;
                                 var impactlevel = res.riskMxScore[n].riskImpact.riskImpactName;
                                 var problevel = res.riskMxScore[n].riskProbability.riskProbabilityName;
 
-                                $(".wrap").append($("<div>" + val + "</div>").attr('id', boxid).height(30).width(50));     
+                                $(".wrap_" + elmId).append($("<div>" + val + "</div>").attr('id', boxid).height(30).width(50));     
                                 $("#" + boxid).addClass("square");     
                                 $("#" + boxid).css("background", xcolor);    
                                 $("#" + boxid).attr("MxID", mxid);    
@@ -217,20 +260,20 @@
                                     var levelname = $(this).attr('MxLevel');
                                     var levelcolor = $(this).attr('LvlColor');
                                     var score = $(this).html();
-                                    $('#RiskRegister_InherentRiskMx').val(levelid);
-                                    $('#RiskRegister_InherentRiskLvl').val(levelname);
-                                    $('#RiskRegister_InherentRiskLvl').css("background", levelcolor).css("color", "#FFF");
+                                    $('#RiskRegister_' + elmId +'Mx').val(levelid);
+                                    $('#RiskRegister_' + elmId +'Lvl').val(levelname);
+                                    $('#RiskRegister_' + elmId +'Lvl').css("background", levelcolor).css("color", "#FFF");
                                     alert(level);
                                 }); 
 
                                 $("#" + boxid).hover(function(){
-                                    $("#select-impact").html($(this).attr('ImpactLevel'));
-                                    $("#select-prob").html($(this).attr('ProbLevel'));
+                                    $("#" + elmId + "Impact").html($(this).attr('ImpactLevel'));
+                                    $("#" + elmId + "Prob").html($(this).attr('ProbLevel'));
                                 });
                     
                                 n++;
                             }
-                            $(".wrap").append($("<div></div>").css("clear", "both"));
+                            $(".wrap_" + elmId).append($("<div></div>").css("clear", "both"));
                         }
                     },  
                     failure: function (res) {
@@ -295,13 +338,12 @@
             if($('#lib-type').is(':checked')){
                 var selectedType = $("#RiskRegister_RiskTypeID").val();
                 var riskLibrarySelect = $('#RiskLibraryID');
-
                 riskLibrarySelect.empty();
                 if (selectedType != null && selectedType != '') {
                     $.getJSON('@Url.Action("GetRiskLibraries")', { riskType: selectedType }, function (libraries) {     
                         if (libraries != null && !jQuery.isEmptyObject(libraries))
                         {         
-                            if(libraries.riskLibrary.length > 0){
+                            if(libraries.riskLibraryList.length > 0){
                                 riskLibrarySelect.append($('<option/>', {
                                     value: null,
                                     text: "--Select a Risk From the Library--"
@@ -310,7 +352,7 @@
                                     $(this).attr("disabled", "disabled");
                                   })
                                 );
-                                $.each(libraries.riskLibrary, function (index, library) {
+                                $.each(libraries.riskLibraryList, function (index, library) {
                                     riskLibrarySelect.append($('<option/>', {
                                         value: library.value,
                                         text: library.text
