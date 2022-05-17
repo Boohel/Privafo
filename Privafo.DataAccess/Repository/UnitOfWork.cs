@@ -70,6 +70,11 @@ namespace Privafo.DataAccess.Repository
             //Organization
             Branch = new BranchRepository(_db);
             Entity = new EntityRepository(_db);
+            Organization = new OrganizationRepository(_db);
+
+            //Identity
+            User = new UserRepository(_db);
+            Role = new RoleRepository(_db);
 
         }
 
@@ -129,6 +134,11 @@ namespace Privafo.DataAccess.Repository
         //Organization
         public IBranchRepository Branch { get; private set; }
         public IEntityRepository Entity { get; private set; }
+        public IOrganizationRepository Organization { get; private set; }
+
+        //Organization
+        public IUserRepository User { get; private set; }
+        public IRoleRepository Role { get; private set; }
 
         public void Save()
         {

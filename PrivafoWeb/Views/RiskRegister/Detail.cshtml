@@ -1,0 +1,83 @@
+﻿@model RiskRegister
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+    
+@section CssSection
+{
+	<link href="~/theme/plugins/smart-wizard/css/smart_wizard_all.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+       
+    </style>
+}  
+
+<div class="card">
+    <div class="mt-3" id="smartwizard">
+		<ul class="nav">
+			<li class="nav-item">
+				<a class="nav-link" href="#step-1">	<strong>New</strong> </a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#step-2">	<strong>Under Evaluation</strong> </a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#step-3">	<strong>in Review</strong> </a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#step-4">	<strong>Live</strong> </a>
+			</li>
+		</ul>		
+		<div class="tab-content">
+
+		</div>
+	</div>
+    <div class="card-body p-4">
+		<ul class="nav nav-tabs nav-primary mb-0" role="tablist">
+            <li class="nav-item" role="presentation">
+				<a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+					<div class="d-flex align-items-center">
+						<div class="tab-icon"><i class='bx bx-comment-detail font-18 me-1'></i>
+						</div>
+						<div class="tab-title"> Details </div>
+					</div>
+				</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" data-bs-toggle="tab" href="#primarycontact" role="tab" aria-selected="false">
+					<div class="d-flex align-items-center">
+						<div class="tab-icon"><i class='bx bx-star font-18 me-1'></i>
+						</div>
+						<div class="tab-title">Linked</div>
+					</div>
+				</a>
+			</li>
+        </ul>
+		<div class="tab-content pt-3">
+			<div class="tab-pane fade show active" id="primaryhome" role="tabpanel">
+				<p>Details Here</p>
+			</div>
+			<div class="tab-pane fade" id="primarycontact" role="tabpanel">
+				<p>Linked Here.</p>
+			</div>
+		</div>
+    </div>
+</div>
+
+@section Scripts{	
+	<script src="~/theme/plugins/smart-wizard/js/jquery.smartWizard.min.js"></script>
+    <script>    
+        $(document).ready(function() {  
+			// Smart Wizard
+			$('#smartwizard').smartWizard({
+				selected: 0,
+				theme: 'dots',
+				transition: {
+					animation: 'slide-horizontal', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
+				},
+				toolbarSettings: {
+					toolbarPosition: 'none', // both bottom
+				}
+			});
+        });
+    </script>
+}
+
