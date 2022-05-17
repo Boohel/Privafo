@@ -268,7 +268,7 @@ $(function() {
                             fontSize: '14px',
                             color: '#000',
                             offsetY: -10,
-              show: false
+                            show: false
                         },
                         value: {
                             offsetY: 6,
