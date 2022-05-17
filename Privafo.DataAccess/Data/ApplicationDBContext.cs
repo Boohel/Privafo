@@ -43,7 +43,7 @@ namespace Privafo.DataAccess
 
 
         //General Address
-        public DbSet<Address> Address { get; set; }
+        public DbSet<Address> address { get; set; }
         public DbSet<Country> countries { get; set; }
         public DbSet<Province> provinces { get; set; }
         public DbSet<City> cities { get; set; }

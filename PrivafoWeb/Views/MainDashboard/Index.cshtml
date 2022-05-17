@@ -1,0 +1,175 @@
+﻿@{
+    ViewData["Title"] = "Main DashBoard";
+}
+
+@section rtpage
+{
+    <div class="ms-auto">
+	    <a asp-controller="RiskRegister" asp-action="Setting" class="btn btn-primary radius-30 mt-2 mt-lg-0" ><i class="bx bxs-plus-square"></i>Setting</a>
+    </div>
+}
+
+<div class="row">
+	<div class="col-lg-4 col-xl-4">
+		<div class="card radius-10">
+			<div class="card-body">
+				<div class="d-flex align-items-center">
+					<div class="">
+						<h3 class="mt-3 mb-0">78</h3>
+						<p class="mb-0">Number of Processes</p>
+					</div>
+					<div class="card-content dash-array-chart-box ms-auto">
+						<div id="number-of-processes"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card radius-10">
+			<div class="card-body">
+				<div class="d-flex align-items-center">
+					<div class="">
+						<h3 class="mt-3 mb-0">21</h3>
+						<p class="mb-0">Number of Processes under High Risk</p>
+					</div>
+					<div class="card-content dash-array-chart-box ms-auto">
+						<div id="processes-high-risk"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card radius-10">
+			<div class="card-body">
+				<div class="d-flex align-items-center">
+					<div class="">
+						<h3 class="mt-3 mb-0">43</h3>
+						<p class="mb-0">Number of Assets Involved</p>
+					</div>
+					<div class="card-content dash-array-chart-box ms-auto">
+						<div id="asset-involved"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card radius-10">
+			<div class="card-body">
+				<div class="d-flex align-items-center">
+					<div class="">
+						<h3 class="mt-3 mb-0">9</h3>
+						<p class="mb-0">Number of Processes under High Risk</p>
+					</div>
+					<div class="card-content dash-array-chart-box ms-auto">
+						<div id="asset-high-risk"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-8 col-xl-8">
+		<div class="row">
+			<div class="col-lg-6 col-xl-6">
+				<div class="card radius-10">
+					<div class="card-body">
+						<div class="d-flex align-items-center">
+							<div class="">
+								<h3 class="mt-3 mb-0">9</h3>
+								<p class="mb-0">Location</p>
+							</div>
+							<div class="card-content dash-array-chart-box ms-auto">
+								<div id="location"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-xl-6">
+				<div class="card radius-10">
+					<div class="card-body">
+						<div class="d-flex align-items-center">
+							<div class="">
+								<h3 class="mt-3 mb-0">9</h3>
+								<p class="mb-0">Vendors</p>
+							</div>
+							<div class="card-content dash-array-chart-box ms-auto">
+								<div id="vendor"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6 col-xl-6">
+				<div class="card radius-10">
+					<div class="card-body">
+						<div class="d-flex align-items-center">
+							<div>
+								<h6 class="mb-0">Vacancies Status</h6>
+							</div>
+							<div class="font-22 ms-auto"><i class='bx bx-dots-horizontal-rounded'></i>
+							</div>
+						</div>
+						<div class="text-center chart-container-9 d-flex align-items-center justify-content-center">
+							<div id="vacancies-status"></div>
+						</div>
+					</div>
+					<div class="card-footer bg-transparent border-top">
+						<div class="row align-items-center text-center">
+							<div class="col border-end">
+								<h4 class="mb-0">452</h4>
+								<small class="extra-small-font">Filled Vacancies</small>
+							</div>
+							<div class="col">
+								<h4 class="mb-0">680</h4>
+								<small class="extra-small-font">Total Vacancies</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-xl-6">
+				<div class="card radius-10">
+					<div class="card-body">
+						<div class="d-flex align-items-center">
+							<div>
+								<h6 class="mb-0">Top Referrers</h6>
+							</div>
+							<div class="font-22 ms-auto"><i class='bx bx-dots-horizontal-rounded'></i>
+							</div>
+						</div>
+						<div class="">
+							<div id="top-referrers"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-12 col-lg-4 col-xl-4">
+		
+	</div>
+	<div class="col-12 col-lg-4 col-xl-4">
+		
+		<div class="row">			
+			<div class="col-6">
+				
+			</div>	
+			<div class="col-6">
+				
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-lg-4 col-xl-4">
+		
+		
+	</div>
+	<div class="col-12 col-lg-4 col-xl-4">
+		
+	</div>
+</div><!--end row-->
+
+@section Scripts{
+    <script src="~/js/datagrid/riskregister.js"> </script>
+}

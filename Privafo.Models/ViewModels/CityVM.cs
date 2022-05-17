@@ -13,9 +13,13 @@ namespace Privafo.Models.ViewModels
     {
         public City city { get; set; }
         [ValidateNever]
-
+        [Display(Name = "Select a Country")]
+        public IEnumerable<SelectListItem> countryList { get; set; }
+        [ValidateNever]
         [Display(Name = "Select a Province")]
         public IEnumerable<SelectListItem> provinceList { get; set; }
+        [ValidateNever]
+        public string countryId { get; set; }
 
     }
 
