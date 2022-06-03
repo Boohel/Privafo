@@ -95,7 +95,14 @@ namespace Privafo.Models
         public String? Emplacement { get; set; }
 
         [ValidateNever]
-        [Display(Name = "Security Measure")]
+        [Display(Name = "Technical Security Measure")]
+        public int? TechSecMeasureID { get; set; }
+        [ForeignKey("TechSecMeasureID")]
+        [ValidateNever]
+        public TechSecMeasure? TechSecMeasure { get; set; }
+
+        [ValidateNever]
+        [Display(Name = "Organizational Security Measure")]
         public int? OrgSecMeasureID { get; set; }
         [ForeignKey("OrgSecMeasureID")]
         [ValidateNever]
@@ -114,6 +121,18 @@ namespace Privafo.Models
         [ForeignKey("AstDisposalID")]
         [ValidateNever]
         public AssetDisposal? AstDisposal { get; set; }
+
+        [ValidateNever]
+        [Display(Name = "Aggregate Risk")]
+        public int? AggregateRiskMx { get; set; }
+        [ForeignKey("AggregateRiskMx")]
+        [ValidateNever]
+        public RiskMatrixScore AggregateRiskScore { get; set; }
+
+        [ValidateNever]
+        [NotMapped]
+        [Display(Name = "Aggregate Risk")]
+        public string AggregateRiskLvl { get; set; }
 
         [ValidateNever]
         [Required]
