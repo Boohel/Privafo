@@ -1,0 +1,114 @@
+﻿<div id="editForm"
+     style="display:none; text-align:center; position:absolute; border: 1px solid #aeaeae;width:300px;background-color:#F57C00;z-index:10000; ">
+    <div style="padding: 10px 0 10px 0; background-color:#039BE5; color: #ffffff;">Edit Form</div>
+    <div>
+        <div style="padding: 10px 0 5px 0;">
+            <label style="color:#ffffff; width:50px; display:inline-block;" for="name">Name</label>
+            <input style="background-color:#FFCA28" id="name" value="" />
+        </div>
+        <div style="padding: 5px 0 10px 0;">
+            <label style="color:#ffffff; width:50px; display:inline-block;" for="title">Title</label>
+            <input style="background-color:#FFCA28" id="title" value="" />
+        </div>
+        <div style="padding: 5px 0 10px 0;">
+            <label style="color:#ffffff; width:50px; display:inline-block;" for="salary">Salary</label>
+            <input style="background-color:#FFCA28" id="salary" value="" />
+        </div>
+        <div style="padding: 5px 0 15px 0;">
+            <button style="width:108px;" id="cancel">Cancel</button>
+            <button style="width:108px;" id="save">Save</button>
+        </div>
+    </div>
+</div>
+
+
+<div style="width:100%; height:700px;" id="tree" />
+<script src="~/js/orgchart.js"></script>
+<script>
+    //JavaScript
+
+    var editForm = function () {
+        this.nodeId = null;
+    };
+
+    editForm.prototype.init = function (obj) {
+        var that = this;
+        this.obj = obj;
+        this.editForm = document.getElementById("editForm");
+        this.nameInput = document.getElementById("name");
+        this.titleInput = document.getElementById("title");
+        this.salaryInput = document.getElementById("salary");
+        this.cancelButton = document.getElementById("cancel");
+        this.saveButton = document.getElementById("save");
+
+        this.cancelButton.addEventListener("click", function () {
+            that.hide();
+        });
+
+        this.saveButton.addEventListener("click", function () {
+            var node = chart.get(that.nodeId);
+            node.name = that.nameInput.value;
+            node.title = that.titleInput.value;
+            node.salary = that.salaryInput.value;
+            chart.updateNode(node);
+            that.hide();
+        });
+    };
+
+    editForm.prototype.show = function (nodeId) {
+        this.hide();
+        this.nodeId = nodeId;
+
+        var left = document.body.offsetWidth / 2 - 150;
+        this.editForm.style.display = "block";
+        this.editForm.style.left = left + "px";
+        var node = chart.get(nodeId);
+        this.nameInput.value = node.name;
+        this.titleInput.value = node.title;
+        this.salaryInput.value = node.salary;
+    };
+
+    editForm.prototype.hide = function (showldUpdateTheNode) {
+        this.editForm.style.display = "none";
+    };
+    //window.onload = function () {
+        var chart = new OrgChart(document.getElementById("tree"), {
+            mouseScrool: OrgChart.action.none,
+            template: "olivia",
+            nodeMenu: {
+                edit: { text: "Edit" },
+                add: { text: "Add" },
+                remove: { text: "Remove" }
+            },
+            editUI: new editForm(),
+            nodeContextMenu: {
+                edit: { text: "Edit", icon: OrgChart.icon.edit(18, 18, '#039BE5') },
+                add: { text: "Add", icon: OrgChart.icon.add(18, 18, '#FF8304') }
+            },
+            menu: {
+                pdf: { text: "Export PDF" },
+                png: { text: "Export PNG" },
+                svg: { text: "Export SVG" },
+                csv: { text: "Export CSV" }
+            },
+            nodeBinding: {
+                field_0: "name",
+                field_1: "title",
+                field_2: "salary",
+                img_0: "img",
+                
+            },
+            nodes: [
+                { id: 1, name: "Billy Moore", title: "CEO", img: "https://cdn.balkan.app/shared/2.jpg", salary: "8000000" },
+                { id: 2, pid: 1, name: "Billie Rose", title: "Dev Team Lead", img: "https://cdn.balkan.app/shared/5.jpg",salary: "7000000" },
+                { id: 3, pid: 1, name: "Glenn Bell", title: "HR", img: "https://cdn.balkan.app/shared/10.jpg",salary: "7000000" },
+                { id: 4, pid: 1, name: "Blair Francis", title: "HR", img: "https://cdn.balkan.app/shared/11.jpg", salary: "6000000" },
+
+                { id: 5, pid: 3, name: "Skye Terrell", title: "Manager", img: "https://cdn.balkan.app/shared/12.jpg", salary: "5000000" },
+                { id: 6, pid: 2, name: "Jordan Harris", title: "JS Developer", img: "https://cdn.balkan.app/shared/6.jpg",salary: "4000000" },
+                { id: 7, pid: 3, name: "Will Woods", title: "JS Developer", img: "https://cdn.balkan.app/shared/7.jpg", salary: "2000000" }
+            ]
+        });
+    //};
+
+</script> 
