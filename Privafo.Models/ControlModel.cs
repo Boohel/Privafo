@@ -38,7 +38,7 @@ namespace Privafo.Models
         public String? OrgID { get; set; }
         [ForeignKey("OrgID")]
         [ValidateNever]
-        public Org? Org { get; set; }
+        public Organization? Org { get; set; }
 
         [ValidateNever]
         [Display(Name = "Source")]
@@ -129,9 +129,22 @@ namespace Privafo.Models
         public int ID { get; set; }
 
         [Required]
-        [Display(Name = "Security Measure Name")]
-        [StringLength(200, ErrorMessage = "Security Name cannot be longer than 200 characters.")]
+        [Display(Name = "Organizational Security Measure Name")]
+        [StringLength(200, ErrorMessage = "Organizational Security Name cannot be longer than 200 characters.")]
         public String OrgSecMeasureName { get; set; }
+
+        public String? Description { get; set; }
+    }
+
+    public class TechSecMeasure : BaseEntity
+    {
+        [Key]
+        public int ID { get; set; }
+
+        [Required]
+        [Display(Name = "Technical Security Measure Name")]
+        [StringLength(200, ErrorMessage = "Technical Security Name cannot be longer than 200 characters.")]
+        public String TechSecMeasureName { get; set; }
 
         public String? Description { get; set; }
     }

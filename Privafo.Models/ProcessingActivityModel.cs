@@ -15,8 +15,8 @@ namespace Privafo.Models
         public int ID { get; set; }
 
         [Required]
-        [Display(Name = "Asset Name")]
-        [StringLength(255, ErrorMessage = "Asset Name cannot be longer than 100 characters.")]
+        [Display(Name = "Process Name")]
+        [StringLength(255, ErrorMessage = "Process Name cannot be longer than 255 characters.")]
         public String ProcActName { get; set; }
 
         public String? Description { get; set; }
@@ -51,7 +51,7 @@ namespace Privafo.Models
         public String OrgID { get; set; }
         [ForeignKey("OrgID")]
         [ValidateNever]
-        public Org Org { get; set; }
+        public Organization Org { get; set; }
 
         [ValidateNever]
         [Display(Name = "Country Utilizing Process")]
@@ -62,7 +62,7 @@ namespace Privafo.Models
 
         [ValidateNever]
         [StringLength(30)]
-        [Display(Name = "Process Purpose")]
+        [Display(Name = "Purpose of Processing")]
         public int ProcPurposeID { get; set; }
         [ForeignKey("ProcPurposeID")]
         [ValidateNever]
@@ -120,7 +120,7 @@ namespace Privafo.Models
         [StringLength(255, ErrorMessage = "Emplacement cannot be longer than 100 characters.")]
         public String? Emplacement { get; set; }
 
-        [Display(Name = "Location of Parties")]
+        [Display(Name = "Location of Parties (Access/Use Data)")]
         [StringLength(100)]
         public String? LocParties { get; set; }
 
@@ -143,6 +143,10 @@ namespace Privafo.Models
         [Display(Name = "Processor's Representative & DPO Contact Information")]
         [StringLength(100)]
         public String? CtrProcInfo { get; set; }
+
+        [Display(Name = "Legal Basic for Processing")]
+        [StringLength(100)]
+        public String? LegalBasic { get; set; }
 
 
     }

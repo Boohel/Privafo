@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
 using Privafo.DataAccess;
 using Privafo.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +9,8 @@ using Privafo.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Privafo.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Privafo.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
            .AddDefaultUI()
            .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
     options.IdleTimeout = TimeSpan.FromMinutes(10);//You can set Time   

@@ -15,8 +15,8 @@ namespace Privafo.Models
         public int ID { get; set; }
 
         [Required]
-        [Display(Name = "Active Status Name")]
-        [StringLength(100, ErrorMessage = "Active Status Name cannot be longer than 100 characters.")]
+        [Display(Name = "Data Elemement Name")]
+        [StringLength(100, ErrorMessage = "Data Elemement Name cannot be longer than 100 characters.")]
         public String DataElementName { get; set; }
 
         public String? Description { get; set; }
@@ -106,12 +106,12 @@ namespace Privafo.Models
 
         [Required]
         [Display(Name = "Minimum Volume")]
-        [Range(0, 100, ErrorMessage = "Minimum must between 0 and 100 only.")]
+        [Range(1, 99999999, ErrorMessage = "Minimum must between 1 and 99,999,999 only.")]
         public Double MinVol { get; set; }
 
         [Required]
         [Display(Name = "Maximum Volume")]
-        [Range(0, 100, ErrorMessage = "Maximum Volume must between 0 and 100 only.")]
+        [Range(1, 99999999, ErrorMessage = "Maximum Volume must between 1 and 99,999,999 only.")]
         public Double MaxVol { get; set; }
     }
 

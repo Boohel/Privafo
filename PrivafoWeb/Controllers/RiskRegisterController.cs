@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Privafo.DataAccess;
 using Privafo.DataAccess.Repository.IRepository;
@@ -11,10 +12,12 @@ namespace PrivafoWeb.Controllers
     public class RiskRegisterController : Controller
     {
         private readonly IUnitOfWork _uow;
+        private readonly IEmailSender _emailSender;
 
-        public RiskRegisterController(IUnitOfWork uow)
+        public RiskRegisterController(IUnitOfWork uow, IEmailSender emailSender)
         {
             _uow = uow;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -78,6 +81,9 @@ namespace PrivafoWeb.Controllers
                 {
                     _uow.RiskRegister.Add(obj.RiskRegister);
                     TempData["success"] = "Risk Register inserted successfully";
+
+                    _emailSender.SendEmailAsync("arifrmnsyh@gmail.com", "test privafo", "<p>this body email</p>");
+
                 }
                 else
                 {

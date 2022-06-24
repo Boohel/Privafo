@@ -36,7 +36,7 @@ namespace Privafo.DataAccess.Repository
             _db.entities.Update(obj);
         }
     }
-    public class OrganizationRepository : Repository<Org>, IOrganizationRepository
+    public class OrganizationRepository : Repository<Organization>, IOrganizationRepository
     {
         private ApplicationDbContext _db;
 
@@ -45,7 +45,7 @@ namespace Privafo.DataAccess.Repository
             _db = db;
         }
 
-        public void Update(Org obj)
+        public void Update(Organization obj)
         {
             _db.organization.Update(obj);
         }
