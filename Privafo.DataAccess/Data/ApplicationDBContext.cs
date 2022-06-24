@@ -37,7 +37,7 @@ namespace Privafo.DataAccess
 
 
         //Organization
-        public DbSet<Org> organization { get; set; }
+        public DbSet<Organization> organization { get; set; }
         public DbSet<Branch> branches { get; set; }
         public DbSet<Entity> entities { get; set; }
 

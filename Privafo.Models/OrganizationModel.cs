@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Privafo.Models
 {
-    public class Org : BaseEntity
+    public class Organization : BaseEntity
     {
         [Key]
         [StringLength(30)]

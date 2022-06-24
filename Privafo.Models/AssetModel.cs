@@ -55,7 +55,7 @@ namespace Privafo.Models
         public String? OrgID { get; set; }
         [ForeignKey("OrgID")]
         [ValidateNever]
-        public Org? Org { get; set; }
+        public Organization? Org { get; set; }
 
         [ValidateNever]
         [Display(Name = "Vendor")]
