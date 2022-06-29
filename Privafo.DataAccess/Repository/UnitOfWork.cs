@@ -76,6 +76,12 @@ namespace Privafo.DataAccess.Repository
             User = new UserRepository(_db);
             Role = new RoleRepository(_db);
 
+            //Data Privacy
+            PrivacyRequest = new PrivacyRequestRepository(_db);
+            PrivacyReqType = new PrivacyReqTypeRepository(_db);
+            PrivacySubject = new PrivacySubjectRepository(_db);
+            PrivacyReqExtend = new PrivacyReqExtendRepository(_db);
+
         }
 
         //Navigation
@@ -136,9 +142,15 @@ namespace Privafo.DataAccess.Repository
         public IEntityRepository Entity { get; private set; }
         public IOrganizationRepository Organization { get; private set; }
 
-        //Organization
+        //Identity
         public IUserRepository User { get; private set; }
         public IRoleRepository Role { get; private set; }
+
+        //Data Privacy
+        public IPrivacyRequestRepository PrivacyRequest { get; private set; }
+        public IPrivacyReqTypeRepository PrivacyReqType { get; private set; }
+        public IPrivacySubjectRepository PrivacySubject { get; private set; }
+        public IPrivacyReqExtendRepository PrivacyReqExtend { get; private set; }
 
         public void Save()
         {

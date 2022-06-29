@@ -26,7 +26,6 @@ namespace Privafo.DataAccess.Repository.IRepository
         IRiskThreatRepository RiskThreat { get; }
         IRiskVulnerRepository RiskVulnerability { get; }
 
-
         //DPIA
         IDPIATemplateRepository DPIATemplate { get; }
         IDPIAAssetRepository DPIAAsset { get; }
@@ -71,6 +70,12 @@ namespace Privafo.DataAccess.Repository.IRepository
         //Identity
         IUserRepository User { get; }
         IRoleRepository Role { get; }
+
+        //Data Privacy
+        IPrivacyRequestRepository PrivacyRequest { get; }
+        IPrivacyReqTypeRepository PrivacyReqType { get; }
+        IPrivacySubjectRepository PrivacySubject { get; }
+        IPrivacyReqExtendRepository PrivacyReqExtend { get; }
 
         void Save();
     }

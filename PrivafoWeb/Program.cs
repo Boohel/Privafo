@@ -44,6 +44,7 @@ builder.Services.ConfigureApplicationCookie(option =>
     option.LogoutPath = $"/Identity/Account/Logout";
     option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
+builder.Services.AddKendo();
 
 var app = builder.Build();
 

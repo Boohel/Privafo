@@ -14,18 +14,24 @@
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Privacy Information</title>
+
 	<!--favicon-->
 	<link rel="icon" href="~/theme/images/favicon-32x32.png" type="image/png" />
 	<!-- loader-->
 	<link href="~/theme/css/pace.min.css" rel="stylesheet" />
 	<script data-pace-options='{ "ajax": true, "restartOnRequestAfter": true }' src="~/theme/js/pace.min.js"></script>
-
+	
 	<!-- Bootstrap CSS -->
 	<link href="~/theme/css/bootstrap.min.css" rel="stylesheet">
 	<link href="~/theme/css/bootstrap-extended.css" rel="stylesheet">
 	<link href="~/theme/css/jquery-ui.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 	<link href="~/theme/css/icons.css" rel="stylesheet">
+
+	<!-- Kendo Bootstrap theme: -->
+	<link href="~/lib/telerik-kendo/css/kendo.bootstrap-main.min.css" rel="stylesheet">
+    @*<link href="https://kendo.cdn.telerik.com/2022.2.621/styles/kendo.bootstrap-main.min.css" rel="stylesheet" type="text/css" />*@
 
 	<!--plugins-->
 	<link href="~/theme/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
@@ -41,8 +47,15 @@
 	<link rel="stylesheet" href="~/theme/css/dark-theme.css" />
 	<link rel="stylesheet" href="~/theme/css/semi-dark.css" />
 	<link rel="stylesheet" href="~/theme/css/header-colors.css" />
-	<title>Privacy Information 1.0</title>
-
+	
+	<!-- jquery -->
+	<script src="~/theme/js/jquery.min.js"></script>
+	
+	<!-- kendo-telerik -->
+	<script src="~/lib/telerik-kendo/js/kendo.all.min.js"></script>
+	<script src="~/lib/telerik-kendo/js/kendo.aspnetmvc.min.js"></script>
+	@*<script src="https://kendo.cdn.telerik.com/2022.2.621/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2022.2.621/js/kendo.aspnetmvc.min.js"></script>*@
 </head>
 
 <body>
@@ -422,6 +435,7 @@
 				</nav>
 			</div>
 		</header>
+
 		<div class="page-wrapper">	
 			<div class="page-content">		
 				<partial name="_Notification"></partial>
@@ -456,88 +470,88 @@
 		</div>
    
 		<div class="overlay toggle-icon"></div>
-			<a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
-			<footer class="page-footer">
-				<p class="mb-0">Privacy Information, Copyright © 2022. All right reserved.</p>
-			</footer>
-		</div>
-		<!--end wrapper-->	
+		<a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+		<footer class="page-footer">
+			<p class="mb-0">Privacy Information, Copyright © 2022. All right reserved.</p>
+		</footer>
+	</div>
+	<!--end wrapper-->	
 
-		<!-- Bootstrap JS -->
-		<script src="~/theme/js/bootstrap.bundle.min.js"></script>
-		<!--plugins-->
-		<script src="~/theme/js/jquery.min.js"></script>
-		<script src="~/theme/js/jquery-ui.js"></script>
-		<script src="~/theme/plugins/adv-structured-filter/js/structured-filter.js"></script>
-		@*<script src="~/theme/js/jquery-ui-widget.js"></script>*@
-		<script src="~/theme/plugins/simplebar/js/simplebar.min.js"></script>
-		<script src="~/theme/plugins/metismenu/js/metisMenu.min.js"></script>
-		<script src="~/theme/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-		<!--app JS-->
-		<script src="~/theme/js/app.js"></script>
-		<script src="~/js/site.js"></script>
-		<script src="~/theme/plugins/datatable/js/jquery.dataTables.min.js"></script>
-		<script src="~/theme/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
-		<script src="~/theme/plugins/toastr/js/toastr.min.js"></script>	
-		<script src="~/theme/plugins/sweetalert2/sweetalert.min.js"></script>	
-		<script src="~/theme/plugins/smart-wizard/js/jquery.smartWizard.min.js"></script>
+	<!-- Bootstrap JS -->
+	<script src="~/theme/js/bootstrap.bundle.min.js"></script>
+	<!--jquery-->
+	<script src="~/theme/js/jquery-ui.js"></script>
+	<script src="~/theme/js/jquery-ui-widget.js"></script>
+	<!--plugins-->
+	<script src="~/theme/plugins/adv-structured-filter/js/structured-filter.js"></script>
+	<script src="~/theme/plugins/simplebar/js/simplebar.min.js"></script>
+	<script src="~/theme/plugins/metismenu/js/metisMenu.min.js"></script>
+	<script src="~/theme/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+	<!--app JS-->
+	<script src="~/theme/js/app.js"></script>
+	<script src="~/js/site.js"></script>
+	<script src="~/theme/plugins/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="~/theme/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+	<script src="~/theme/plugins/toastr/js/toastr.min.js"></script>	
+	<script src="~/theme/plugins/sweetalert2/sweetalert.min.js"></script>	
+	<script src="~/theme/plugins/smart-wizard/js/jquery.smartWizard.min.js"></script>
 
-		@await RenderSectionAsync("Scripts", required: false)
+	@await RenderSectionAsync("Scripts", required: false)
 
-		<script>
-			$(document).ready(function() {
-				var table = $('#myTable').DataTable( {
-					lengthChange: false,
-					buttons: [ 'copy', 'excel', 'pdf', 'print']
-				} );
+	<script>
+		$(document).ready(function() {
+			var table = $('#myTable').DataTable( {
+				lengthChange: false,
+				buttons: [ 'copy', 'excel', 'pdf', 'print']
+			} );
 		 
-				table.buttons().container()
-					.appendTo( '#myTable_wrapper .col-md-6:eq(0)' );
-			} );			
+			table.buttons().container()
+				.appendTo( '#myTable_wrapper .col-md-6:eq(0)' );
+		} );			
 				
 		
-			$(function() {
-			  $('#menu').metisMenu({
-				toggle: true // disable the auto collapse. Default: true.
-			  });
+		$(function() {
+			$('#menu').metisMenu({
+			toggle: true // disable the auto collapse. Default: true.
 			});
+		});
 
 
-			//Notice delete from table
-			function Delete(url) {
-				Swal.fire({
-					title: 'Are you sure?',
-					text: "You won't be able to revert this!",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: 'Yes, delete it!'
-				}).then((result) => {
-					if (result.isConfirmed) {
-						$.ajax({
-							url: url,
-							type: 'DELETE',
-							success: function (data) {
-								if (data.success) {
-									dataTable.ajax.reload();
-									toastr.options = {
-										"closeButton": true,
-										"progressBar": true,
-									}
-									toastr.success(data.message);
-								} else {
-									toastr.options = {
-										"closeButton": true,
-										"progressBar": true,
-									}
-									toastr.error(data.message);
+		//Notice delete from table
+		function Delete(url) {
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: url,
+						type: 'DELETE',
+						success: function (data) {
+							if (data.success) {
+								dataTable.ajax.reload();
+								toastr.options = {
+									"closeButton": true,
+									"progressBar": true,
 								}
+								toastr.success(data.message);
+							} else {
+								toastr.options = {
+									"closeButton": true,
+									"progressBar": true,
+								}
+								toastr.error(data.message);
 							}
-						})
-					}
-				})
-			}
-		</script>
-	</body>
+						}
+					})
+				}
+			})
+		}
+	</script>
+</body>
 </html>

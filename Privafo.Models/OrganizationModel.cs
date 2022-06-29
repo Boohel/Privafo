@@ -15,34 +15,40 @@ namespace Privafo.Models
         [StringLength(30)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public String ID { get; set; }
+
         [Required]
         [Display(Name = "Organization Name")]
         [StringLength(100, ErrorMessage = "Organization Name cannot be longer than 100 characters.")]
         public String OrgName { get; set; }
+
         [Display(Name = "Organization Code")]
         [StringLength(50, ErrorMessage = "Organization Code cannot be longer than 50 characters.")]
         public String? OrgCode { get; set; }
+
         [DataType(DataType.Text)]
         public String? Description { get; set; }
+
         [Required]
         [StringLength(30)]
         public String ParentID { get; set; }
+
         [Required]
         [Display(Name = "Sort")]
         public int OrgSort { get; set; }
-        [ValidateNever]
-        [Required]
-        [Display(Name = "Branch")]
-        public int BranchID { get; set; }
-        [ForeignKey("BranchID")]
-        [ValidateNever]
-        public Branch Branch { get; set; }
     }
 
     public class Branch : BaseEntity
     {
         [Key]
         public int ID { get; set; }
+
+        [ValidateNever]
+        [Required]
+        [Display(Name = "Entity")]
+        public int EntityID { get; set; }
+        [ForeignKey("EntityID")]
+        [ValidateNever]
+        public Entity Entity { get; set; }
 
         [Required]
         [Display(Name = "Branch Name")]
@@ -85,15 +91,19 @@ namespace Privafo.Models
     {
         [Key]
         public int ID { get; set; }
+
         [Required]
         [Display(Name = "Entity Name")]
         [StringLength(200, ErrorMessage = "Entity Name cannot be longer than 200 characters.")]
         public String EntityName { get; set; }
+
         [Display(Name = "Brand Name ")]
         [StringLength(200, ErrorMessage = "Brand Name cannot be longer than 200 characters.")]
         public String? BrandName { get; set; }
+
         [DataType(DataType.Text)]
         public String? Description { get; set; }
+
         [ValidateNever]
         [Required]
         [Display(Name = "Industry")]
@@ -101,18 +111,23 @@ namespace Privafo.Models
         [ForeignKey("IndustryID")]
         [ValidateNever]
         public City Industry { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "Entity PIC cannot be longer than 50 characters.")]
         public String EntityPIC { get; set; }
+
         [Display(Name = "Phone Number")]
         [StringLength(100, ErrorMessage = "Phone cannot be longer than 100 characters.")]
         public String? Phone { get; set; }
+
         [Display(Name = "Mobile Phone Number")]
         [StringLength(100, ErrorMessage = "Mobile Phone cannot be longer than 100 characters.")]
         public String? MobilePhone { get; set; }
+
         [Display(Name = "Email")]
         [StringLength(200, ErrorMessage = "Email cannot be longer than 200 characters.")]
         public String? Email { get; set; }
+
         [ValidateNever]
         [Required]
         [Display(Name = "Address")]

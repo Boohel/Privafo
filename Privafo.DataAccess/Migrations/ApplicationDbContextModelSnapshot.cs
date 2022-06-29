@@ -191,7 +191,7 @@ namespace Privafo.DataAccess.Migrations
 
                     b.HasIndex("CityID");
 
-                    b.ToTable("Address");
+                    b.ToTable("address");
                 });
 
             modelBuilder.Entity("Privafo.Models.ApplicationRole", b =>
@@ -321,6 +321,9 @@ namespace Privafo.DataAccess.Migrations
                     b.Property<int>("ActiveStatusID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AggregateRiskMx")
+                        .HasColumnType("int");
+
                     b.Property<string>("AssetName")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -406,12 +409,17 @@ namespace Privafo.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("TechSecMeasureID")
+                        .HasColumnType("int");
+
                     b.Property<int?>("VendorID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ActiveStatusID");
+
+                    b.HasIndex("AggregateRiskMx");
 
                     b.HasIndex("AstDisposalID");
 
@@ -432,6 +440,8 @@ namespace Privafo.DataAccess.Migrations
                     b.HasIndex("OrgSecMeasureID");
 
                     b.HasIndex("Owner");
+
+                    b.HasIndex("TechSecMeasureID");
 
                     b.HasIndex("VendorID");
 
@@ -544,6 +554,9 @@ namespace Privafo.DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("EntityID")
+                        .HasColumnType("int");
+
                     b.Property<string>("MobilePhone")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -561,6 +574,8 @@ namespace Privafo.DataAccess.Migrations
                     b.HasIndex("AddressID");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("EntityID");
 
                     b.HasIndex("ModifiedBy");
 
@@ -1661,14 +1676,11 @@ namespace Privafo.DataAccess.Migrations
                     b.ToTable("module_ctg");
                 });
 
-            modelBuilder.Entity("Privafo.Models.Org", b =>
+            modelBuilder.Entity("Privafo.Models.Organization", b =>
                 {
                     b.Property<string>("ID")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("BranchID")
-                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -1706,8 +1718,6 @@ namespace Privafo.DataAccess.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("BranchID");
 
                     b.HasIndex("CreatedBy");
 
@@ -1754,6 +1764,205 @@ namespace Privafo.DataAccess.Migrations
                     b.HasIndex("ModifiedBy");
 
                     b.ToTable("org_sec_measure");
+                });
+
+            modelBuilder.Entity("Privafo.Models.PrivacyReqExtend", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ExtendedDays")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PrivacyReqID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ModifiedBy");
+
+                    b.HasIndex("PrivacyReqID");
+
+                    b.ToTable("privacy_req_extend");
+                });
+
+            modelBuilder.Entity("Privafo.Models.PrivacyReqType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RequestTypeName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ModifiedBy");
+
+                    b.ToTable("privacy_req_type");
+                });
+
+            modelBuilder.Entity("Privafo.Models.PrivacyRequest", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int?>("BranchID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Company")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("CompletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CountryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Deadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RequestDetail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RequestTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestorName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Resolution")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubjectTypeID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BranchID");
+
+                    b.HasIndex("CountryID");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ModifiedBy");
+
+                    b.HasIndex("RequestTypeID");
+
+                    b.HasIndex("SubjectTypeID");
+
+                    b.ToTable("privacy_request");
+                });
+
+            modelBuilder.Entity("Privafo.Models.PrivacySubject", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SubjectTypeName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ModifiedBy");
+
+                    b.ToTable("privacy_subject");
                 });
 
             modelBuilder.Entity("Privafo.Models.Province", b =>
@@ -2406,6 +2615,46 @@ namespace Privafo.DataAccess.Migrations
                     b.ToTable("risk_vulneries");
                 });
 
+            modelBuilder.Entity("Privafo.Models.TechSecMeasure", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TechSecMeasureName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ModifiedBy");
+
+                    b.ToTable("TechSecMeasure");
+                });
+
             modelBuilder.Entity("Privafo.Models.Vendor", b =>
                 {
                     b.Property<int>("ID")
@@ -2799,6 +3048,10 @@ namespace Privafo.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Privafo.Models.RiskMatrixScore", "AggregateRiskScore")
+                        .WithMany()
+                        .HasForeignKey("AggregateRiskMx");
+
                     b.HasOne("Privafo.Models.AssetDisposal", "AstDisposal")
                         .WithMany()
                         .HasForeignKey("AstDisposalID");
@@ -2835,7 +3088,7 @@ namespace Privafo.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ModifiedBy");
 
-                    b.HasOne("Privafo.Models.Org", "Org")
+                    b.HasOne("Privafo.Models.Organization", "Org")
                         .WithMany()
                         .HasForeignKey("OrgID");
 
@@ -2849,11 +3102,17 @@ namespace Privafo.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Privafo.Models.TechSecMeasure", "TechSecMeasure")
+                        .WithMany()
+                        .HasForeignKey("TechSecMeasureID");
+
                     b.HasOne("Privafo.Models.Vendor", "Vendor")
                         .WithMany()
                         .HasForeignKey("VendorID");
 
                     b.Navigation("ActiveStatus");
+
+                    b.Navigation("AggregateRiskScore");
 
                     b.Navigation("AssetStorageFormat");
 
@@ -2868,6 +3127,8 @@ namespace Privafo.DataAccess.Migrations
                     b.Navigation("Org");
 
                     b.Navigation("OrgSecMeasure");
+
+                    b.Navigation("TechSecMeasure");
 
                     b.Navigation("UserCreated");
 
@@ -2892,11 +3153,19 @@ namespace Privafo.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Privafo.Models.Entity", "Entity")
+                        .WithMany()
+                        .HasForeignKey("EntityID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Privafo.Models.ApplicationUser", "UserModified")
                         .WithMany()
                         .HasForeignKey("ModifiedBy");
 
                     b.Navigation("Address");
+
+                    b.Navigation("Entity");
 
                     b.Navigation("UserCreated");
 
@@ -3066,7 +3335,7 @@ namespace Privafo.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ModifiedBy");
 
-                    b.HasOne("Privafo.Models.Org", "Org")
+                    b.HasOne("Privafo.Models.Organization", "Org")
                         .WithMany()
                         .HasForeignKey("OrgID");
 
@@ -3400,13 +3669,91 @@ namespace Privafo.DataAccess.Migrations
                     b.Navigation("ModuleCtg");
                 });
 
-            modelBuilder.Entity("Privafo.Models.Org", b =>
+            modelBuilder.Entity("Privafo.Models.Organization", b =>
+                {
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserModified")
+                        .WithMany()
+                        .HasForeignKey("ModifiedBy");
+
+                    b.Navigation("UserCreated");
+
+                    b.Navigation("UserModified");
+                });
+
+            modelBuilder.Entity("Privafo.Models.OrgSecMeasure", b =>
+                {
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserModified")
+                        .WithMany()
+                        .HasForeignKey("ModifiedBy");
+
+                    b.Navigation("UserCreated");
+
+                    b.Navigation("UserModified");
+                });
+
+            modelBuilder.Entity("Privafo.Models.PrivacyReqExtend", b =>
+                {
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserModified")
+                        .WithMany()
+                        .HasForeignKey("ModifiedBy");
+
+                    b.HasOne("Privafo.Models.PrivacyRequest", "PrivacyRequest")
+                        .WithMany()
+                        .HasForeignKey("PrivacyReqID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PrivacyRequest");
+
+                    b.Navigation("UserCreated");
+
+                    b.Navigation("UserModified");
+                });
+
+            modelBuilder.Entity("Privafo.Models.PrivacyReqType", b =>
+                {
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserModified")
+                        .WithMany()
+                        .HasForeignKey("ModifiedBy");
+
+                    b.Navigation("UserCreated");
+
+                    b.Navigation("UserModified");
+                });
+
+            modelBuilder.Entity("Privafo.Models.PrivacyRequest", b =>
                 {
                     b.HasOne("Privafo.Models.Branch", "Branch")
                         .WithMany()
-                        .HasForeignKey("BranchID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BranchID");
+
+                    b.HasOne("Privafo.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryID");
 
                     b.HasOne("Privafo.Models.ApplicationUser", "UserCreated")
                         .WithMany()
@@ -3418,14 +3765,32 @@ namespace Privafo.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ModifiedBy");
 
+                    b.HasOne("Privafo.Models.PrivacyReqType", "RequestType")
+                        .WithMany()
+                        .HasForeignKey("RequestTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Privafo.Models.PrivacySubject", "SubjectType")
+                        .WithMany()
+                        .HasForeignKey("SubjectTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Branch");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("RequestType");
+
+                    b.Navigation("SubjectType");
 
                     b.Navigation("UserCreated");
 
                     b.Navigation("UserModified");
                 });
 
-            modelBuilder.Entity("Privafo.Models.OrgSecMeasure", b =>
+            modelBuilder.Entity("Privafo.Models.PrivacySubject", b =>
                 {
                     b.HasOne("Privafo.Models.ApplicationUser", "UserCreated")
                         .WithMany()
@@ -3683,7 +4048,7 @@ namespace Privafo.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ModifiedBy");
 
-                    b.HasOne("Privafo.Models.Org", "Org")
+                    b.HasOne("Privafo.Models.Organization", "Org")
                         .WithMany()
                         .HasForeignKey("OrgID");
 
@@ -3782,6 +4147,23 @@ namespace Privafo.DataAccess.Migrations
                 });
 
             modelBuilder.Entity("Privafo.Models.RiskVulnerability", b =>
+                {
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Privafo.Models.ApplicationUser", "UserModified")
+                        .WithMany()
+                        .HasForeignKey("ModifiedBy");
+
+                    b.Navigation("UserCreated");
+
+                    b.Navigation("UserModified");
+                });
+
+            modelBuilder.Entity("Privafo.Models.TechSecMeasure", b =>
                 {
                     b.HasOne("Privafo.Models.ApplicationUser", "UserCreated")
                         .WithMany()
