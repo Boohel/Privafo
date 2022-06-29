@@ -27,7 +27,6 @@ namespace Privafo.DataAccess
             modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("user_login");
         }
 
-
         //Administrator
         public DbSet<ModuleCtg> module_ctg { get; set; }
         public DbSet<Module> modules { get; set; }
@@ -35,12 +34,10 @@ namespace Privafo.DataAccess
         public DbSet<ApplicationUser> users { get; set; }
         public DbSet<ApplicationRole> roles { get; set; }
 
-
         //Organization
         public DbSet<Organization> organization { get; set; }
         public DbSet<Branch> branches { get; set; }
         public DbSet<Entity> entities { get; set; }
-
 
         //General Address
         public DbSet<Address> address { get; set; }
@@ -48,11 +45,9 @@ namespace Privafo.DataAccess
         public DbSet<Province> provinces { get; set; }
         public DbSet<City> cities { get; set; }
 
-
         //General Data
         public DbSet<Industry> industries { get; set; }
         public DbSet<ActiveStatus> status { get; set; }
-
 
         //Risk Management
         public DbSet<RiskLibrary> risk_library { get; set; }
@@ -71,13 +66,11 @@ namespace Privafo.DataAccess
         public DbSet<RiskVendor> risk_vendor { get; set; }
         public DbSet<RiskProcess> risk_process { get; set; }
 
-
         //Asset
         public DbSet<Asset> assets { get; set; }
         public DbSet<AssetType> asset_type { get; set; }
         public DbSet<AssetStorageFormat> asset_storage_format { get; set; }
         public DbSet<AssetDisposal> asset_disposal { get; set; }
-
 
         //Vendor
         public DbSet<Vendor> vendors { get; set; }
@@ -86,7 +79,6 @@ namespace Privafo.DataAccess
         public DbSet<VendorType> vendor_type { get; set; }
         public DbSet<VendorProduct> vendor_product { get; set; }
         public DbSet<VendorProductCtg> vendor_product_ctg { get; set; }
-
 
         //DataElement
         public DbSet<DataElement> data_elements { get; set; }
@@ -100,7 +92,6 @@ namespace Privafo.DataAccess
         public DbSet<DteVendor> dte_vendor { get; set; }
         public DbSet<DteProcess> dte_process { get; set; }
 
-
         //Control
         public DbSet<ControlLibrary> control_library { get; set; }
         public DbSet<ControlRegister> control_reg { get; set; }
@@ -113,10 +104,15 @@ namespace Privafo.DataAccess
         public DbSet<ControlVendor> control_vendor { get; set; }
         public DbSet<ControlProcess> control_process { get; set; }
 
-
         //DPIA
         public DbSet<DPIATemplate> dpia_template { get; set; }
         public DbSet<DPIAAsset> dpia_asset { get; set; }
+
+        //Data Privacy
+        public DbSet<PrivacyRequest> privacy_request { get; set; }
+        public DbSet<PrivacyReqType> privacy_req_type { get; set; }
+        public DbSet<PrivacySubject> privacy_subject { get; set; }
+        public DbSet<PrivacyReqExtend> privacy_req_extend { get; set; }
 
 
     }

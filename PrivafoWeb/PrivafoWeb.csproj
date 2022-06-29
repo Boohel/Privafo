@@ -21,6 +21,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2022.2.510" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +31,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Controllers\" />
-    <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\Upload\Images\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,89 @@
+﻿@using Kendo.Mvc.UI
+
+@{
+    ViewData["Title"] = "Telerik Page";
+}
+@{ 
+    var stylesheets = new string[] { "~/shared/web/editor/editorStyles.css" };
+}
+<div class="card">
+	<div class="card-body">
+      <div id="example" class="demo-section wide editor">
+    <kendo-editor stylesheets="stylesheets" tag="textarea" name="editor" style="width: 100%; height:840px" value="">
+	<tools>
+	 	<tool name="bold">
+	 	</tool>
+	 	<tool name="italic">
+	 	</tool>
+	 	<tool name="underline">
+	 	</tool>
+	 	<tool name="justifyLeft">
+	 	</tool>
+	 	<tool name="justifyCenter">
+	 	</tool>
+	 	<tool name="justifyRight">
+	 	</tool>
+	 	<tool name="insertUnorderedList">
+	 	</tool>
+	 	<tool name="insertOrderedList">
+	 	</tool>
+	 	<tool name="outdent">
+	 	</tool>
+	 	<tool name="indent">
+	 	</tool>
+	 	<tool name="createLink">
+	 	</tool>
+	 	<tool name="unlink">
+	 	</tool>
+	 	<tool name="insertImage">
+	 	</tool>
+	 	<tool name="tableWizard">
+	 	</tool>
+	 	<tool name="createTable">
+	 	</tool>
+	 	<tool name="addColumnLeft">
+	 	</tool>
+	 	<tool name="addColumnRight">
+	 	</tool>
+	 	<tool name="addRowAbove">
+	 	</tool>
+	 	<tool name="addRowBelow">
+	 	</tool>
+	 	<tool name="deleteColumn">
+	 	</tool>
+	 	<tool name="deleteRow">
+	 	</tool>
+	 	<tool name="mergeCellsHorizontally">
+	 	</tool>
+	 	<tool name="mergeCellsVertically">
+	 	</tool>
+	 	<tool name="splitCellHorizontally">
+	 	</tool>
+	 	<tool name="splitCellVertically">
+	 	</tool>
+	 	<tool name="tableAlignLeft">
+	 	</tool>
+	 	<tool name="tableAlignCenter">
+	 	</tool>
+	 	<tool name="tableAlignRight">
+	 	</tool>
+	 	<tool name="fontName">
+	 	</tool>
+	 	<tool name="fontSize">
+	 	</tool>
+	 	<tool name="foreColor">
+	 	</tool>
+	 	<tool name="backColor">
+	 	</tool>
+	</tools>
+    <image-browser file-types="*.png,*.gif,*.jpg,*.jpeg">
+        <image-browser-transport upload-url="@Url.Action("Upload", "ImageBrowser")" image-url="~/Upload/{0}">
+            <create url="@Url.Action("Create", "ImageBrowser")" />
+            <read url="@Url.Action("Read", "ImageBrowser")" />
+            <destroy url="@Url.Action("Destroy", "ImageBrowser")" />
+        </image-browser-transport>
+    </image-browser>
+</kendo-editor>
+</div>
+    </div>
+</div>
