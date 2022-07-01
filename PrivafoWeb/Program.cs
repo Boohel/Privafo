@@ -11,12 +11,20 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Privafo.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Privafo.Utility;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.Configure<FormOptions>(o =>
+{
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                           builder.Configuration.GetConnectionString("DefaultConnection")
                       ));
@@ -62,7 +70,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseSession();
 
 app.MapRazorPages();

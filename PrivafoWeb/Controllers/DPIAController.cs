@@ -4,19 +4,28 @@ using Privafo.DataAccess;
 using Privafo.DataAccess.Repository.IRepository;
 using Privafo.Models;
 using Privafo.Models.ViewModels;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace PrivafoWeb.Controllers
 {
     public class DPIAController : Controller
     {
         private readonly IUnitOfWork _uow;
-
-        public DPIAController(IUnitOfWork uow)
+        private Microsoft.AspNetCore.Hosting.IHostingEnvironment Environment;
+        public DPIAController(IUnitOfWork uow,Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment)
         {
             _uow = uow;
+            Environment = _environment;
         }
         //GET
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        //GET
+        public IActionResult Telerik()
         {
             return View();
         }
@@ -134,6 +143,31 @@ namespace PrivafoWeb.Controllers
             //var productList = _uow.Module.GetAll();
             var productList = _uow.DPIATemplate.GetAll().Select(i => new { name = i.TemplateName, desc = i.Description } );
             return Json(new { data = productList });
+        }
+
+        
+        //POST
+        [HttpPost]
+        public IActionResult Upload(string data,string myfile)
+        {
+            //create pdf
+            var pdfBinary = Convert.FromBase64String(data);
+            var dir = this.Environment.WebRootPath;
+            var path = Path.Combine(dir, "tmp"); //folder name
+
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            //var fileName = path + "\\PDF-Dog-" + DateTime.Now.ToString("yyyyMMdd-HHMMss") + ".pdf";
+            var fileName = path + "/dpia/" + myfile;
+            //add time to avoid the duplicate
+            using (var fs = new FileStream(fileName, FileMode.Create))
+            using (var writer = new BinaryWriter(fs))
+            {
+                writer.Write(pdfBinary, 0, pdfBinary.Length);
+                writer.Close();
+            }
+            return null;
         }
         #endregion
 
