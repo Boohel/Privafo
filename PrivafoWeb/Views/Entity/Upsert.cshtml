@@ -1,0 +1,195 @@
+﻿@model Privafo.Models.ViewModels.EntityVM
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Upsert" asp-route-id="@Model.entity.ID" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="entity.ID" />
+            <input type="hidden" asp-for="entity.AddressID"/>
+            <input asp-for="entity.CreatedBy" value="@UserManager.GetUserId(User)" hidden />
+            <input asp-for="entity.ModifiedBy" value="@UserManager.GetUserId(User)" hidden />
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <div class="form-group mb-3">
+                        <label asp-for="entity.EntityName" class="control-label"></label>
+                        <input asp-for="entity.EntityName" class="form-control">
+                        <span asp-validation-for="entity.EntityName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="entity.EntityPIC" class="control-label"></label>
+                        <input asp-for="entity.EntityPIC" class="form-control">
+                        <span asp-validation-for="entity.EntityPIC" class="text-danger"></span>
+                    </div>
+                     <div class="form-group mb-3">
+                        <label asp-for="entity.BrandName" class="control-label"></label>
+                        <input asp-for="entity.BrandName" class="form-control">
+                        <span asp-validation-for="entity.BrandName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="entity.Phone" class="control-label"></label>
+                        <input asp-for="entity.Phone" class="form-control">
+                        <span asp-validation-for="entity.Phone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="entity.MobilePhone" class="control-label"></label>
+                        <input asp-for="entity.MobilePhone" class="form-control">
+                        <span asp-validation-for="entity.MobilePhone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="entity.Email" class="control-label"></label>
+                        <input asp-for="entity.Email" class="form-control">
+                        <span asp-validation-for="entity.Email" class="text-danger"></span>
+                    </div>
+                     <div class="form-group mb-3">
+                        <label>Industry</label>
+                        <select asp-for="entity.IndustryID" asp-items="@Model.industryList" class="form-select">
+                            <option disabled selected>--Select Industry--</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="entity.Description" class="control-label"></label>
+                        <textarea asp-for="entity.Description" class="form-control"></textarea>
+                        <span asp-validation-for="entity.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Country</label>
+                        <select id="country" asp-items="@Model.countryList" class="form-select">
+                            <option disabled selected>--Select Country--</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Province</label>
+                        <select id="province" asp-items="@Model.provinceList" class="form-select">
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>City</label>
+                        <select asp-for="address.CityID" asp-items="@Model.cityList" class="form-select">
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="address.PostCode" class="control-label"></label>
+                        <input asp-for="address.PostCode" class="form-control">
+                        <span asp-validation-for="address.PostCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="address.Latitude" class="control-label"></label>
+                        <input asp-for="address.Latitude" class="form-control">
+                        <span asp-validation-for="address.Latitude" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="address.Longitude" class="control-label"></label>
+                        <input asp-for="address.Longitude" class="form-control">
+                        <span asp-validation-for="address.Longitude" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="address.Add1" class="control-label"></label>
+                        <textarea asp-for="address.Add1" class="form-control"></textarea>
+                        <span asp-validation-for="address.Add1" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="address.Add2" class="control-label"></label>
+                        <textarea asp-for="address.Add2" class="form-control"></textarea>
+                        <span asp-validation-for="address.Add2" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="address.Add3" class="control-label"></label>
+                        <textarea asp-for="address.Add3" class="form-control"></textarea>
+                        <span asp-validation-for="address.Add3" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-md-12" style="text-align:right">
+                            <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.countryId != null)
+{
+    <script>
+        $(document).ready(function() {
+            $("#country").val(@Model.countryId);
+            $("#province").val(@Model.provinceId);
+            $("#address_CityID").val(@Model.cityId);
+        });
+    </script>
+}
+
+<script>
+    $('#country').change(function () {
+                   var countryselect = $("#country").val();
+                   var provinceSelect = $('#province');
+                   provinceSelect.empty();
+                   $('#address_CityID').empty();
+                   if (countryselect != null && countryselect != '') {
+                       $.getJSON('@Url.Action("GetProvince")', { country: countryselect }, function (libraries) {
+                           if (libraries != null && !jQuery.isEmptyObject(libraries))
+                           {
+                               if(libraries.provinceList.length > 0){
+                                   provinceSelect.append($('<option/>', {
+                                       value: null,
+                                       text: "--Select a Province--"
+                                   }).each(function(){
+                                       $(this).attr("selected", "selected");
+                                       $(this).attr("disabled", "disabled");
+                                     })
+                                   );
+                                   $.each(libraries.provinceList, function (index, library) {
+                                       provinceSelect.append($('<option/>', {
+                                           value: library.value,
+                                           text: library.text
+                                       }));
+                                      });
+                               }
+                           };
+                       });
+                   }
+           });
+
+</script>
+
+<script>
+    $('#province').change(function () {
+                      var provinceselect = $("#province").val();
+                      var citySelect = $('#address_CityID');
+                      citySelect.empty();
+                      //alert(provinceselect);
+                      if (provinceselect != '') {
+                          $.getJSON('@Url.Action("GetCity")', { province: provinceselect }, function (libraries) {
+                              if (libraries != null && !jQuery.isEmptyObject(libraries))
+                              {
+                                  if(libraries.cityList.length > 0){
+                                      citySelect.append($('<option/>', {
+                                          value: null,
+                                          text: "--Select a City--"
+                                      }).each(function(){
+                                          $(this).attr("selected", "selected");
+                                          $(this).attr("disabled", "disabled");
+                                        })
+                                      );
+                                      $.each(libraries.cityList, function (index, library) {
+                                          citySelect.append($('<option/>', {
+                                              value: library.value,
+                                              text: library.text
+                                          }));
+                                         });
+                                  }
+                              };
+                          });
+                      }
+              });
+</script>

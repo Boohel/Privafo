@@ -9,18 +9,22 @@ function loadDataTable(jsonFilter) {
     dataTable = $('#tblData').DataTable({
         dom: 'trip', //l:length row perpage, i:information page, t:table, p:pagination control, s:search/filtering box, r: processing display element
         "ajax": {
-            "url": "/city/GetAll?jsonFilter=" + jsonFilter
+            "url": "/entity/GetAll?jsonFilter=" + jsonFilter
         },
         "columns": [
-            { "data": "cityName", "width": "15%" },
-            { "data": "province.provinceName", "width": "15%" },
+            { "data": "entityName", "width": "15%" },
+            { "data": "entityPIC", "width": "15%" },
+            { "data": "brandName", "width": "15%" },
+            { "data": "industry", "width": "15%" },
+            { "data": "email", "width": "15%" },
+            { "data": "description", "width": "15%" },
             {
                 "data": "id",
                 "render": function (data) {
                     return `
                             <div class="d-flex order-actions">
-								<a onclick="showInPopup('/city/Upsert/${data}', 'Update Data City')" class="ms-3 cursor-pointer"><i class='bx bxs-edit'></i></a>
-								<a onClick="Delete('/city/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
+								<a onclick="showInPopup('/entity/Upsert/${data}', 'Update Data Entity')" class="ms-3 cursor-pointer"><i class='bx bxs-edit'></i></a>
+								<a onClick="Delete('/entity/Delete/${data}')" class="ms-3 cursor-pointer"><i class='bx bxs-trash'></i></a>
 							</div>
                         `
                 },
@@ -36,8 +40,7 @@ $('#areaSearch').on('keyup click', function () {
 
 $('#submitFilter').on('click', function () {
     var jsonFilter = JSON.stringify($('#myFilter').structFilter("val"), null, 2);
-    alert(jsonFilter);
-    //dataTable.destroy();
-    //loadDataTable(jsonFilter);
-    //$(".switcher-filter").removeClass("switcher-filter-toggled");
+    dataTable.destroy();
+    loadDataTable(jsonFilter);
+    $(".switcher-filter").removeClass("switcher-filter-toggled");
 });

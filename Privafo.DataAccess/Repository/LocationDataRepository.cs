@@ -8,6 +8,20 @@ using System.Threading.Tasks;
 
 namespace Privafo.DataAccess.Repository
 {
+    public class AddressRepository : Repository<Address>, IAddressRepository
+    {
+        private ApplicationDbContext _db;
+
+        public AddressRepository(ApplicationDbContext db) : base(db)
+        {
+            _db = db;
+        }
+
+        public void Update(Address obj)
+        {
+            _db.address.Update(obj);
+        }
+    }
     public class CountryRepository : Repository<Country>, ICountryRepository
     {
         private ApplicationDbContext _db;

@@ -10,11 +10,11 @@ using static Privafo.Utility.Helper;
 
 namespace PrivafoWeb.Controllers
 {
-    public class BranchOfficeController : Controller
+    public class EntityController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public BranchOfficeController(IUnitOfWork uow)
+        public EntityController(IUnitOfWork uow)
         {
             _uow = uow;
         }
@@ -28,20 +28,15 @@ namespace PrivafoWeb.Controllers
         {
             if (!string.IsNullOrWhiteSpace(country))
             {
-                BranchVM branchVM = new()
+                EntityVM entityVM = new()
                 {
                     provinceList = _uow.Province.GetAll(u => u.CountryID == Int64.Parse(country)).Select(i => new SelectListItem
                     {
                         Text = i.ProvinceName,
                         Value = i.ID.ToString()
-                    }),
-                     entitiesList = _uow.Entity.GetAll().Select(i => new SelectListItem
-                     {
-                         Text = i.BrandName,
-                         Value = i.ID.ToString()
-                     })
+                    })
                 };
-                return Json(branchVM);
+                return Json(entityVM);
             }
             return Json("");
         }
@@ -51,7 +46,7 @@ namespace PrivafoWeb.Controllers
         {
             if (!string.IsNullOrWhiteSpace(province))
             {
-                BranchVM branchVM = new()
+                EntityVM entityVM = new()
                 {
                     cityList = _uow.City.GetAll(u => u.ProvinceID == Int64.Parse(province)).Select(i => new SelectListItem
                     {
@@ -59,7 +54,7 @@ namespace PrivafoWeb.Controllers
                         Value = i.ID.ToString()
                     })
                 };
-                return Json(branchVM);
+                return Json(entityVM);
             }
             return Json("");
         }
@@ -67,63 +62,63 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public async Task<IActionResult> Upsert(int ID = 0)
         {
-            BranchVM branchVM = new()
+            EntityVM entityVM = new()
             {
-                branch = new(),
+                entity = new(),
                 address = new(),
+                industryList = _uow.Industry.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.IndustryName,
+                    Value = i.ID.ToString()
+                }),
                 countryList = _uow.Country.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.CountryName,
                     Value = i.ID.ToString()
                 }),
-                entitiesList = _uow.Entity.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.BrandName,
-                    Value = i.ID.ToString()
-                })
             };
             if (ID == null || ID == 0)
-                return View(branchVM);
+                return View(entityVM);
             else
             {
-                branchVM.branch = _uow.Branch.GetFirstOrDefault(u => u.ID == ID);
-                branchVM.address = _uow.Address.GetFirstOrDefault(u => u.ID == branchVM.branch.AddressID);
-                branchVM.cityId = branchVM.address.CityID.ToString();
-                branchVM.provinceId = _uow.City.GetFirstOrDefault(u => u.ID == Int64.Parse(branchVM.cityId)).ProvinceID.ToString();
-                branchVM.countryId = _uow.Province.GetFirstOrDefault(u => u.ID == Int64.Parse(branchVM.provinceId)).CountryID.ToString();
-                branchVM.entitiesList = _uow.Entity.GetAll().Where(w => w.ID == branchVM.branch.EntityID).Select(i => new SelectListItem
+                entityVM.entity = _uow.Entity.GetFirstOrDefault(u => u.ID == ID);
+                entityVM.address = _uow.Address.GetFirstOrDefault(u => u.ID == entityVM.entity.AddressID);
+                entityVM.cityId = entityVM.address.CityID.ToString();
+                entityVM.provinceId = _uow.City.GetFirstOrDefault(u => u.ID == Int64.Parse(entityVM.cityId)).ProvinceID.ToString();
+                entityVM.countryId = _uow.Province.GetFirstOrDefault(u => u.ID == Int64.Parse(entityVM.provinceId)).CountryID.ToString();
+                entityVM.industryList = _uow.Industry.GetAll().Where(w => w.ID == entityVM.entity.IndustryID).Select(i => new SelectListItem
                 {
-                    Text = i.EntityName,
+                    Text = i.IndustryName,
                     Value = i.ID.ToString()
                 });
-                branchVM.cityList = _uow.City.GetAll().Where(w=> w.ProvinceID== Int64.Parse(branchVM.provinceId)).Select(i => new SelectListItem
+                entityVM.cityList = _uow.City.GetAll().Where(w=> w.ProvinceID== Int64.Parse(entityVM.provinceId)).Select(i => new SelectListItem
                 {
                     Text = i.CityName,
                     Value = i.ID.ToString()
                 });
-                branchVM.provinceList = _uow.Province.GetAll().Where(w => w.CountryID == Int64.Parse(branchVM.countryId)).Select(i => new SelectListItem
+                entityVM.provinceList = _uow.Province.GetAll().Where(w => w.CountryID == Int64.Parse(entityVM.countryId)).Select(i => new SelectListItem
                 {
                     Text = i.ProvinceName,
                     Value = i.ID.ToString()
                 });
-                 branchVM.countryList = _uow.Country.GetAll().Select(i => new SelectListItem
+                entityVM.countryList = _uow.Country.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.CountryName,
                     Value = i.ID.ToString()
                 });
-                return View(branchVM);
+                return View(entityVM);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(BranchVM obj)
+        public async Task<IActionResult> Upsert(EntityVM obj)
         {
             if (ModelState.IsValid)
             {
                 //Insert
-                String resultMsg = "bisa";
-                if (obj.branch.ID == 0)
+                String resultMsg = "";
+                if (obj.entity.ID == 0)
                 {
                     Address saveAddress = new Address();
                     saveAddress.Add1 = obj.address.Add1;
@@ -136,39 +131,39 @@ namespace PrivafoWeb.Controllers
                     _uow.Address.Add(saveAddress);
                     _uow.Save();
 
-                    Branch savebranch = new Branch();
-                    savebranch.BranchCode = obj.branch.BranchCode;
-                    savebranch.BranchName = obj.branch.BranchName;
-                    savebranch.BranchPIC = obj.branch.BranchPIC;
-                    savebranch.Phone = obj.branch.Phone;
-                    savebranch.MobilePhone = obj.branch.MobilePhone;
-                    savebranch.Email = obj.branch.Email;
-                    savebranch.Description = obj.branch.Description;
-                    savebranch.CreatedBy = obj.branch.CreatedBy;
-                    savebranch.UserCreated = obj.branch.UserCreated;
-                    savebranch.EntityID = obj.branch.EntityID;
-                    savebranch.AddressID = saveAddress.ID;
-                    _uow.Branch.Add(savebranch);
+                    Entity saveEntity = new Entity();
+                    saveEntity.EntityName = obj.entity.EntityName;
+                    saveEntity.EntityPIC = obj.entity.EntityPIC;
+                    saveEntity.BrandName = obj.entity.BrandName;
+                    saveEntity.Phone = obj.entity.Phone;
+                    saveEntity.MobilePhone = obj.entity.MobilePhone;
+                    saveEntity.Email = obj.entity.Email;
+                    saveEntity.Description = obj.entity.Description;
+                    saveEntity.CreatedBy = obj.entity.CreatedBy;
+                    saveEntity.UserCreated = obj.entity.UserCreated;
+                    saveEntity.IndustryID = obj.entity.IndustryID;
+                    saveEntity.AddressID = saveAddress.ID;
+                    _uow.Entity.Add(saveEntity);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category created successfully";
-                    resultMsg = "Branch Office created successfully ";
+                    resultMsg = "Entity created successfully ";
                 }
                 else
                 {
-                    obj.address.ID = obj.branch.AddressID;
+                    obj.address.ID = obj.entity.AddressID;                 
                     _uow.Address.Update(obj.address);
                     _uow.Save();
 
-                    _uow.Branch.Update(obj.branch);
+                    _uow.Entity.Update(obj.entity);
                     _uow.Save();
                     //TempData["success"] = "Vendor Product Category updated successfully";
-                    resultMsg = "Branch Office updated successfully";
+                    resultMsg = "Entity updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new Branch()), msg = resultMsg });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new Entity()), msg = resultMsg });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new Branch()), msg = "Data not Valid " });
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new Entity()), msg = "Data not Valid " });
             }
         }
 
@@ -176,7 +171,7 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.Branch.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.Entity.GetFirstOrDefault(u => u.ID == ID);
             var addr = _uow.Address.GetFirstOrDefault(u => u.ID == obj.AddressID);
 
             if (obj == null)
@@ -184,9 +179,9 @@ namespace PrivafoWeb.Controllers
                 return Json(new { success = false, message = "Error while deleting" });
             }
             _uow.Address.Remove(addr);
-            _uow.Branch.Remove(obj);
+            _uow.Entity.Remove(obj);
             _uow.Save();
-            return Json(new { success = true, message = "Branch deleted successfully"  });
+            return Json(new { success = true, message = "Entity deleted successfully"  });
         }
 
         [NoDirectAccess]
@@ -237,11 +232,11 @@ namespace PrivafoWeb.Controllers
 
         #region API CALLS
         [HttpGet]
-        [NoDirectAccess]
+        //[NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
-            var bracnhList = _uow.Branch.GetAll(includeProperties: "UserCreated");
-            return Json(new { data = bracnhList });
+            var entityList = _uow.Entity.GetAll(includeProperties: "UserCreated");
+            return Json(new { data = entityList });
         }
         #endregion
     }
