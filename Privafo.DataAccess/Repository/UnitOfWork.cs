@@ -63,6 +63,7 @@ namespace Privafo.DataAccess.Repository
             ActiveStatus = new ActiveStatusRepository(_db);
 
             //General Address
+            Address = new AddressRepository(_db);
             Country = new CountryRepository(_db);
             Province = new ProvinceRepository(_db);
             City = new CityRepository(_db);
@@ -133,6 +134,7 @@ namespace Privafo.DataAccess.Repository
         public IActiveStatusRepository ActiveStatus { get; private set; }
 
         //General Address
+        public IAddressRepository Address { get; private set; }
         public ICountryRepository Country { get; private set; }
         public IProvinceRepository Province { get; private set; }
         public ICityRepository City { get; private set; }

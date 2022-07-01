@@ -58,6 +58,7 @@ namespace Privafo.DataAccess.Repository.IRepository
         IActiveStatusRepository ActiveStatus { get; }
 
         //General Address
+        IAddressRepository Address { get; }
         ICountryRepository Country { get; }
         IProvinceRepository Province { get; }
         ICityRepository City { get; }

@@ -137,47 +137,17 @@ namespace PrivafoWeb.Controllers
             {
                 new FilterField
                 {
-                    type = "text",
-                    id = "ThreatName",
-                    label = "Threat Name"
-                },
-                new FilterField
-                {
                     type = "date",
                     id = "CreateDate",
                     label = "Date Created"
                 },
-                new FilterField
-                {
-                    type = "list",
-                    id = "TestList",
-                    label = "Test List",
-                    list = new List<FilterListItem>
-                    {
-                        new FilterListItem
-                        {
-                            id = "1",
-                            label = "A"
-                        },
-                        new FilterListItem
-                        {
-                            id = "2",
-                            label = "B"
-                        },
-                        new FilterListItem
-                        {
-                            id = "3",
-                            label = "C"
-                        }
-                    }
-                }
             };
             return Json(new { fields = filterField });
         }
 
         #region API CALLS
         [HttpGet]
-        //[NoDirectAccess]
+        [NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
             var ProvinceList = _uow.City.GetAll(includeProperties: "Province");

@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Privafo.DataAccess.Repository.IRepository
 {
+    public interface IAddressRepository : IRepository<Address>
+    {
+        void Update(Address obj);
+    }
     public interface ICountryRepository : IRepository<Country>
     {
         void Update(Country obj);
