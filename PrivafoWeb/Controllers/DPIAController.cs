@@ -6,13 +6,17 @@ using Privafo.Models;
 using Privafo.Models.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace PrivafoWeb.Controllers
 {
     public class DPIAController : Controller
     {
+
         private readonly IUnitOfWork _uow;
         private Microsoft.AspNetCore.Hosting.IHostingEnvironment Environment;
+
         public DPIAController(IUnitOfWork uow,Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment)
         {
             _uow = uow;
@@ -25,10 +29,11 @@ namespace PrivafoWeb.Controllers
         }
 
         //GET
-        public IActionResult Telerik()
+        public IActionResult Views()
         {
             return View();
         }
+
 
         //POST
         [HttpPost]
@@ -137,7 +142,13 @@ namespace PrivafoWeb.Controllers
             var productList = _uow.DPIATemplate.GetAll();
             return Json(new { data = productList });
         }
-
+        [HttpGet]
+        public IActionResult GetCustom(int? ID)
+        {
+            //var productList = _uow.Module.GetAll();
+            var productList = _uow.DPIATemplate.GetFirstOrDefault(u => u.ID == ID);
+            return Json(new { data = productList });
+        }
         public IActionResult GetAllCustom()
         {
             //var productList = _uow.Module.GetAll();
@@ -167,6 +178,46 @@ namespace PrivafoWeb.Controllers
                 writer.Write(pdfBinary, 0, pdfBinary.Length);
                 writer.Close();
             }
+            return null;
+        }
+
+        [HttpPost]
+        public IActionResult Email(string data, string myfile, string recipient)
+        {
+            //create pdf
+            var pdfBinary = Convert.FromBase64String(data);
+            var dir = this.Environment.WebRootPath;
+            var path = Path.Combine(dir, "tmp"); //folder name
+
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            var fileName = path + "/dpia/" + myfile;
+            using (var fs = new FileStream(fileName, FileMode.Create))
+            using (var writer = new BinaryWriter(fs))
+            {
+                writer.Write(pdfBinary, 0, pdfBinary.Length);
+                writer.Close();
+            }
+            //email
+            MimeMessage message = new MimeMessage();
+            MailboxAddress from = new MailboxAddress("privafo","admin@privafo.com");
+            message.From.Add(from);
+            MailboxAddress to = new MailboxAddress(recipient, recipient);
+            message.To.Add(to);
+            message.Subject = "Privafo Template Test";
+            BodyBuilder bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = "<h1>Email from Privafo</h1>";
+            bodyBuilder.TextBody = "email with attchment : " + myfile;
+            bodyBuilder.Attachments.Add(fileName);
+            message.Body = bodyBuilder.ToMessageBody();
+            SmtpClient client = new SmtpClient();
+            client.Connect("mx.mailspace.id", 465, true);
+            client.Authenticate("admin@privafo.com", "sysAdmin22!");
+            client.Send(message);
+            client.Disconnect(true);
+            client.Dispose();
+            //-----
             return null;
         }
         #endregion

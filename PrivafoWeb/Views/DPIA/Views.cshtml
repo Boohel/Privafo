@@ -1,0 +1,402 @@
+﻿@model Privafo.Models.ViewModels.DPIAVM
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "View DPIA Template";
+}
+
+<h6 class="mb-0 text-uppercase">View DPIA Template</h6>
+<br/>
+<div class="row">
+<div class="demo-section wide">
+        <kendo-tabstrip name="tabstrip">
+            <popup-animation>
+                <open effects="fade:in" />
+            </popup-animation>
+            <items>
+                <tabstrip-item text="Index" selected="true">
+                    <content>
+		                    <div class="card-body">
+	                            <div class="table-responsive">
+                                    <table id="tblData" class="table" style="width:100%">
+                                        <thead class="table-light">                        
+                                            <tr>
+                                                <th>Template Name</th>
+                                                <th>Description</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                    </content>
+                </tabstrip-item>
+                <tabstrip-item text="View">
+                    <content>
+																			 	@* ---Content Design---*@
+																				 <kendo-toolbar name="ToolBar">
+																					<toolbar-items>
+																						<item template="<button class='btn btn btn-light btn-sm' type='button' onclick='ShowIndex();'><i class='bx bx-arrow-back'></i>Back</button>"/>
+																						<item type="CommandType.Separator" />
+																						<item template="<button class='btn btn btn-light btn-sm' type='button' onclick='TampilModalemail();'><i class='bx bx-mail-send'></i>Send Email</button>"/>
+																						<item type="CommandType.Separator" />
+																						<item template="<button class='btn btn btn-light btn-sm' type='button' onclick='createForm();'><i class='bx bx-news'></i>Generate Form</button>"/>
+																					</toolbar-items>
+																				</kendo-toolbar>
+
+																					<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.js"></script>
+																					<script>
+																						window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.worker.js';
+																					</script>
+
+																					<div id="pdfviewer">
+																						@(Html.Kendo().PDFViewer().Name("pdfviewer")
+																						.PdfjsProcessing(pdf => pdf.File(Url.Content("~/tmp/dpia/") + "blank.pdf"))
+																						.Height(500)
+																						        .Toolbar(toolbar =>
+																									toolbar.Items(items =>
+																									{
+																										items.Add().Name("pager");
+																										items.Add().Name("spacer");
+																										items.Add().Name("zoom");
+																										items.Add().Name("toggleSelection");
+																										items.Add().Name("spacer");
+																										items.Add().Name("search");
+																										items.Add().Name("open");
+																										items.Add().Name("download");
+																										items.Add().Name("print");
+																									})
+																								)
+																						)
+																					</div>
+
+																					<style>
+																						html body #pdfviewer {
+																							width: 100% !important;
+																						}
+																					</style>														
+
+						
+																						 	@*---End Content Design---*@
+                    </content>
+                </tabstrip-item>
+            </items>
+        </kendo-tabstrip>
+    </div>
+</div>
+
+<!-- Modal -->
+			<div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Select Email Recipient</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+							<div class="col-12"> 
+								<div class="mb-3">
+									<label>Email Address</label>
+								</div>
+								<div class="mb-3">
+									<input id="emailaddress" type="text" class="form-control" required>
+								</div>
+							</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary" onclick="send_email();">Send Email</button> 
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+@section Scripts{
+    <script src="~/js/datagrid/dpiaviews.js"> </script>
+	<script src="~/js/jspdf.min.js"></script>
+    <script>
+var todos;
+var tmpname;
+var tmpdesc;
+var tmpwelcome;
+
+            function viewSelect(ID) {
+                var tabStrip = $("#tabstrip").data("kendoTabStrip");
+                tabStrip.select(1);
+                $.getJSON('/DPIA/GetCustom?ID='+ID, function (xdata) {
+                    
+					 tmpname = xdata.data.templateName;
+					 tmpdesc = xdata.data.description;
+					 tmpwelcome = xdata.data.welcome;
+                     todos = JSON.parse(xdata.data.questionJSON);
+						//alert(todos[1].quest[1].question);
+                    print_pdf(true, false);
+                });
+            }
+
+    function print_pdf(_file,_email)
+	{
+        var pageCount;
+		const yfactor = 0.3527777778;
+		var lMargin=30; //left margin in mm
+        var rMargin=15; //right margin in mm
+        var pdfInMM=210;  // width of A4 in mm
+		var widtharea = pdfInMM-lMargin-rMargin;
+        var doc = new jsPDF("p","mm","a4");
+		var pos = 20;
+		var paragraph;
+		var lines;
+		var lheight;
+
+			doc.setProperties({
+				title: tmpname,
+				subject: tmpname + 'Template',
+				author: 'privafo',
+				keywords: 'dpia, assesment, template',
+				creator: 'privafo'
+			});
+
+		doc.setFontSize(14)
+		doc.text(lMargin, pos, tmpname);
+		doc.setFontSize(10)
+		pos += 5;
+		doc.text(lMargin, pos, tmpdesc);
+		pos += 20;
+		paragraph = tmpwelcome;
+		lines =doc.splitTextToSize(paragraph, widtharea);
+		doc.text(lMargin,pos,lines);
+
+		//pos += (lines.length * (doc.getLineHeight(paragraph)*yfactor));
+
+		doc.addPage();
+		pos = 20;
+		for (var i = 0; i < todos.length; i++) 
+		{
+			if (i>0)
+			{
+				doc.setFontSize(11)
+				paragraph = todos[i].text;
+				lines =doc.splitTextToSize(paragraph, widtharea);
+				lheight=(lines.length * (doc.getLineHeight(paragraph)*yfactor))+2;
+				doc.setFillColor(105,105,105);
+				doc.setTextColor(255,255,255)
+				doc.rect(lMargin-10, pos-5, doc.internal.pageSize.width - (lMargin + rMargin) + 10, lheight, 'F');
+				doc.text(lMargin,pos,lines);
+				paragraph = i + '.';
+				doc.text(lMargin-8,pos,paragraph);
+				pos += 2;
+				pos += lheight;
+				doc.setFillColor(255,255,255);
+				doc.setTextColor(0,0,0)				
+					for (var j = 0; j < todos[i].quest.length; j++)
+					{
+						if (j>0)
+						{
+							doc.setFontSize(10)
+							paragraph = i + '.' + j + '.';
+							doc.text(lMargin-10,pos,paragraph);
+							paragraph = todos[i].quest[j].question;
+							lines =doc.splitTextToSize(paragraph, widtharea);
+							lheight=(lines.length * (doc.getLineHeight(paragraph)*yfactor));
+							doc.text(lMargin,pos,lines);
+							pos += lheight+2;
+								if (todos[i].quest[j].type=='mc')
+								{
+									if (todos[i].quest[j].a!='')
+									{
+										paragraph = 'a. ' + todos[i].quest[j].a;
+										doc.text(lMargin,pos,paragraph);
+										lheight=(lines.length * (doc.getLineHeight(paragraph)*yfactor));
+										pos += lheight;
+									}
+									if (todos[i].quest[j].b!='')
+									{
+										paragraph = 'b. ' + todos[i].quest[j].b;
+										doc.text(lMargin,pos,paragraph);
+										lines =doc.splitTextToSize(paragraph, widtharea);
+										lheight=(lines.length * (doc.getLineHeight(paragraph)*yfactor));
+										pos += lheight;
+									}
+									if (todos[i].quest[j].c!='')
+									{
+										paragraph = 'c. ' + todos[i].quest[j].c;
+										doc.text(lMargin,pos,paragraph);
+										lines =doc.splitTextToSize(paragraph, widtharea);
+										lheight=(lines.length * (doc.getLineHeight(paragraph)*yfactor));
+										pos += lheight;
+									}
+									if (todos[i].quest[j].d!='')
+									{
+										paragraph = 'd. ' + todos[i].quest[j].d;
+										doc.text(lMargin,pos,paragraph);
+										lines =doc.splitTextToSize(paragraph, widtharea);
+										lheight=(lines.length * (doc.getLineHeight(paragraph)*yfactor));
+										pos += lheight;
+									}
+									if (todos[i].quest[j].e!='')
+									{
+										paragraph = 'e. ' + todos[i].quest[j].e;
+										doc.text(lMargin,pos,paragraph);
+										lines =doc.splitTextToSize(paragraph, widtharea);
+										lheight=(lines.length * (doc.getLineHeight(paragraph)*yfactor));
+										pos += lheight;
+									}
+									pos += 2;
+								}
+							if 	(todos[i].quest[j].description!='')
+								{
+									doc.setFontSize(8)
+									doc.setFontStyle('italic');
+									paragraph = todos[i].quest[j].description;
+									lines =doc.splitTextToSize(paragraph, widtharea);
+									lheight=(lines.length * (doc.getLineHeight(paragraph)*yfactor))+2;
+									doc.setFillColor(245,245,245);
+									doc.roundedRect(lMargin, pos-5, doc.internal.pageSize.width - (lMargin + rMargin), lheight +2, 2, 2, 'F');
+									doc.text(lMargin+5,pos,lines);
+									pos += lheight+1;
+									doc.setFontStyle('normal');									
+								}
+								
+	
+							var nx=0;									
+							if 	(todos[i].quest[j].answereq==true)
+								{	
+									doc.setFontSize(8)
+									doc.setFontStyle('italic');	
+									doc.setFillColor(255,217,204);								
+									paragraph = "Answer Required";
+									doc.roundedRect(lMargin+nx, pos-3, 25, 5, 2, 2, 'F');
+									doc.text(lMargin+nx+2,pos,paragraph);
+									nx+=27;	
+								}	
+							if 	(todos[i].quest[j].attachreq==true)
+								{	
+									doc.setFontSize(8)
+									doc.setFontStyle('italic');	
+									doc.setFillColor(255,217,204);								
+									paragraph = "Attachment Required";
+									doc.roundedRect(lMargin+nx, pos-3, 30, 5, 2, 2, 'F');
+									doc.text(lMargin+nx+2,pos,paragraph);
+									nx+=32;
+								}
+							if 	(todos[i].quest[j].questhint==true)
+								{	
+									doc.setFontSize(8)
+									doc.setFontStyle('italic');	
+									doc.setFillColor(255,217,204);								
+									paragraph = "Question Hint";
+									doc.roundedRect(lMargin+nx, pos-3, 25, 5, 2, 2, 'F');
+									doc.text(lMargin+nx+2,pos,paragraph);
+									nx+=27;
+								}	
+							if 	(todos[i].quest[j].notsure==true)
+								{	
+									doc.setFontSize(8)
+									doc.setFontStyle('italic');	
+									doc.setFillColor(255,217,204);								
+									paragraph = "Allow Not Sure";
+									doc.roundedRect(lMargin+nx, pos-3, 25, 5, 2, 2, 'F');
+									doc.text(lMargin+nx+2,pos,paragraph);
+									nx+=27;
+								}	
+							if 	(todos[i].quest[j].na==true)
+								{	
+									doc.setFontSize(8)
+									doc.setFontStyle('italic');	
+									doc.setFillColor(255,217,204);								
+									paragraph = "Allow Not Applicable";
+									doc.roundedRect(lMargin+nx, pos-3, 30, 5, 2, 2, 'F');
+									doc.text(lMargin+nx+2,pos,paragraph);
+									nx+=32;
+								}								
+									pos +=5;	
+									doc.setFontStyle('normal');									
+						}					
+					}	
+					pos += 10;
+			}
+		}
+		//Page Number
+				pageCount = doc.internal.getNumberOfPages()
+			    for (var i = 1; i <= pageCount; i++) 
+				{
+					doc.setPage(i)
+					doc.text('Page ' + String(i) + ' of ' + String(pageCount), 
+                    doc.internal.pageSize.width - 50,
+                    doc.internal.pageSize.height - 10, { align: 'right' }
+					)
+				}
+		//End Page Number
+		//doc.save(tmpname.replace(" ","_") + '.pdf');
+        
+		if (_file == false)
+			{
+				doc.autoPrint();  
+				doc.output('dataurlnewwindow');
+			}
+		else
+			{
+           var filename = tmpname.replace(" ", "_") + '.pdf';
+					var binary = doc.output();
+                    var reqData = btoa(binary);
+
+						if (_email == true) 
+						{
+							$.ajax({
+								url: "/DPIA/Email",
+								data: { data: reqData, myfile:filename , recipient: document.getElementById("emailaddress").value},
+								dataType: "json",
+								type: "POST",
+							});
+						}
+						else
+						{
+							$.ajax({
+								url: "/DPIA/Upload",
+								data: { data: reqData, myfile:filename },
+								dataType: "json",
+								type: "POST",
+							});
+								var pdfViewer = $("#pdfviewer").data("kendoPDFViewer");
+								pdfViewer.fromFile('@Url.Content("~/tmp/dpia")' + "/" + filename);
+						}
+			}
+	}
+
+
+	function send_email()
+	{
+        var emailadd = document.getElementById("emailaddress").value;
+        if (emailadd.trim() != "") {
+		print_pdf(true, true);
+			$("#emailModal").modal("hide");
+			}
+        else {
+            alert("Invalid email address");
+		}
+	}
+
+	function TampilModalemail()
+	{
+			$("#emailModal").modal("show");
+	}
+	function createForm() 
+	{
+    alert("Generate Form Under Construction");
+	}
+function ShowIndex() 
+	{
+		var tabStrip = $("#tabstrip").data("kendoTabStrip");
+        tabStrip.select(0);
+	}
+	$(document).ready(function () {
+		$($("#tabstrip").data("kendoTabStrip").items()[0]).attr("style", "display:none");
+		$($("#tabstrip").data("kendoTabStrip").items()[1]).attr("style", "display:none");
+	});
+
+    </script>
+}
+
