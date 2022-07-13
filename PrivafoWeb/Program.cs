@@ -17,7 +17,10 @@ using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddNewtonsoftJson();
+//builder.Services.AddControllersWithViews().AddNewtonsoftJson();
+// Add services to the container.
+builder.Services.AddControllersWithViews()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.Configure<FormOptions>(o =>
 {
@@ -52,6 +55,8 @@ builder.Services.ConfigureApplicationCookie(option =>
     option.LogoutPath = $"/Identity/Account/Logout";
     option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
+
+
 builder.Services.AddKendo();
 
 var app = builder.Build();

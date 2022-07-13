@@ -31,6 +31,9 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="wwwroot\data\dpia\controller\" />
+    <Folder Include="wwwroot\file\dpia\" />
+    <Folder Include="wwwroot\shared\filemanager\" />
     <Folder Include="wwwroot\tmp\dpia\" />
     <Folder Include="wwwroot\Upload\Images\" />
   </ItemGroup>

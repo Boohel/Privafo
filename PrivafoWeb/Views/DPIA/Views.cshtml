@@ -2,10 +2,10 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "View DPIA Template";
+    ViewData["Title"] = "Send DPIA Template";
 }
 
-<h6 class="mb-0 text-uppercase">View DPIA Template</h6>
+<h6 class="mb-0 text-uppercase">Send DPIA Template</h6>
 <br/>
 <div class="row">
 <div class="demo-section wide">
@@ -39,8 +39,6 @@
 																						<item template="<button class='btn btn btn-light btn-sm' type='button' onclick='ShowIndex();'><i class='bx bx-arrow-back'></i>Back</button>"/>
 																						<item type="CommandType.Separator" />
 																						<item template="<button class='btn btn btn-light btn-sm' type='button' onclick='TampilModalemail();'><i class='bx bx-mail-send'></i>Send Email</button>"/>
-																						<item type="CommandType.Separator" />
-																						<item template="<button class='btn btn btn-light btn-sm' type='button' onclick='createForm();'><i class='bx bx-news'></i>Generate Form</button>"/>
 																					</toolbar-items>
 																				</kendo-toolbar>
 
@@ -382,10 +380,6 @@ var tmpwelcome;
 	function TampilModalemail()
 	{
 			$("#emailModal").modal("show");
-	}
-	function createForm() 
-	{
-    alert("Generate Form Under Construction");
 	}
 function ShowIndex() 
 	{

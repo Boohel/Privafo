@@ -33,8 +33,16 @@ namespace PrivafoWeb.Controllers
         {
             return View();
         }
-
-
+        //GET
+        public IActionResult Forms()
+        {
+            return View();
+        }
+        //GET
+        public IActionResult Telerik()
+        {
+            return View();
+        }
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -220,7 +228,41 @@ namespace PrivafoWeb.Controllers
             //-----
             return null;
         }
+
+        public ActionResult Tag_Helper()
+        {
+            return View();
+        }
+
+        public ActionResult TagHelper_Save(string contentType, string base64, string fileName)
+        {
+            var fileContents = Convert.FromBase64String(base64);
+
+            return File(fileContents, contentType, fileName);
+        }
+
+        [HttpGet]
+        public string GetFile(string myfile)
+        {
+            var dir = this.Environment.WebRootPath;
+            var path = Path.Combine(dir, "shared");
+            var fileName = path + "/UserFiles/Folders/" + myfile;
+            byte[] fileByteArray = System.IO.File.ReadAllBytes(fileName);
+            string file = Convert.ToBase64String(fileByteArray);
+            return "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + file;
+        }
+
+        public ActionResult SaveFile(string contentType, string base64, string fileName)
+        {
+            var dir = this.Environment.WebRootPath;
+            var path = Path.Combine(dir, "file");
+            var xfileName = path + "/dpia/sample.xlsx";
+            var fileContents = Convert.FromBase64String(base64);
+            System.IO.File.WriteAllBytes(xfileName, fileContents);
+            return null;
+        }
         #endregion
+
 
     }
 }

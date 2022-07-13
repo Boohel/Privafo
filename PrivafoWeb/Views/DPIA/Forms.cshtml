@@ -1,0 +1,170 @@
+﻿@model Privafo.Models.ViewModels.DPIAVM
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "DPIA Controller";
+}
+
+<h6 class="mb-0 text-uppercase">DPIA Controller</h6>
+<br/>
+<div class="row">
+<kendo-toolbar name="ToolBar">
+    <toolbar-items>
+        <item template="<button class='btn btn btn-light btn-sm' type='button' data-bs-toggle='modal' data-bs-target='#openModal'><i class='bx bx-folder-open'></i>Open</button>"/>
+        <item type="CommandType.Separator" />
+        <item template="<button class='btn btn btn-light btn-sm' type='button' onclick='SaveCurrentFile();'><i class='bx bx-save'></i>Save</button>"/>
+    </toolbar-items>
+</kendo-toolbar>
+    @(Html.Kendo().Spreadsheet()
+    .Name("spreadsheet")
+    .Excel(excel => excel
+    .ProxyURL(Url.Action("SaveFile", "DPIA")))
+    .HtmlAttributes(new { style = "width:100%" })
+    )
+</div>
+
+
+<form method="post" asp-action="Forms" asp-controller="DPIA" enctype="multipart/form-data">
+<div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+@*        <input asp-for="DPIATemplate.ID" hidden />
+        <input asp-for="DPIATemplate.CreatedBy" value="@UserManager.GetUserId(User)" hidden />*@
+         <div class="row">
+@(Html.Kendo().FileManager().Name("filemanager")
+    .DataSource(ds =>
+        {
+            ds.Read(operation => operation
+            .Type(HttpVerbs.Post)
+            .Action("Read", "FileManagerData")
+        );
+        ds.Destroy(operation => operation
+            .Type(HttpVerbs.Post)
+            .Action("Destroy", "FileManagerData")
+        );
+        ds.Create(operation => operation
+            .Type(HttpVerbs.Post)
+            .Action("Create", "FileManagerData")
+        );
+        ds.Update(operation => operation
+            .Type(HttpVerbs.Post)
+            .Action("Update", "FileManagerData")
+        );
+    })
+    .UploadUrl("Upload", "FileManagerData")
+    .Toolbar(tb => tb.Items(items =>
+    {
+        items.Add("createFolder");
+        items.Add("upload");
+        items.Add("sortDirection");
+        items.Add("sortField");
+        items.Add("changeView");
+        items.Add("spacer");
+        items.Add("details");
+        items.Add("search");
+    }))
+    .ContextMenu(context => context.Items(items =>
+    {
+        items.Add("rename");
+        items.Add("delete");
+    }))
+    .Events(events => events
+                                @*            .DataBound("onDataBound")
+            .Drop("onDrop")
+            .Execute("onExecute")
+            .Navigate("onNavigate")*@
+            .Open("onOpen")
+            .Select("onSelect")
+                                @*            .Command("onCommand")*@
+        )
+)
+
+@section scripts {
+<script>
+    function onOpen(e) {      
+        if (e.entry.extension == ".xlsx" || e.entry.extension == ".xls") {
+                $("#openModal").modal("hide");
+                var spread = $('#spreadsheet').getKendoSpreadsheet();
+                var myurl = '@Url.Action("GetFile", "DPIA", new {myfile="namafile"})'.replace("namafile",e.entry.path);
+                $.ajax({
+                    url: myurl,
+                    method: "get",
+                    success:function(data){                       
+                        spread.fromFile(b64toBlob(data));
+                    }
+                })
+        }        
+    }
+        function b64toBlob(dataURI) {
+	        var byteString = atob(dataURI.split(',')[1]);
+	        var ab = new ArrayBuffer(byteString.length);
+	        var ia = new Uint8Array(ab);
+	        for (var i = 0; i < byteString.length; i++) {
+		        ia[i] = byteString.charCodeAt(i);
+	        }
+            
+	        return new Blob([ab], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        }
+    function onSelect(e) {
+        alert(e.selection.count);
+    }
+
+    $(document).on("kendoReady", function () {
+        var filemanager = $("#filemanager").getKendoFileManager();
+
+        filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
+        filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
+    })
+</script>
+}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+       @* <button type="button" class="btn btn-primary">Open File</button> *@
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
+
+<script>
+    //var spread = $('#spreadsheet').data("kendoSpreadsheet");
+
+
+
+
+        function loadFile() 
+        {             
+            var spread = $('#spreadsheet').getKendoSpreadsheet();
+            $.ajax({
+                url: '@Url.Action("GetFile", "DPIA")',
+                data: {myfile = "/shared/UserFiles/Folders/" + e.entry.path}
+                method: "get",
+                success:function(data){
+                    spread.fromFile(b64toBlob(data));
+                }
+            })
+        }
+
+        function SaveCurrentFile() 
+        {
+            var spread = $('#spreadsheet').getKendoSpreadsheet();
+            $.ajax({
+                url: '@Url.Action("SaveFile", "DPIA")',
+                method: "post",
+                success:function(data){
+                    //spread.fromFile(b64toBlob(data));
+                }
+            })
+        }
+
+</script>

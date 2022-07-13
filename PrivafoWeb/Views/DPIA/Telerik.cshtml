@@ -1,120 +1,52 @@
-﻿<div class="demo-section wide">
-    <div class="demo-app" style="position:relative">
-        <div id="city" class="demo-view" style="position:absolute">
-            <div class="title">
-                <h3>Current City</h3>
-            </div>
-            <div class="cards-container">
-                <div class="k-card">
-                    <div class="k-card-header">
-                        <h5 class="k-card-title">Rome</h5>
-                        <h6 class="k-card-subtitle">Capital of Italy</h6>
-                    </div>
-                    <img class="k-card-image" src="~/Assets/Images/Modules/rome.jpg" />
-                    <div class="k-card-body">
-                        <p>Rome is a sprawling, cosmopolitan city with nearly 3,000 years of globally influential art, architecture and culture on display.</p>
-                        <p>Ancient ruins such as the Forum and the Colosseum evoke the power of the former Roman Empire. </p>
-                    </div>
-                </div>
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_LayoutExploler";
+}
 
-            </div>
-            @(Html.Kendo().Button()
-                .Name("openActionSheetBttn")
-                .ThemeColor(ThemeColor.Primary)
-                .Content("OPEN ACTION SHEET")
-                .Events(ev => ev.Click("openActionSheetBttn"))
-            )
-            @(Html.Kendo().ActionSheet()
-                .Name("actionsheet")
-                .Title("Select item")
-                .Items(items =>
-                {
-                    items.Add().Text("Edit Item").IconClass("k-icon k-i-edit").Click("onClick");
-                    items.Add().Text("Add to Favorites").IconClass("k-icon k-i-heart").Click("onClick");
-                    items.Add().Text("Upload New").IconClass("k-icon k-i-upload").Click("onClick");
-                    items.Add().Text("Cancel").IconClass("k-icon k-i-cancel").Group("bottom").Click("onClick");
-                })
-            )
-        </div>
-    </div>
-</div>
+@(Html.Kendo().FileManager().Name("filemanager")
+    .DataSource(ds =>
+        {
+            ds.Read(operation => operation
+            .Type(HttpVerbs.Post)
+            .Action("Read", "FileManagerData")
+        );
+        ds.Destroy(operation => operation
+            .Type(HttpVerbs.Post)
+            .Action("Destroy", "FileManagerData")
+        );
+        ds.Create(operation => operation
+            .Type(HttpVerbs.Post)
+            .Action("Create", "FileManagerData")
+        );
+        ds.Update(operation => operation
+            .Type(HttpVerbs.Post)
+            .Action("Update", "FileManagerData")
+        );
+    })
+    .UploadUrl("Upload", "FileManagerData")
+    .Toolbar(tb => tb.Items(items =>
+    {
+        items.Add("createFolder");
+        items.Add("upload");
+        items.Add("sortDirection");
+        items.Add("sortField");
+        items.Add("changeView");
+        items.Add("spacer");
+        items.Add("details");
+        items.Add("search");
+    }))
+    .ContextMenu(context => context.Items(items =>
+    {
+        items.Add("rename");
+        items.Add("delete");
+    }))
+)
 
 <script>
-        function openActionSheetBttn() {
-            var actionsheet = $("#actionsheet").data("kendoActionSheet");
-            actionsheet.open()
-        }
+    $(document).ready( function () {
+        var filemanager = $("#filemanager").getKendoFileManager();
 
-        function onClick(e) {
-            e.preventDefault();
-            var actionsheet = $("#actionsheet").data("kendoActionSheet");
-            actionsheet.close();
-        }
-    </script>
-
-<style>
-    .demo-view {
-        transform: scale(1);
-        overflow: hidden;
-    }
-
-    .k-actionsheet-container {
-        width: 100%;
-        height: 100%;
-    }
-
-    .k-actionsheet-container > .k-overlay {
-        border-bottom-left-radius: 30px;
-        border-bottom-right-radius: 30px;
-    }
-
-    .cards-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .k-card {
-        width: 285px;
-        margin: 5%;
-    }
-
-    #openActionSheetBttn {
-        margin: 0 auto;
-        display: block;
-    }
-
-    .demo-app {
-        margin: auto;
-        width: 380px;
-        height: 814px;
-        background: #FFFFFF;
-        box-shadow: 0px 10px 20px #00000016;
-        border-radius: 30px;
-        font-family: 'Roboto', sans-serif;
-        font-size: 14px;
-    }
-
-        .demo-app .title {
-            width: 100%;
-        }
-
-    #city {
-        background: #F9F9F9;
-        height: inherit;
-        width: inherit;
-        border-radius: 30px;
-        border: 10px solid white;
-        box-sizing: border-box;
-    }
-
-
-    .demo-app h3 {
-        padding-top: 24px;
-        text-align: center;
-        font-size: 28px;
-        letter-spacing: 0.28px;
-        color: #3D57D8;
-        font-weight: 400;
-    }
-</style>
+        filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
+        filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
+    })
+</script>
