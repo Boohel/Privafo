@@ -8,6 +8,10 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using MailKit.Net.Smtp;
 using MimeKit;
+using Telerik.Web.Spreadsheet;
+using TelerikMimeTypes = Telerik.Web.Spreadsheet.MimeTypes;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Newtonsoft.Json.Linq;
 
 namespace PrivafoWeb.Controllers
 {
@@ -15,9 +19,9 @@ namespace PrivafoWeb.Controllers
     {
 
         private readonly IUnitOfWork _uow;
-        private Microsoft.AspNetCore.Hosting.IHostingEnvironment Environment;
+        private IHostingEnvironment Environment;
 
-        public DPIAController(IUnitOfWork uow,Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment)
+        public DPIAController(IUnitOfWork uow,IHostingEnvironment _environment)
         {
             _uow = uow;
             Environment = _environment;
@@ -252,14 +256,23 @@ namespace PrivafoWeb.Controllers
             return "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + file;
         }
 
-        public ActionResult SaveFile(string contentType, string base64, string fileName)
+        [HttpPost]
+        public string SaveFileToServer(string data, string myfile)
         {
-            var dir = this.Environment.WebRootPath;
-            var path = Path.Combine(dir, "file");
-            var xfileName = path + "/dpia/sample.xlsx";
-            var fileContents = Convert.FromBase64String(base64);
-            System.IO.File.WriteAllBytes(xfileName, fileContents);
-            return null;
+            try
+            {
+                if (myfile=="" || myfile==null) { return ""; }
+                var dir = this.Environment.WebRootPath;
+                var path = Path.Combine(dir, "shared");
+                var fileName = path + "/UserFiles/Folders/" + myfile;
+                var workbook = Workbook.FromJson(data);
+                    workbook.Save(fileName);
+                return "ok";
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return null;
+            }
         }
         #endregion
 
