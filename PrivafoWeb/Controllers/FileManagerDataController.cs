@@ -9,6 +9,9 @@ using System.Net.Http.Headers;
 using System.Collections.Generic;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.Extensions.FileProviders;
+using System.Text.Json;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Kendo.Mvc.Examples.Controllers
 {
@@ -285,8 +288,14 @@ namespace Kendo.Mvc.Examples.Controllers
 
         public virtual JsonResult Read(string target)
         {
+            var camelCaseResolver = new DefaultContractResolver();
+            //builder.Services.AddControllersWithViews()
+            //                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());
             var path = NormalizePath(target);
-
+            var jsonsettings = new JsonSerializerSettings()
+            {
+                ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver()
+            };
             if (Authorize(path))
             {
                 try
@@ -294,8 +303,7 @@ namespace Kendo.Mvc.Examples.Controllers
                     var files = directoryBrowser.GetFiles(path, Filter);
                     var directories = directoryBrowser.GetDirectories(path);
                     var result = files.Concat(directories).Select(VirtualizePath);
-
-                    return Json(result.ToArray());
+                    return Json(result.ToArray(), jsonsettings);
                 }
                 catch (DirectoryNotFoundException)
                 {
