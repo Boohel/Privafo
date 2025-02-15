@@ -19,7 +19,7 @@ namespace Privafo.Models.ViewModels
         [Display(Name = "Select a Province")]
         public IEnumerable<SelectListItem> provinceList { get; set; }
         [ValidateNever]
-        public string countryId { get; set; }
+        public int countryId { get; set; }
 
     }
 

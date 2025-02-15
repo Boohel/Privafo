@@ -44,8 +44,8 @@ namespace PrivafoWeb.Controllers
             {
                 
                 cityVM.city = _uow.City.GetFirstOrDefault(u => u.ID == ID);
-                int get1p = _uow.Province.GetFirstOrDefault(u => u.ID == cityVM.city.ProvinceID).CountryID;
-                cityVM.countryId = get1p.ToString();
+                int _countryId = _uow.Province.GetFirstOrDefault(u => u.ID == cityVM.city.ProvinceID).CountryID;
+                cityVM.countryId = _countryId;
                 //cityVM.countryList = _uow.Country.GetAll().Where(w => w.ID==8).Select(i => new SelectListItem
                 //{
                 //    Text = i.CountryName,
@@ -56,7 +56,7 @@ namespace PrivafoWeb.Controllers
                     Text = i.CountryName,
                     Value = i.ID.ToString()
                 });  
-                cityVM.provinceList = _uow.Province.GetAll().Where(w => w.CountryID==get1p).Select(i => new SelectListItem
+                cityVM.provinceList = _uow.Province.GetAll().Where(w => w.CountryID== _countryId).Select(i => new SelectListItem
                 {
                     Text = i.ProvinceName,
                     Value = i.ID.ToString()
@@ -69,6 +69,16 @@ namespace PrivafoWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(CityVM obj)
         {
+            //CityVM cityVM = new()
+            //{
+            //    city = obj.city,
+            //    countryList = _uow.Country.GetAll().Select(i => new SelectListItem
+            //    {
+            //        Text = i.CountryName,
+            //        Value = i.ID.ToString()
+            //    }),
+            //};
+
             if (ModelState.IsValid)
             {
                 //Insert
@@ -87,11 +97,26 @@ namespace PrivafoWeb.Controllers
                     //TempData["success"] = "Vendor Product Category updated successfully";
                     resultMsg = "City updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new City()), msg = resultMsg  });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", obj), msg = resultMsg  });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new City()), msg = "Data Not Valid" });
+                //cityVM.city = _uow.City.GetFirstOrDefault(u => u.ID == obj.city.ID);
+                //int _countryId = obj.countryId;
+                //cityVM.countryId = _countryId;
+
+                //cityVM.countryList = _uow.Country.GetAll().Select(i => new SelectListItem
+                //{
+                //    Text = i.CountryName,
+                //    Value = i.ID.ToString()
+                //});
+                //cityVM.provinceList = _uow.Province.GetAll().Where(w => w.CountryID == _countryId).Select(i => new SelectListItem
+                //{
+                //    Text = i.ProvinceName,
+                //    Value = i.ID.ToString()
+                //});
+
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", obj), msg = "Data Not Valid" });
             }
         }
 

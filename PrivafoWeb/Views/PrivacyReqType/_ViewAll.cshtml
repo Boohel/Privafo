@@ -1,4 +1,8 @@
-﻿@model Privafo.Models.ViewModels.CityVM
+﻿@model PrivacyReqType
+
+@{
+    ViewData["Title"] = "Privacy Request Type";
+}
 
 <div class="card">
     <div class="card-body">
@@ -6,7 +10,7 @@
 	        <div class="position-relative">
 		        <input type="text" id="areaSearch" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
 	        </div>
-	        <a class="hold-switcher" href="#" onclick="showFilterSide('@Url.Action("FilterData","City",null,Context.Request.Scheme)','Filter Data City')"> <i class="bx bx-filter font-22 text-dark hold-switcher" id="switcher-filter"></i>
+	        <a class="hold-switcher" href="#" onclick="showFilterSide('@Url.Action("FilterData","PrivacyReqType",null,Context.Request.Scheme)','Filter Data Privacy Request Type')"> <i class="bx bx-filter font-22 text-dark hold-switcher" id="switcher-filter"></i>
 	        </a>
             <div class="dropdown ms-auto">
 		        <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">	<i class='bx bx-dots-horizontal-rounded font-22 text-dark'></i>
@@ -24,10 +28,16 @@
                 <thead class="table-light">
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.city.CityName)
+                            @Html.DisplayNameFor(model => model.RequestTypeName)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.city.Province.ProvinceName)
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateCreated)
                         </th>
                         <th>
                         </th>

@@ -86,7 +86,7 @@ namespace Privafo.Models
         public String? CityCode { get; set; }
         [ValidateNever]
         [Required]
-        [Display(Name = "City Code")]
+        [Display(Name = "Province")]
         public int ProvinceID { get; set; }
         [ForeignKey("ProvinceID")]
         [ValidateNever]

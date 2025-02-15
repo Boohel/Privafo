@@ -7,11 +7,11 @@ using static Privafo.Utility.Helper;
 
 namespace PrivafoWeb.Controllers
 {
-    public class PrivacySubjectController : Controller
+    public class PrivacyReqTypeController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public PrivacySubjectController(IUnitOfWork uow)
+        public PrivacyReqTypeController(IUnitOfWork uow)
         {
             _uow = uow;
         }
@@ -24,44 +24,44 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public async Task<IActionResult> Upsert(int ID = 0)
         {
-            PrivacySubject privacySubject = new();
+            PrivacyReqType privacyReqType = new();
             if (ID == 0)
-                return View(privacySubject);
+                return View(privacyReqType);
             else
             {
-                var privacySubjectData = _uow.PrivacySubject.GetFirstOrDefault(u => u.ID == ID);
-                if (privacySubjectData == null)
+                var privacyReqTypeData = _uow.PrivacyReqType.GetFirstOrDefault(u => u.ID == ID);
+                if (privacyReqTypeData == null)
                 {
                     return NotFound();
                 }
-                return View(privacySubjectData);
+                return View(privacyReqTypeData);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(PrivacySubject obj)
+        public async Task<IActionResult> Upsert(PrivacyReqType obj)
         {
             if (ModelState.IsValid)
             {
                 String resultMsg = "";
                 if (obj.ID == 0)
                 {
-                    _uow.PrivacySubject.Add(obj);
+                    _uow.PrivacyReqType.Add(obj);
                     _uow.Save();
-                    resultMsg = "Privacy Subject created successfully";
+                    resultMsg = "Privacy Request Type created successfully";
                 }
                 else
                 {
-                    _uow.PrivacySubject.Update(obj);
+                    _uow.PrivacyReqType.Update(obj);
                     _uow.Save();
-                    resultMsg = "Privacy Subject updated successfully";
+                    resultMsg = "Privacy Request Type updated successfully";
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new PrivacySubject()), msg = resultMsg });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", new PrivacyReqType()), msg = resultMsg });
             }
             else
             {
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new PrivacySubject()), msg = "Data not Valid" });
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Upsert", new PrivacyReqType()), msg = "Data not Valid" });
             }
         }
 
@@ -69,29 +69,29 @@ namespace PrivafoWeb.Controllers
         [HttpDelete]
         public IActionResult Delete(int? ID)
         {
-            var obj = _uow.PrivacySubject.GetFirstOrDefault(u => u.ID == ID);
+            var obj = _uow.PrivacyReqType.GetFirstOrDefault(u => u.ID == ID);
 
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _uow.PrivacySubject.Remove(obj);
+            _uow.PrivacyReqType.Remove(obj);
             _uow.Save();
-            return Json(new { success = true, message = "Data Privacy Subject deleted successfully" });
+            return Json(new { success = true, message = "Data Privacy Request Type deleted successfully" });
         }
 
         [NoDirectAccess]
         public async Task<IActionResult> FilterData()
         {
-            PrivacySubject privacySubject = new();
+            PrivacyReqType privacyReqType = new();
             var filterField = new List<FilterField>
             {
                 new FilterField
                 {
                     type = "text",
-                    id = "PrivacySubjectName",
-                    label = "Privacy Subject Name"
+                    id = "PrivacyReqTypeName",
+                    label = "Privacy Request Type Name"
                 },
                 new FilterField
                 {
@@ -108,8 +108,8 @@ namespace PrivafoWeb.Controllers
         [NoDirectAccess]
         public IActionResult GetAll(String jsonFilter)
         {
-            var privacySubjectList = _uow.PrivacySubject.GetAll(includeProperties: "UserCreated");
-            return Json(new { data = privacySubjectList });
+            var privacyReqTypeList = _uow.PrivacyReqType.GetAll(includeProperties: "UserCreated");
+            return Json(new { data = privacyReqTypeList });
         }
         #endregion
     }

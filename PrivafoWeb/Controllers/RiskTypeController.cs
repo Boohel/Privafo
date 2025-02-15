@@ -17,7 +17,6 @@ namespace PrivafoWeb.Controllers
             _uow = uow;
         }
 
-        // GET: RiskThreatController
         public ActionResult Index()
         {
             return View();

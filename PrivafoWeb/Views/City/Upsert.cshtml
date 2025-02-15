@@ -25,6 +25,11 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
+                        <label asp-for="city.CityCode" class="control-label"></label>
+                        <input asp-for="city.CityCode" class="form-control" />
+                        <span asp-validation-for="city.CityCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
                         <label asp-for="city.CityName" class="control-label"></label>
                         <input asp-for="city.CityName" class="form-control">
                         <span asp-validation-for="city.CityName" class="text-danger"></span>
@@ -54,31 +59,31 @@
 
 <script>
     $('#country').change(function () {
-                   var countryselect = $("#country").val();
-                   var provinceSelect = $('#city_ProvinceID');
-                   provinceSelect.empty();
-                   if (countryselect != null && countryselect != '') {
-                       $.getJSON('@Url.Action("GetProvince")', { country: countryselect }, function (libraries) {
-                           if (libraries != null && !jQuery.isEmptyObject(libraries))
-                           {
-                               if(libraries.provinceList.length > 0){
-                                   provinceSelect.append($('<option/>', {
-                                       value: null,
-                                       text: "--Select a Province--"
-                                   }).each(function(){
-                                       $(this).attr("selected", "selected");
-                                       $(this).attr("disabled", "disabled");
-                                     })
-                                   );
-                                   $.each(libraries.provinceList, function (index, library) {
-                                       provinceSelect.append($('<option/>', {
-                                           value: library.value,
-                                           text: library.text
-                                       }));
-                                      });
-                               }
-                           };
-                       });
-                   }
-           });
+                var countryselect = $("#country").val();
+                var provinceSelect = $('#city_ProvinceID');
+                provinceSelect.empty();
+                if (countryselect != null && countryselect != '') {
+                    $.getJSON('@Url.Action("GetProvince")', { country: countryselect }, function (libraries) {
+                        if (libraries != null && !jQuery.isEmptyObject(libraries))
+                        {
+                            if(libraries.provinceList.length > 0){
+                                provinceSelect.append($('<option/>', {
+                                    value: null,
+                                    text: "--Select a Province--"
+                                }).each(function(){
+                                    $(this).attr("selected", "selected");
+                                    $(this).attr("disabled", "disabled");
+                                    })
+                                );
+                                $.each(libraries.provinceList, function (index, library) {
+                                    provinceSelect.append($('<option/>', {
+                                        value: library.value,
+                                        text: library.text
+                                    }));
+                                    });
+                            }
+                        };
+                    });
+                }
+        });
 </script>

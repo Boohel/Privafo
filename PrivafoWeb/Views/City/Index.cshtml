@@ -1,4 +1,4 @@
-﻿@model City
+﻿@model Privafo.Models.ViewModels.CityVM
 
 @{ ViewData["Title"] = "Index"; }
 
@@ -10,7 +10,8 @@
 }
 
 <div id="view-all">
-    @await Html.PartialAsync("_ViewAll", new City())
+    @*@await Html.PartialAsync("_ViewAll")*@
+    @await Html.PartialAsync("_ViewAll", Model)
 </div>
 
 @section Scripts{
